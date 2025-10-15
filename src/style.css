@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  background-color: #f4f4f9;
+  font-family: "Cal Sans", sans-serif;
+}
+
+.header {
+  color: #111111;
+}
+
+.title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #111111;
+  color: whitesmoke;
+  padding: 0.75rem 1.5rem;
+}
+
+.home-btn {
+  text-decoration: none;
+  color: whitesmoke;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.util-btn {
+  background: #333333;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.util-btn:hover {
+  background: #555555;
+}
