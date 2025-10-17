@@ -124,6 +124,12 @@ body {
   flex: 1;
 }
 
+@media (max-width: 768px) {
+  .hero-text {
+    display: none;
+  }
+}
+
 .hero-text h1 {
   font-size: 3rem;
   font-weight: bold;
@@ -163,6 +169,13 @@ body {
   padding: 2rem;
   border-radius: 2vw;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .appointment-card {
+    flex: 0 0 90%;
+    margin: -0.5rem -1rem;
+  }
 }
 
 .appointment-card h2 {
