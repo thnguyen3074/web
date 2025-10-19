@@ -280,11 +280,39 @@ body {
 }
 
 .availability input[type="checkbox"] {
-    height: 1.1rem;
-    width: 1.1rem;
+    position: relative;
+    appearance: none;
+    height: 1.5rem;
+    width: 2.5rem;
+    background: var(--overlay-2-color);
     accent-color: var(--accent-color);
     cursor: pointer;
-    border-radius: 0.3rem;
+    border-radius: 10vw;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+/* Nút tròn bên trong */
+.availability input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    background: var(--surface-0-color);
+    top: 0.13rem;
+    left: 0.13rem;
+    height: 1.1rem;
+    width: 1.1rem;
+    border-radius: 10vw;
+    transition: transform 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Bật */
+.availability input[type="checkbox"]:checked {
+    background: var(--accent-color);
+}
+
+.availability input[type="checkbox"]:checked::before {
+    transform: translateX(1rem);
 }
 
 /* Mobile */
@@ -323,6 +351,10 @@ body {
         width: 20%;
         justify-content: flex-start;
     }
+
+    .availability input[type="checkbox"]:checked::before {
+    transform: translateX(1.4rem);
+}
 }
 
 /* */
