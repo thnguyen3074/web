@@ -65,6 +65,7 @@ body {
     width: 100%;
     z-index: 1000;
     border-bottom: 1px solid var(--overlay-0-color);
+    box-sizing: border-box;
 }
 
 .home-btn {
