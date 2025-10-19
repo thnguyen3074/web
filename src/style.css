@@ -190,14 +190,6 @@ body {
     gap: 0.75rem;
 }
 
-.appointment-card input,
-.appointment-card select {
-    padding: 0.5rem;
-    border: 1px solid var(--surface-1-color);
-    border-radius: 1vw;
-    font-family: "Cal Sans", sans-serif;
-}
-
 .util-btn.full {
     display: block;
     width: 100%;
@@ -207,6 +199,65 @@ body {
 
 /* */
 
+.doctor-search {
+    position: relative;
+    padding: 2rem;
+    background: var(--accent-color);
+    display: flex;
+    justify-content: center;
+}
+
+.doctor-search-form {
+    flex: 1 1 100%;
+    max-width: 1280px;
+    background: var(--surface-0-color);
+    padding: 1.5rem;
+    border-radius: 2vw;
+    box-sizing: border-box;
+}
+
+.doctor-search h2 {
+    margin: 0 0 1rem;
+}
+
+.doctor-searchbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.doctor-searchbar input,
+.doctor-searchbar select {
+    flex: 1;
+    min-width: 20%;
+    box-sizing: border-box;
+}
+
+.doctor-searchbar button {
+    flex: 0 0 auto;
+    width: 15%;
+    white-space: nowrap;
+}
+
+.availability {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+}
+
+.availability input[type="checkbox"] {
+    height: 1.1rem;
+    width: 1.1rem;
+    accent-color: var(--accent-color);
+    cursor: pointer;
+    border-radius: 0.3rem;
+}
+
+/* Mobile */
 @media (max-width: 768px) {
     .hero {
         padding: 3rem 1rem;
@@ -222,4 +273,29 @@ body {
         padding: 1.5rem;
         border-radius: 4vw;
     }
+
+    .doctor-searchbar {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .doctor-searchbar input,
+    .doctor-searchbar select {
+        width: 100%;
+    }
+
+    .doctor-searchbar button {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    .availability {
+        width: 20%;
+        justify-content: flex-start;
+    }
 }
+
+/* */
