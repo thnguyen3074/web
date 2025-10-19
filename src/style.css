@@ -115,7 +115,7 @@ body {
 .hero {
     position: relative;
     background: url(asset/booking-bg.png) center/cover no-repeat;
-    padding: 2rem 1rem;
+    padding: 7rem 1rem 5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -272,9 +272,6 @@ body {
 
 /* Mobile */
 @media (max-width: 768px) {
-    .hero {
-        padding: 3rem 1rem;
-    }
 
     .hero-text {
         display: none;
