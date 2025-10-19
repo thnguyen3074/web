@@ -21,6 +21,7 @@ input,
 select,
 textarea {
     font-family: var(--font-family-base);
+    color: var(--text-color);
 }
 
 /* Loại bỏ hiệu ứng khi click vào link */
@@ -35,6 +36,14 @@ a:active {
     opacity: 1;
 }
 
+input,
+select {
+    padding: 0.5rem;
+    border: 1px solid var(--surface-1-color);
+    border-radius: 1vw;
+    font-family: "Cal Sans", sans-serif;
+}
+
 /* */
 
 body {
@@ -45,12 +54,17 @@ body {
 }
 
 .title-bar {
+    position: fixed;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--surface-0-color);
-    color: var(--text-color);
     padding: 0.75rem 1.5rem;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 1px solid var(--overlay-0-color);
 }
 
 .home-btn {
@@ -100,7 +114,6 @@ body {
 .hero {
     position: relative;
     background: url(asset/booking-bg.png) center/cover no-repeat;
-    color: var(--background-color);
     padding: 2rem 1rem;
     display: flex;
     justify-content: center;
@@ -166,7 +179,6 @@ body {
 .appointment-card {
     flex: 0 0 40%;
     background: var(--surface-0-color);
-    color: var(--text-color);
     padding: 2rem;
     border-radius: 2vw;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
