@@ -1,16 +1,16 @@
 :root {
-    --accent-color: #40a02b;
-    --background-color: #eff1f5;
-    --text-color: #4c4f69;
-    --surface-0-color: #ccd0da;
-    --surface-1-color: #bcc0cc;
-    --surface-2-color: #acb0be;
-    --overlay-0-color: #9ca0b0;
-    --overlay-1-color: #8c8fa1;
-    --overlay-2-color: #7c7f93;
-    --subtext-0-color: #6c6f85;
-    --subtext-1-color: #5c5f77;
-    --font-family-base: "Cal Sans", system-ui, sans-serif;
+    --accent: #40a02b;
+    --background: #eff1f5;
+    --text: #4c4f69;
+    --surface0: #ccd0da;
+    --surface1: #bcc0cc;
+    --surface2: #acb0be;
+    --overlay0: 156, 160, 176;
+    --overlay1: 140, 143, 161;
+    --overlay2: 124, 127, 147;
+    --subtext0: #6c6f85;
+    --subtext1: #5c5f77;
+    --font-family: "Cal Sans", system-ui, sans-serif;
 }
 
 /* Đổi font cho toàn bộ trang */
@@ -20,8 +20,8 @@ button,
 input,
 select,
 textarea {
-    font-family: var(--font-family-base);
-    color: var(--text-color);
+    font-family: var(--font-family);
+    color: var(--text);
 }
 
 html {
@@ -43,7 +43,7 @@ a:active {
 input,
 select {
     padding: 0.5rem;
-    border: 1px solid var(--surface-1-color);
+    border: 1px solid var(--surface1);
     border-radius: 1vw;
     font-family: "Cal Sans", sans-serif;
 }
@@ -52,7 +52,7 @@ select {
 
 body {
     margin: 0;
-    background-color: var(--background-color);
+    background-color: var(--background);
     max-width: 100%;
     overflow-x: hidden;
 }
@@ -62,13 +62,13 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--surface-0-color);
+    background-color: var(--surface0);
     padding: 0.75rem 1.5rem;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    border-bottom: 1px solid var(--overlay-0-color);
+    border-bottom: 1px solid var(--surface2);
     box-sizing: border-box;
 }
 
@@ -97,8 +97,8 @@ body {
 }
 
 .util-btn {
-    background: var(--accent-color);
-    color: var(--surface-0-color);
+    background: var(--accent);
+    color: var(--surface0);
     border: none;
     padding: 0.5rem 1rem;
     margin-left: 0.5rem;
@@ -133,7 +133,7 @@ body {
     left: 0;
     width: 100%;
     height: 150px;
-    background: linear-gradient(to bottom, transparent, var(--accent-color));
+    background: linear-gradient(to bottom, transparent, var(--accent));
     z-index: 0;
     pointer-events: none;
 }
@@ -166,11 +166,11 @@ body {
     font-weight: bold;
     line-height: 1;
     margin-bottom: 1rem;
-    color: var(--background-color);
+    color: var(--background);
 }
 
 .hero-text p {
-    color: var(--background-color);
+    color: var(--background);
     font-size: 1.1rem;
     margin-bottom: 2rem;
 }
@@ -182,13 +182,13 @@ body {
 
 .util-btn.secondary {
     background: transparent;
-    border: solid var(--surface-0-color);
-    color: var(--surface-0-color);
+    border: solid var(--surface0);
+    color: var(--surface0);
 }
 
 .util-btn.secondary:hover {
-    background: var(--surface-0-color);
-    color: var(--text-color);
+    background: var(--surface0);
+    color: var(--text);
 }
 
 /* */
@@ -196,7 +196,7 @@ body {
 /* Phần form bên phải */
 .appointment-card {
     flex: 0 0 40%;
-    background: var(--surface-0-color);
+    background: var(--surface0);
     padding: 2rem;
     border-radius: 2vw;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -232,7 +232,7 @@ body {
 .doctor-search {
     position: relative;
     padding: 2rem;
-    background: var(--accent-color);
+    background: var(--accent);
     display: flex;
     justify-content: center;
 }
@@ -240,7 +240,7 @@ body {
 .doctor-search-form {
     flex: 1 1 100%;
     max-width: 1280px;
-    background: var(--surface-0-color);
+    background: var(--surface0);
     padding: 1.5rem;
     border-radius: 2vw;
     box-sizing: border-box;
@@ -256,6 +256,11 @@ body {
     gap: 1rem;
     width: 100%;
     flex-wrap: wrap;
+}
+
+.doctor-searchbar-title {
+    text-align: center;
+    padding-top: 1rem;
 }
 
 .doctor-searchbar input,
@@ -284,8 +289,8 @@ body {
     appearance: none;
     height: 1.5rem;
     width: 2.5rem;
-    background: var(--overlay-2-color);
-    accent-color: var(--accent-color);
+    background: var(--surface2);
+    accent-color: var(--accent);
     cursor: pointer;
     border-radius: 10vw;
     outline: none;
@@ -296,7 +301,7 @@ body {
 .availability input[type="checkbox"]::before {
     content: "";
     position: absolute;
-    background: var(--surface-0-color);
+    background: var(--surface0);
     top: 0.13rem;
     left: 0.13rem;
     height: 1.1rem;
@@ -308,11 +313,70 @@ body {
 
 /* Bật */
 .availability input[type="checkbox"]:checked {
-    background: var(--accent-color);
+    background: var(--accent);
 }
 
 .availability input[type="checkbox"]:checked::before {
     transform: translateX(1rem);
+}
+
+.doctor-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-list h3 {
+    margin: -0.1rem 0 1rem;
+}
+
+.doctor-cards {
+    display: flex;
+    flex-direction: row;
+}
+
+.doctor-card {
+    width: 7rem;
+    height: 12rem;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    margin: auto;
+    border: 1px solid rgba(var(--overlay0), 0.5);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    background: var(--surface1);
+}
+
+.doctor-card:hover {
+    background: rgba(var(--overlay0), 0.5);
+    cursor: pointer;
+}
+
+.doctor-card img {
+    width: 7rem;
+    height: 7rem;
+    user-select: none;
+}
+
+.doctor-card .name {
+    justify-content: flex-start;
+    position: absolute;
+    padding-left: 100%;
+    animation: scroll 5s linear infinite;
+}
+
+.doctor-card .info {
+    position: absolute;
+    padding: 1.5rem 0;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-100%, 0);
+    }
 }
 
 /* Mobile */
