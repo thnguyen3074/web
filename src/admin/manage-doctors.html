@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Bác sĩ - Admin</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCare Admin</span>
+                </div>
+                <nav class="nav">
+                    <a href="../index.html">Trang chủ</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="manage-doctors.html" class="active">Quản lý BS</a>
+                    <a href="manage-patients.html">Quản lý BN</a>
+                    <a href="manage-bookings.html">Quản lý lịch</a>
+                    <a href="reports.html">Báo cáo</a>
+                </nav>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="settings.html"><i class="fas fa-cog" style="font-size: 1.5rem; color: var(--secondary-blue);"></i></a>
+                    <a href="../index.html" class="btn-secondary" style="padding: 0.6rem 1rem;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Quản lý Bác sĩ</h1>
+            <p class="breadcrumb"><a href="dashboard.html">Dashboard</a> / Quản lý Bác sĩ</p>
+        </div>
+    </div>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="card">
+                <div class="table-header">
+                    <div>
+                        <h2>Danh sách Bác sĩ</h2>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <input type="text" placeholder="Tìm kiếm..." style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                            <select style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                                <option>Tất cả chuyên khoa</option>
+                                <option>Tim mạch</option>
+                                <option>Nội khoa</option>
+                                <option>Nhi khoa</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn-submit">+ Thêm bác sĩ</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ tên</th>
+                                <th>Chuyên khoa</th>
+                                <th>Email</th>
+                                <th>SĐT</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BS001</td>
+                                <td>Nguyễn Văn A</td>
+                                <td>Tim mạch</td>
+                                <td>nguyen.van.a@medicare.com</td>
+                                <td>0987 654 321</td>
+                                <td><span class="status-badge status-confirmed">Hoạt động</span></td>
+                                <td>
+                                    <button class="btn-action btn-edit">Sửa</button>
+                                    <button class="btn-action btn-view">Xem</button>
+                                    <button class="btn-action btn-delete">Xóa</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BS002</td>
+                                <td>Trần Thị B</td>
+                                <td>Da liễu</td>
+                                <td>tran.thi.b@medicare.com</td>
+                                <td>0987 654 322</td>
+                                <td><span class="status-badge status-confirmed">Hoạt động</span></td>
+                                <td>
+                                    <button class="btn-action btn-edit">Sửa</button>
+                                    <button class="btn-action btn-view">Xem</button>
+                                    <button class="btn-action btn-delete">Xóa</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BS003</td>
+                                <td>Lê Văn C</td>
+                                <td>Nhi</td>
+                                <td>le.van.c@medicare.com</td>
+                                <td>0987 654 323</td>
+                                <td><span class="status-badge status-confirmed">Hoạt động</span></td>
+                                <td>
+                                    <button class="btn-action btn-edit">Sửa</button>
+                                    <button class="btn-action btn-view">Xem</button>
+                                    <button class="btn-action btn-delete">Xóa</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BS004</td>
+                                <td>Phạm Thị D</td>
+                                <td>Sản - Phụ khoa</td>
+                                <td>pham.thi.d@medicare.com</td>
+                                <td>0987 654 324</td>
+                                <td><span class="status-badge status-confirmed">Hoạt động</span></td>
+                                <td>
+                                    <button class="btn-action btn-edit">Sửa</button>
+                                    <button class="btn-action btn-view">Xem</button>
+                                    <button class="btn-action btn-delete">Xóa</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts.js"></script>
+</body>
+</html>
+

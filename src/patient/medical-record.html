@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ bệnh án - Bệnh nhân</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCare</span>
+                </div>
+                <nav class="nav">
+                    <a href="../index.html">Trang chủ</a>
+                    <a href="../booking.html">Đặt lịch</a>
+                    <a href="appointments.html">Lịch hẹn</a>
+                    <a href="medical-record.html" class="active">Hồ sơ bệnh án</a>
+                </nav>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="profile.html"><i class="fas fa-user-circle" style="font-size: 1.5rem; color: var(--secondary-blue);"></i></a>
+                    <a href="../index.html" class="btn-secondary" style="padding: 0.6rem 1rem;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Hồ sơ bệnh án</h1>
+            <p class="breadcrumb"><a href="dashboard.html">Dashboard</a> / Hồ sơ bệnh án</p>
+        </div>
+    </div>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Lịch sử khám bệnh</h2>
+                    <select style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                        <option>Sắp xếp theo ngày</option>
+                        <option>Mới nhất</option>
+                        <option>Cũ nhất</option>
+                    </select>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1.5rem 0;">
+                    <div style="border-left: 4px solid var(--secondary-blue); padding-left: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <h3>BS. Nguyễn Văn A - Tim mạch</h3>
+                                <p style="color: var(--gray); margin: 0.3rem 0;">15/12/2024 | 09:00</p>
+                            </div>
+                            <span class="status-badge status-completed">Hoàn thành</span>
+                        </div>
+                        <div style="background: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                            <h4 style="margin-bottom: 0.5rem;">Chẩn đoán:</h4>
+                            <p>Cao huyết áp giai đoạn 1</p>
+                        </div>
+                        <div style="background: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                            <h4 style="margin-bottom: 0.5rem;">Điều trị:</h4>
+                            <p>Kê đơn thuốc điều trị cao huyết áp. Tái khám sau 2 tuần.</p>
+                        </div>
+                        <button class="btn-action btn-view">Xem chi tiết</button>
+                    </div>
+
+                    <div style="border-left: 4px solid var(--accent-teal); padding-left: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <h3>BS. Lê Văn C - Nhi</h3>
+                                <p style="color: var(--gray); margin: 0.3rem 0;">10/12/2024 | 10:00</p>
+                            </div>
+                            <span class="status-badge status-completed">Hoàn thành</span>
+                        </div>
+                        <div style="background: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                            <h4 style="margin-bottom: 0.5rem;">Chẩn đoán:</h4>
+                            <p>Cảm cúm, sốt nhẹ</p>
+                        </div>
+                        <div style="background: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                            <h4 style="margin-bottom: 0.5rem;">Điều trị:</h4>
+                            <p>Kê đơn thuốc hạ sốt, nghỉ ngơi, uống nhiều nước.</p>
+                        </div>
+                        <button class="btn-action btn-view">Xem chi tiết</button>
+                    </div>
+
+                    <div style="border-left: 4px solid var(--accent-teal); padding-left: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <h3>BS. Nguyễn Văn A - Tim mạch</h3>
+                                <p style="color: var(--gray); margin: 0.3rem 0;">05/12/2024 | 08:00</p>
+                            </div>
+                            <span class="status-badge status-completed">Hoàn thành</span>
+                        </div>
+                        <div style="background: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                            <h4 style="margin-bottom: 0.5rem;">Chẩn đoán:</h4>
+                            <p>Khám sức khỏe tổng quát - Kết quả bình thường</p>
+                        </div>
+                        <div style="background: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                            <h4 style="margin-bottom: 0.5rem;">Ghi chú:</h4>
+                            <p>Tất cả các chỉ số đều trong mức bình thường. Nên tiếp tục tái khám định kỳ mỗi 6 tháng.</p>
+                        </div>
+                        <button class="btn-action btn-view">Xem chi tiết</button>
+                    </div>
+
+                    <div style="border-left: 4px solid var(--success); padding-left: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <h3>BS. Phạm Thị D - Sản - Phụ khoa</h3>
+                                <p style="color: var(--gray); margin: 0.3rem 0;">28/11/2024 | 14:00</p>
+                            </div>
+                            <span class="status-badge status-completed">Hoàn thành</span>
+                        </div>
+                        <div style="background: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                            <h4 style="margin-bottom: 0.5rem;">Chẩn đoán:</h4>
+                            <p>Khám phụ khoa định kỳ</p>
+                        </div>
+                        <div style="background: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                            <h4 style="margin-bottom: 0.5rem;">Ghi chú:</h4>
+                            <p>Kết quả khám bình thường. Tái khám sau 6 tháng.</p>
+                        </div>
+                        <button class="btn-action btn-view">Xem chi tiết</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts.js"></script>
+</body>
+</html>
+

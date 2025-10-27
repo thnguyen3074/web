@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ - Bệnh nhân</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCare</span>
+                </div>
+                <nav class="nav">
+                    <a href="../index.html">Trang chủ</a>
+                    <a href="../booking.html">Đặt lịch</a>
+                    <a href="appointments.html">Lịch hẹn</a>
+                    <a href="medical-record.html">Hồ sơ bệnh án</a>
+                </nav>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="profile.html"><i class="fas fa-user-circle" style="font-size: 1.5rem; color: var(--secondary-blue);"></i></a>
+                    <a href="../index.html" class="btn-secondary" style="padding: 0.6rem 1rem;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Thông tin cá nhân</h1>
+            <p class="breadcrumb"><a href="dashboard.html">Dashboard</a> / Hồ sơ</p>
+        </div>
+    </div>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="form-container">
+                <form>
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <img src="https://via.placeholder.com/150" alt="Avatar" style="width: 150px; border-radius: 50%; margin-bottom: 1rem;">
+                        <h3>Nguyễn Văn Bình</h3>
+                        <p style="color: var(--gray);">Bệnh nhân</p>
+                        <button type="button" class="btn-secondary" style="margin-top: 1rem;">Đổi ảnh đại diện</button>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem;">Thông tin cơ bản</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Họ và tên *</label>
+                            <input type="text" value="Nguyễn Văn Bình" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Giới tính *</label>
+                            <select required>
+                                <option value="">Chọn</option>
+                                <option selected>Nam</option>
+                                <option>Nữ</option>
+                                <option>Khác</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Ngày sinh *</label>
+                            <input type="date" value="1990-05-15" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại *</label>
+                            <input type="tel" value="0123 456 789" required>
+                        </div>
+                    </div>
+
+                    <div class="form-full">
+                        <label>Email *</label>
+                        <input type="email" value="binh.nguyen@email.com" required>
+                    </div>
+
+                    <div class="form-full">
+                        <label>Địa chỉ</label>
+                        <input type="text" value="123 Nguyễn Văn Linh, Quận 7, TP.HCM">
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem;">Thông tin y tế</h3>
+                    <div class="form-full">
+                        <label>Nhóm máu</label>
+                        <select>
+                            <option value="">Chọn</option>
+                            <option selected>O+</option>
+                            <option>O-</option>
+                            <option>A+</option>
+                            <option>A-</option>
+                            <option>B+</option>
+                            <option>B-</option>
+                            <option>AB+</option>
+                            <option>AB-</option>
+                        </select>
+                    </div>
+
+                    <div class="form-full">
+                        <label>Dị ứng</label>
+                        <input type="text" placeholder="Nhập các loại dị ứng nếu có">
+                    </div>
+
+                    <div class="form-full">
+                        <label>Bảo hiểm y tế</label>
+                        <input type="text" placeholder="Nhập số BHYT">
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem;">Đổi mật khẩu</h3>
+                    <div class="form-full">
+                        <label>Mật khẩu hiện tại</label>
+                        <input type="password">
+                    </div>
+                    <div class="form-full">
+                        <label>Mật khẩu mới</label>
+                        <input type="password">
+                    </div>
+                    <div class="form-full">
+                        <label>Xác nhận mật khẩu mới</label>
+                        <input type="password">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary">Hủy</button>
+                        <button type="submit" class="btn-submit">Lưu thay đổi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts.js"></script>
+</body>
+</html>
+
