@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch hẹn - Bệnh nhân</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCare</span>
+                </div>
+                <nav class="nav">
+                    <a href="../index.html">Trang chủ</a>
+                    <a href="../booking.html">Đặt lịch</a>
+                    <a href="appointments.html" class="active">Lịch hẹn</a>
+                    <a href="medical-record.html">Hồ sơ bệnh án</a>
+                </nav>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="profile.html"><i class="fas fa-user-circle" style="font-size: 1.5rem; color: var(--secondary-blue);"></i></a>
+                    <a href="../index.html" class="btn-secondary" style="padding: 0.6rem 1rem;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Quản lý lịch hẹn</h1>
+            <p class="breadcrumb"><a href="dashboard.html">Dashboard</a> / Lịch hẹn</p>
+        </div>
+    </div>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="card">
+                <div class="table-header">
+                    <div>
+                        <h2>Lịch hẹn của tôi</h2>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <select style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                                <option>Tất cả</option>
+                                <option>Đã xác nhận</option>
+                                <option>Chờ xác nhận</option>
+                                <option>Đã hủy</option>
+                                <option>Hoàn thành</option>
+                            </select>
+                        </div>
+                    </div>
+                    <a href="../booking.html" class="btn-submit">Đặt lịch mới</a>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã đặt lịch</th>
+                                <th>Ngày giờ</th>
+                                <th>Bác sĩ</th>
+                                <th>Chuyên khoa</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#APT2024001</td>
+                                <td>15/12/2024<br>09:00</td>
+                                <td>BS. Nguyễn Văn A</td>
+                                <td>Tim mạch</td>
+                                <td><span class="status-badge status-confirmed">Đã xác nhận</span></td>
+                                <td>
+                                    <button class="btn-action btn-view">Xem</button>
+                                    <button class="btn-action btn-cancel">Hủy</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#APT2024002</td>
+                                <td>20/12/2024<br>14:30</td>
+                                <td>BS. Trần Thị B</td>
+                                <td>Da liễu</td>
+                                <td><span class="status-badge status-pending">Chờ xác nhận</span></td>
+                                <td>
+                                    <button class="btn-action btn-view">Xem</button>
+                                    <button class="btn-action btn-cancel">Hủy</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#APT2024003</td>
+                                <td>10/12/2024<br>10:00</td>
+                                <td>BS. Lê Văn C</td>
+                                <td>Nhi</td>
+                                <td><span class="status-badge status-completed">Hoàn thành</span></td>
+                                <td>
+                                    <button class="btn-action btn-view">Xem</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#APT2023121</td>
+                                <td>05/12/2024<br>08:00</td>
+                                <td>BS. Nguyễn Văn A</td>
+                                <td>Tim mạch</td>
+                                <td><span class="status-badge status-completed">Hoàn thành</span></td>
+                                <td>
+                                    <button class="btn-action btn-view">Xem</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#APT2023115</td>
+                                <td>28/11/2024<br>14:00</td>
+                                <td>BS. Phạm Thị D</td>
+                                <td>Sản - Phụ khoa</td>
+                                <td><span class="status-badge status-completed">Hoàn thành</span></td>
+                                <td>
+                                    <button class="btn-action btn-view">Xem</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts.js"></script>
+</body>
+</html>
+

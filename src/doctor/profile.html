@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ - Bác sĩ</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCare</span>
+                </div>
+                <nav class="nav">
+                    <a href="../index.html">Trang chủ</a>
+                    <a href="appointments.html">Lịch hẹn</a>
+                    <a href="schedule.html">Lịch làm việc</a>
+                    <a href="profile.html" class="active">Hồ sơ</a>
+                </nav>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="profile.html"><i class="fas fa-user-circle" style="font-size: 1.5rem; color: var(--secondary-blue);"></i></a>
+                    <a href="../index.html" class="btn-secondary" style="padding: 0.6rem 1rem;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Thông tin cá nhân</h1>
+            <p class="breadcrumb"><a href="dashboard.html">Dashboard</a> / Hồ sơ</p>
+        </div>
+    </div>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="form-container">
+                <form>
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <img src="https://via.placeholder.com/150" alt="Avatar" style="width: 150px; border-radius: 50%; margin-bottom: 1rem;">
+                        <h3>BS. Nguyễn Văn A</h3>
+                        <p style="color: var(--gray);">Chuyên khoa Tim mạch</p>
+                        <button type="button" class="btn-secondary" style="margin-top: 1rem;">Đổi ảnh đại diện</button>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem;">Thông tin cơ bản</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Họ và tên *</label>
+                            <input type="text" value="Nguyễn Văn A" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Chứng chỉ hành nghề *</label>
+                            <input type="text" value="CC012345" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Chuyên khoa *</label>
+                            <select required>
+                                <option value="">Chọn</option>
+                                <option selected>Tim mạch</option>
+                                <option>Nội khoa</option>
+                                <option>Nhi khoa</option>
+                                <option>Da liễu</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Giới tính *</label>
+                            <select required>
+                                <option value="">Chọn</option>
+                                <option selected>Nam</option>
+                                <option>Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Số điện thoại *</label>
+                            <input type="tel" value="0987 654 321" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" value="nguyen.van.a@medicare.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-full">
+                        <label>Mô tả chuyên môn</label>
+                        <textarea rows="4" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-family: 'Poppins', sans-serif;">Bác sĩ Nguyễn Văn A tốt nghiệp Đại học Y Dược TP.HCM với hơn 15 năm kinh nghiệm trong điều trị các bệnh về tim mạch. Bác sĩ đã tham gia nhiều khóa học và hội thảo chuyên sâu về tim mạch trong và ngoài nước.</textarea>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem;">Đổi mật khẩu</h3>
+                    <div class="form-full">
+                        <label>Mật khẩu hiện tại</label>
+                        <input type="password">
+                    </div>
+                    <div class="form-full">
+                        <label>Mật khẩu mới</label>
+                        <input type="password">
+                    </div>
+                    <div class="form-full">
+                        <label>Xác nhận mật khẩu mới</label>
+                        <input type="password">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary">Hủy</button>
+                        <button type="submit" class="btn-submit">Lưu thay đổi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts.js"></script>
+</body>
+</html>
+

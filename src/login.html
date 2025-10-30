@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - MediCare</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCare</span>
+                </div>
+                <nav class="nav">
+                    <a href="index.html">Trang chủ</a>
+                    <a href="about.html">Giới thiệu</a>
+                    <a href="services.html">Dịch vụ</a>
+                    <a href="doctors.html">Bác sĩ</a>
+                    <a href="contact.html">Liên hệ</a>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-login active">Đăng nhập</a>
+                    <a href="register.html" class="btn-primary">Đăng ký</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Đăng nhập</h1>
+        </div>
+    </div>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="form-container">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h2>Chào mừng trở lại</h2>
+                    <p style="color: var(--gray);">Đăng nhập để tiếp tục</p>
+                </div>
+
+                <form>
+                    <div class="form-full">
+                        <label>Email / Số điện thoại</label>
+                        <input type="text" placeholder="Nhập email hoặc số điện thoại">
+                    </div>
+
+                    <div class="form-full">
+                        <label>Mật khẩu</label>
+                        <input type="password" placeholder="Nhập mật khẩu">
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox" style="margin-right: 0.5rem;">
+                            Ghi nhớ đăng nhập
+                        </label>
+                        <a href="forgot-password.html" style="color: var(--secondary-blue); text-decoration: none;">Quên mật khẩu?</a>
+                    </div>
+
+                    <button type="submit" class="btn-submit" style="width: 100%;">Đăng nhập</button>
+
+                    <div style="text-align: center; margin-top: 1.5rem;">
+                        <p style="color: var(--gray);">Chưa có tài khoản? <a href="register.html" style="color: var(--secondary-blue);">Đăng ký ngay</a></p>
+                    </div>
+                </form>
+
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--light-gray);">
+                    <p style="text-align: center; margin-bottom: 1rem; color: var(--gray);">Hoặc đăng nhập với</p>
+                    <div style="display: empresa; gap: 1rem;">
+                        <button style="flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">
+                            <i class="fab fa-google" style="color: #ea4335; margin-right: 0.5rem;"></i>
+                            Google
+                        </button>
+                        <button style="flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">
+                            <i class="fab fa-facebook" style="color: #1877f2; margin-right: 0.5rem;"></i>
+                            Facebook
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>MediCare</h3>
+                    <p>Hệ thống đặt lịch khám bệnh trực tuyến hàng đầu Việt Nam</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Liên kết nhanh</h4>
+                    <ul>
+                        <li><a href="about.html">Giới thiệu</a></li>
+                        <li><a href="services.html">Dịch vụ</a></li>
+                        <li><a href="doctors.html">Bác sĩ</a></li>
+                        <li><a href="contact.html">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Dịch vụ</h4>
+                    <ul>
+                        <li><a href="#">Đặt lịch khám</a></li>
+                        <li><a href="#">Khám online</a></li>
+                        <li><a href="#">Xem kết quả</a></li>
+                        <li><a href="#">Hồ sơ sức khỏe</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Liên hệ</h4>
+                    <ul>
+                        <li><i class="EDITOR_PREFIX_icons.fa-map-marker-alt"></i> 123 Nguyễn Văn Linh, TP.HCM</li>
+                        <li><i class="fas fa-phone"></i> 0123 456 789</li>
+                        <li><i class="fas fa-envelope"></i> info@medicare.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MediCare. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
+

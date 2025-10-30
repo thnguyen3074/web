@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Bệnh nhân</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCare</span>
+                </div>
+                <nav class="nav">
+                    <a href="../index.html">Trang chủ</a>
+                    <a href="../booking.html">Đặt lịch</a>
+                    <a href="appointments.html">Lịch hẹn</a>
+                    <a href="medical-record.html">Hồ sơ bệnh án</a>
+                </nav>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="profile.html"><i class="fas fa-user-circle" style="font-size: 1.5rem; color: var(--secondary-blue);"></i></a>
+                    <a href="../index.html" class="btn-secondary" style="padding: 0.6rem 1rem;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Dashboard</h1>
+            <p class="breadcrumb">Tổng quan</p>
+        </div>
+    </div>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>3</h3>
+                        <p>Lịch hẹn sắp tới</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>12</h3>
+                        <p>Đã khám</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>15</h3>
+                        <p>Hồ sơ bệnh án</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>2</h3>
+                        <p>Thông báo mới</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Lịch hẹn sắp tới</h2>
+                    <a href="appointments.html" class="btn-view">Xem tất cả</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ngày</th>
+                            <th>Giờ</th>
+                            <th>Bác sĩ</th>
+                            <th>Chuyên khoa</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>15/12/2024</td>
+                            <td>09:00</td>
+                            <td>BS. Nguyễn Văn A</td>
+                            <td>Tim mạch</td>
+                            <td><span class="status-badge status-confirmed">Đã xác nhận</span></td>
+                            <td>
+                                <button class="btn-action btn-view">Xem</button>
+                                <button class="btn-action btn-cancel">Hủy</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>20/12/2024</td>
+                            <td>14:30</td>
+                            <td>BS. Trần Thị B</td>
+                            <td>Da liễu</td>
+                            <td><span class="status-badge status-pending">Chờ xác nhận</span></td>
+                            <td>
+                                <button class="btn-action btn-view">Xem</button>
+                                <button class="btn-action btn-cancel">Hủy</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>22/12/2024</td>
+                            <td>10:00</td>
+                            <td>BS. Lê Văn C</td>
+                            <td>Nhi</td>
+                            <td><span class="status-badge status-confirmed">Đã xác nhận</span></td>
+                            <td>
+                                <button class="btn-action btn-view">Xem</button>
+                                <button class="btn-action btn-cancel">Hủy</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Thông báo</h2>
+                </div>
+                <div style="padding: 1.5rem 0;">
+                    <div style="display: flex; gap: 1rem; padding: 1rem; background: #fff3cd; border-radius: 5px; margin-bottom: 1rem;">
+                        <i class="fas fa-bell" style="color: var(--warning); font-size: 1.5rem;"></i>
+                        <div>
+                            <strong>Lịch hẹn đã được xác nhận</strong>
+                            <p style="margin: 0.3rem 0; color: var(--gray);">BS. Nguyễn Văn A đã xác nhận lịch hẹn vào 15/12/2024 lúc 09:00</p>
+                            <small style="color: var(--gray);">2 giờ trước</small>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; padding: 1rem; background: #d4edda; border-radius: 5px;">
+                        <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.5rem;"></i>
+                        <div>
+                            <strong>Kết quả khám đã có</strong>
+                            <p style="margin: 0.3rem 0; color: var(--gray);">Kết quả khám ngày 05/12/2024 đã có sẵn</p>
+                            <small style="color: var(--gray);">1 ngày trước</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts.js"></script>
+</body>
+</html>
+

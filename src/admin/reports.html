@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo - Admin</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCare Admin</span>
+                </div>
+                <nav class="nav">
+                    <a href="../index.html">Trang chủ</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="manage-doctors.html">Quản lý BS</a>
+                    <a href="manage-patients.html">Quản lý BN</a>
+                    <a href="manage-bookings.html">Quản lý lịch</a>
+                    <a href="reports.html" class="active">Báo cáo</a>
+                </nav>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="settings.html"><i class="fas fa-cog" style="font-size: 1.5rem; color: var(--secondary-blue);"></i></a>
+                    <a href="../index.html" class="btn-secondary" style="padding: 0.6rem 1rem;">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Báo cáo và Thống kê</h1>
+            <p class="breadcrumb"><a href="dashboard.html">Dashboard</a> / Báo cáo</p>
+        </div>
+    </div>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Báo cáo lịch hẹn</h2>
+                    <select style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                        <option>Tháng này</option>
+                        <option>Tháng trước</option>
+                        <option>3 tháng gần đây</option>
+                        <option>6 tháng gần đây</option>
+                        <option>Năm nay</option>
+                    </select>
+                </div>
+                <div style="height: 300px; display: flex; align-items: center; justify-content: center; background: var(--light-gray); border-radius: 10px; margin-bottom: 2rem;">
+                    <p style="color: var(--gray);">Biểu đồ thống kê lịch hẹn sẽ hiển thị tại đây</p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;">Thống kê theo chuyên khoa</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Chuyên khoa</th>
+                                <th>Số lượng</th>
+                                <th>Tỷ lệ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tim mạch</td>
+                                <td>850</td>
+                                <td>35%</td>
+                            </tr>
+                            <tr>
+                                <td>Nội khoa</td>
+                                <td>650</td>
+                                <td>27%</td>
+                            </tr>
+                            <tr>
+                                <td>Nhi khoa</td>
+                                <td>420</td>
+                                <td>17%</td>
+                            </tr>
+                            <tr>
+                                <td>Da liễu</td>
+                                <td>310</td>
+                                <td>13%</td>
+                            </tr>
+                            <tr>
+                                <td>Khác</td>
+                                <td>220</td>
+                                <td>9%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;">Thống kê theo bác sĩ</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bác sĩ</th>
+                                <th>Số lịch</th>
+                                <th>Tỷ lệ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BS. Nguyễn Văn A</td>
+                                <td>450</td>
+                                <td>19%</td>
+                            </tr>
+                            <tr>
+                                <td>BS. Trần Thị B</td>
+                                <td>380</td>
+                                <td>16%</td>
+                            </tr>
+                            <tr>
+                                <td>BS. Lê Văn C</td>
+                                <td>320</td>
+                                <td>13%</td>
+                            </tr>
+                            <tr>
+                                <td>BS. Phạm Thị D</td>
+                                <td>280</td>
+                                <td>12%</td>
+                            </tr>
+                            <tr>
+                                <td>Khác</td>
+                                <td>990</td>
+                                <td>40%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts.js"></script>
+</body>
+</html>
+

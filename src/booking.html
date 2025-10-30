@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt lịch khám - MediCare</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCare</span>
+                </div>
+                <nav class="nav">
+                    <a href="index.html">Trang chủ</a>
+                    <a href="about.html">Giới thiệu</a>
+                    <a href="services.html">Dịch vụ</a>
+                    <a href="doctors.html">Bác sĩ</a>
+                    <a href="contact.html">Liên hệ</a>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-login">Đăng nhập</a>
+                    <a href="register.html" class="btn-primary">Đăng ký</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Đặt lịch khám</h1>
+            <p class="breadcrumb"><a href="index.html">Trang chủ</a> / Đặt lịch</p>
+        </div>
+    </div>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="form-container">
+                <h2>Thông tin đặt lịch</h2>
+                <form action="booking-confirm.html">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Chọn bác sĩ *</label>
+                            <select required>
+                                <option value="">Chọn bác sĩ</option>
+                                <option>BS. Nguyễn Văn A - Tim mạch</option>
+                                <option>BS. Trần Thị B - Da liễu</option>
+                                <option>BS. Lê Văn C - Nhi</option>
+                                <option>BS. Phạm Thị D - Sản - Phụ khoa</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Chuyên khoa</label>
+                            <select>
+                                <option>Tất cả chuyên khoa</option>
+                                <option>Tim mạch</option>
+                                <option>Nội tiết</option>
+                                <option>Da liễu</option>
+                                <option>Tiêu hóa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Ngày khám *</label>
+                            <input type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Giờ khám *</label>
+                            <select required>
+                                <option value="">Chọn giờ</option>
+                                <option>08:00</option>
+                                <option>08:30</option>
+                                <option>09:00</option>
+                                <option>09:30</option>
+                                <option>10:00</option>
+                                <option>14:00</option>
+                                <option>14:30</option>
+                                <option>15:00</option>
+                                <option>15:30</option>
+                                <option>16:00</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem;">Thông tin bệnh nhân</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Họ và tên *</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại *</label>
+                            <input type="tel" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Ngày sinh *</label>
+                            <input type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Giới tính *</label>
+                            <select required>
+                                <option value="">Chọn</option>
+                                <option>Nam</option>
+                                <option>Nữ</option>
+                                <option>Khác</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-full">
+                        <label>Email</label>
+                        <input type="email">
+                    </div>
+
+                    <div class="form-full">
+                        <label>Địa chỉ</label>
+                        <input type="text">
+                    </div>
+
+                    <div class="form-full">
+                        <label>Triệu chứng / Lý do khám</label>
+                        <textarea rows="4" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-family: 'Poppins', sans-serif;"></textarea>
+                    </div>
+
+                    <div style="margin: 2rem 0;">
+                        <label style="display: flex; align-items: start; cursor: pointer;">
+                            <input type="checkbox" required style="margin-right: 0.5rem; margin-top: 0.2rem;">
+                            <span>Tôi xác nhận thông tin trên là chính xác</span>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="history.back()">Hủy</button>
+                        <button type="submit" class="btn-submit">Đặt lịch khám</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>MediCare</h3>
+                    <p>Hệ thống đặt lịch khám bệnh trực tuyến hàng đầu Việt Nam</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Liên kết nhanh</h4>
+                    <ul>
+                        <li><a href="about.html">Giới thiệu</a></li>
+                        <li><a href="services.html">Dịch vụ</a></li>
+                        <li><a href="doctors.html">Bác sĩ</a></li>
+                        <li><a href="contact.html">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Dịch vụ</h4>
+                    <ul>
+                        <li><a href="#">Đặt lịch khám</a></li>
+                        <li><a href="#">Khám online</a></li>
+                        <li><a href="#">Xem kết quả</a></li>
+                        <li><a href="#">Hồ sơ sức khỏe</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Liên hệ</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Nguyễn Văn Linh, TP.HCM</li>
+                        <li><i class="fas fa-phone"></i> 0123 456 789</li>
+                        <li><i class="fas fa-envelope"></i> info@medicare.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MediCare. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
+
