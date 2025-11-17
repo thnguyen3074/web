@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare - Cơ sở y tế</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">Medicare</div>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="facility.html">Cơ sở y tế</a>
+        <a href="Specialty.html">Chuyên khoa</a>
+        <a href="About.html">Giới thiệu</a>
+        <a href="Contact.html">Liên hệ</a>
+      </nav>
+      <div class="auth">
+        <a href="login.html" class="auth-link">Đăng nhập</a>
+        <a href="register.html" class="auth-link signup">Đăng ký</a>
+      </div>
+      <button class="menu-toggle" aria-label="Mở menu">☰</button>
+    </header>
+
+    <main class="facility-page">
+      <section class="page-hero">
+        <h1>Cơ sở y tế</h1>
+        <p>Tìm kiếm và lựa chọn bệnh viện hoặc phòng khám phù hợp.</p>
+      </section>
+
+      <section class="facility-tabs">
+        <button class="tab-button active" data-tab-target="hospital">
+          Bệnh viện
+        </button>
+        <button class="tab-button" data-tab-target="clinic">
+          Phòng khám
+        </button>
+      </section>
+
+      <section
+        class="tab-panel facility-grid hospital-list default-show"
+        data-tab-panel="hospital"
+        data-display="grid"
+      >
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 1" />
+          <div class="card-body">
+            <h3>Bệnh viện Trung ương</h3>
+            <p>123 Trần Hưng Đạo, Hà Nội</p>
+            <p>Giờ làm việc: 7:00 - 20:00</p>
+            <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 2" />
+          <div class="card-body">
+            <h3>Bệnh viện An Khang</h3>
+            <p>45 Nguyễn Văn Linh, Đà Nẵng</p>
+            <p>Giờ làm việc: 7:30 - 19:30</p>
+            <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 3" />
+          <div class="card-body">
+            <h3>Bệnh viện Sài Gòn</h3>
+            <p>210 Lê Lợi, TP.HCM</p>
+            <p>Giờ làm việc: 8:00 - 21:00</p>
+            <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 4" />
+          <div class="card-body">
+            <h3>Bệnh viện Hoa Sen</h3>
+            <p>56 Nguyễn Thị Minh Khai, Cần Thơ</p>
+            <p>Giờ làm việc: 7:00 - 18:00</p>
+            <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 5" />
+          <div class="card-body">
+            <h3>Bệnh viện Quốc tế Ánh Dương</h3>
+            <p>88 Phan Đình Phùng, Huế</p>
+            <p>Giờ làm việc: 7:00 - 19:00</p>
+            <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 6" />
+          <div class="card-body">
+            <h3>Bệnh viện Hòa Bình</h3>
+            <p>12 Lê Duẩn, Đà Nẵng</p>
+            <p>Giờ làm việc: 6:30 - 18:30</p>
+            <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+          </div>
+        </article>
+      </section>
+
+      <section
+        class="tab-panel facility-grid"
+        data-tab-panel="clinic"
+        data-display="grid"
+      >
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/80" alt="Phòng khám 1" />
+          <div>
+            <h3>Phòng khám An Tâm</h3>
+            <p>99 Phan Đình Phùng, Huế</p>
+          </div>
+          <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/80" alt="Phòng khám 2" />
+          <div>
+            <h3>Phòng khám Gia Đình</h3>
+            <p>12 Lý Thường Kiệt, Hà Nội</p>
+          </div>
+          <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/80" alt="Phòng khám 3" />
+          <div>
+            <h3>Phòng khám Sức Khỏe+</h3>
+            <p>78 Nguyễn Huệ, TP.HCM</p>
+          </div>
+          <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/80" alt="Phòng khám 4" />
+          <div>
+            <h3>Phòng khám Thiện Tâm</h3>
+            <p>34 Lê Duẩn, Đà Nẵng</p>
+          </div>
+          <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/80" alt="Phòng khám 5" />
+          <div>
+            <h3>Phòng khám Ánh Dương</h3>
+            <p>25 Nguyễn Trãi, Hà Nội</p>
+          </div>
+          <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+        </article>
+        <article class="facility-card reveal">
+          <img src="https://via.placeholder.com/80" alt="Phòng khám 6" />
+          <div>
+            <h3>Phòng khám Tâm Đức</h3>
+            <p>63 Lê Lợi, TP.HCM</p>
+          </div>
+          <a href="FacilityDetail.html" class="btn-secondary">Xem chi tiết</a>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Medicare © 2024</p>
+      <p>123 Đường Sức Khỏe, Quận 1, TP.HCM</p>
+      <p>Email: contact@medicare.vn</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
+

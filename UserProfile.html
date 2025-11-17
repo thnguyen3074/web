@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare - Hồ sơ cá nhân</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">Medicare</div>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="facility.html">Cơ sở y tế</a>
+        <a href="Specialty.html">Chuyên khoa</a>
+        <a href="About.html">Giới thiệu</a>
+        <a href="Contact.html">Liên hệ</a>
+      </nav>
+      <div class="auth">
+        <a href="MyAppointments.html" class="auth-link">Lịch hẹn của tôi</a>
+        <a href="UserProfile.html" class="auth-link signup">Nguyễn Văn A</a>
+      </div>
+      <button class="menu-toggle" aria-label="Mở menu">☰</button>
+    </header>
+
+    <main class="page user-profile-page">
+      <section class="page-hero">
+        <h1>Hồ sơ cá nhân</h1>
+      </section>
+
+      <section class="profile-card">
+        <div class="profile-avatar">
+          <img src="https://via.placeholder.com/120" alt="Avatar" />
+        </div>
+        <div class="profile-info">
+          <h2>Nguyễn Văn A</h2>
+          <div class="info-item">
+            <strong>Email:</strong>
+            <span>nguyenvana@email.com</span>
+          </div>
+          <div class="info-item">
+            <strong>Số điện thoại:</strong>
+            <span>0901234567</span>
+          </div>
+          <div class="info-item">
+            <strong>Ngày tạo tài khoản:</strong>
+            <span>15/01/2024</span>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn-primary" onclick="openEditModal()">
+            Chỉnh sửa thông tin
+          </button>
+          <button class="btn-secondary" onclick="openChangePasswordModal()">
+            Đổi mật khẩu
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal chỉnh sửa thông tin -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Chỉnh sửa thông tin</h2>
+          <span class="close" onclick="closeModal('editModal')">&times;</span>
+        </div>
+        <form class="modal-form" data-validate="true" data-success-message="Cập nhật thông tin thành công!">
+          <div class="form-group">
+            <label for="edit-name">Họ và tên</label>
+            <input type="text" id="edit-name" name="name" value="Nguyễn Văn A" required />
+          </div>
+          <div class="form-group">
+            <label for="edit-email">Email</label>
+            <input type="email" id="edit-email" name="email" value="nguyenvana@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="edit-phone">Số điện thoại</label>
+            <input type="tel" id="edit-phone" name="phone" value="0901234567" required />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeModal('editModal')">Hủy</button>
+            <button type="submit" class="btn-primary">Lưu thay đổi</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal đổi mật khẩu -->
+    <div id="passwordModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Đổi mật khẩu</h2>
+          <span class="close" onclick="closeModal('passwordModal')">&times;</span>
+        </div>
+        <form class="modal-form" data-validate="true" data-success-message="Đổi mật khẩu thành công!">
+          <div class="form-group">
+            <label for="current-password">Mật khẩu hiện tại</label>
+            <input type="password" id="current-password" name="currentPassword" required />
+          </div>
+          <div class="form-group">
+            <label for="new-password">Mật khẩu mới</label>
+            <input type="password" id="new-password" name="newPassword" required />
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Xác nhận mật khẩu mới</label>
+            <input type="password" id="confirm-password" name="confirmPassword" required />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeModal('passwordModal')">Hủy</button>
+            <button type="submit" class="btn-primary">Đổi mật khẩu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Medicare © 2024</p>
+      <p>123 Đường Sức Khỏe, Quận 1, TP.HCM</p>
+      <p>Email: contact@medicare.vn</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
+

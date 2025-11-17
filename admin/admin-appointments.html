@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare Admin - Quản lý lịch hẹn</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-body">
+    <header class="admin-header">
+      <div class="admin-logo">Medicare Admin</div>
+      <div class="admin-header-actions">
+        <button class="btn-admin-logout" onclick="window.location.href='admin-login.html'">
+          Đăng xuất
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <nav class="admin-nav">
+          <a href="admin-dashboard.html" class="nav-item">
+            <span>📊</span> Dashboard
+          </a>
+          <a href="admin-facilities.html" class="nav-item">
+            <span>🏥</span> Cơ sở y tế
+          </a>
+          <a href="admin-specialties.html" class="nav-item">
+            <span>⚕️</span> Chuyên khoa
+          </a>
+          <a href="admin-appointments.html" class="nav-item active">
+            <span>📅</span> Lịch hẹn
+          </a>
+          <a href="admin-users.html" class="nav-item">
+            <span>👥</span> Người dùng
+          </a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <div class="admin-content">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý lịch hẹn</h1>
+          </div>
+
+          <div class="filter-bar">
+            <div class="filter-group">
+              <label for="filter-status">Lọc theo trạng thái:</label>
+              <select id="filter-status" class="filter-select">
+                <option value="">Tất cả</option>
+                <option value="pending">Chờ</option>
+                <option value="confirmed">Xác nhận</option>
+                <option value="cancelled">Hủy</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="filter-facility">Lọc theo cơ sở y tế:</label>
+              <select id="filter-facility" class="filter-select">
+                <option value="">Tất cả</option>
+                <option value="1">Bệnh viện Quốc tế Medicare</option>
+                <option value="2">Bệnh viện Đa khoa Tâm Đức</option>
+                <option value="3">Phòng khám Tim mạch An Tâm</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên bệnh nhân</th>
+                  <th>Cơ sở y tế</th>
+                  <th>Chuyên khoa</th>
+                  <th>Ngày khám</th>
+                  <th>Giờ khám</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Nguyễn Văn A</td>
+                  <td>Bệnh viện Quốc tế Medicare</td>
+                  <td>Tim mạch</td>
+                  <td>15/12/2024</td>
+                  <td>08:00</td>
+                  <td><span class="status-badge pending">Chờ</span></td>
+                  <td>
+                    <button class="btn-confirm" onclick="confirmAppointment(1)">Xác nhận</button>
+                    <button class="btn-cancel-action" onclick="cancelAppointment(1)">Hủy</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>Bệnh viện Đa khoa Tâm Đức</td>
+                  <td>Da liễu</td>
+                  <td>16/12/2024</td>
+                  <td>09:30</td>
+                  <td><span class="status-badge confirmed">Xác nhận</span></td>
+                  <td>
+                    <button class="btn-cancel-action" onclick="cancelAppointment(2)">Hủy</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Lê Văn C</td>
+                  <td>Phòng khám Tim mạch An Tâm</td>
+                  <td>Tim mạch</td>
+                  <td>17/12/2024</td>
+                  <td>10:00</td>
+                  <td><span class="status-badge cancelled">Hủy</span></td>
+                  <td>-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
+

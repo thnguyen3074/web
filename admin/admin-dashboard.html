@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare Admin - Dashboard</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-body">
+    <header class="admin-header">
+      <div class="admin-logo">Medicare Admin</div>
+      <div class="admin-header-actions">
+        <button class="btn-admin-logout" onclick="window.location.href='admin-login.html'">
+          Đăng xuất
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <nav class="admin-nav">
+          <a href="admin-dashboard.html" class="nav-item active">
+            <span>📊</span> Dashboard
+          </a>
+          <a href="admin-facilities.html" class="nav-item">
+            <span>🏥</span> Cơ sở y tế
+          </a>
+          <a href="admin-specialties.html" class="nav-item">
+            <span>⚕️</span> Chuyên khoa
+          </a>
+          <a href="admin-appointments.html" class="nav-item">
+            <span>📅</span> Lịch hẹn
+          </a>
+          <a href="admin-users.html" class="nav-item">
+            <span>👥</span> Người dùng
+          </a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <div class="admin-content">
+          <h1 class="page-title">Tổng quan</h1>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">🏥</div>
+              <div class="stat-info">
+                <h3>Bệnh viện</h3>
+                <p class="stat-number">24</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🏨</div>
+              <div class="stat-info">
+                <h3>Phòng khám</h3>
+                <p class="stat-number">48</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">⚕️</div>
+              <div class="stat-info">
+                <h3>Chuyên khoa</h3>
+                <p class="stat-number">12</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📅</div>
+              <div class="stat-info">
+                <h3>Lịch hẹn</h3>
+                <p class="stat-number">1,234</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">👥</div>
+              <div class="stat-info">
+                <h3>Người dùng</h3>
+                <p class="stat-number">5,678</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
+

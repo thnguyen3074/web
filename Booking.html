@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare - Đặt lịch khám</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">Medicare</div>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="facility.html">Cơ sở y tế</a>
+        <a href="Specialty.html">Chuyên khoa</a>
+        <a href="About.html">Giới thiệu</a>
+        <a href="Contact.html">Liên hệ</a>
+      </nav>
+      <div class="auth">
+        <a href="login.html" class="auth-link">Đăng nhập</a>
+        <a href="register.html" class="auth-link signup">Đăng ký</a>
+      </div>
+      <button class="menu-toggle" aria-label="Mở menu">☰</button>
+    </header>
+
+    <main class="booking-page">
+      <section class="page-hero">
+        <h1>Đặt lịch khám</h1>
+        <p>Vui lòng chọn thông tin lịch khám và điền thông tin cá nhân của bạn.</p>
+      </section>
+
+      <section class="booking-card">
+        <form class="booking-form" id="bookingForm" data-validate="true">
+          <div class="booking-section">
+            <h3>Thông tin cơ sở y tế</h3>
+            <div class="facility-summary">
+              <h4>Bệnh viện Quốc tế Medicare</h4>
+              <p>123 Đường Sức Khỏe, Quận 1, TP.HCM</p>
+              <p>Hotline: (028) 1234 5678</p>
+            </div>
+          </div>
+
+          <div class="booking-section">
+            <h3>Chọn chuyên khoa & thời gian</h3>
+            <div class="form-group">
+              <label for="booking-specialty">Chuyên khoa</label>
+              <select id="booking-specialty" name="specialty" required>
+                <option value="">Chọn chuyên khoa</option>
+                <option>Tim mạch</option>
+                <option>Da liễu</option>
+                <option>Tai mũi họng</option>
+                <option>Nội tổng quát</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="booking-date">Ngày khám</label>
+              <input type="date" id="booking-date" name="date" required />
+            </div>
+            <div class="form-group">
+              <label for="booking-time">Giờ khám</label>
+              <select id="booking-time" name="time" required>
+                <option value="">Chọn giờ khám</option>
+                <option>07:00</option>
+                <option>07:30</option>
+                <option>08:00</option>
+                <option>08:30</option>
+                <option>09:00</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="booking-section">
+            <h3>Thông tin cá nhân</h3>
+            <div class="form-group">
+              <label for="booking-name">Họ và tên</label>
+              <input
+                type="text"
+                id="booking-name"
+                name="fullname"
+                placeholder="Nhập họ và tên"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="booking-phone">Số điện thoại</label>
+              <input
+                type="tel"
+                id="booking-phone"
+                name="phone"
+                placeholder="Nhập số điện thoại"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="booking-email">Email</label>
+              <input
+                type="email"
+                id="booking-email"
+                name="email"
+                placeholder="Nhập email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="booking-symptom">Triệu chứng</label>
+              <textarea
+                id="booking-symptom"
+                name="symptom"
+                rows="4"
+                placeholder="Mô tả triệu chứng của bạn"
+                required
+              ></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary booking-submit">
+            Xác nhận đặt lịch
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Medicare © 2024</p>
+      <p>123 Đường Sức Khỏe, Quận 1, TP.HCM</p>
+      <p>Email: contact@medicare.vn</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>

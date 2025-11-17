@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">Medicare</div>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="facility.html">Cơ sở y tế</a>
+        <a href="Specialty.html">Chuyên khoa</a>
+        <a href="About.html">Giới thiệu</a>
+        <a href="Contact.html">Liên hệ</a>
+      </nav>
+      <div class="auth">
+        <a href="login.html" class="auth-link">Đăng nhập</a>
+        <a href="register.html" class="auth-link signup">Đăng ký</a>
+      </div>
+      <button class="menu-toggle" aria-label="Mở menu">☰</button>
+    </header>
+
+    <section class="search-bar">
+      <div class="search-wrapper">
+        <input
+          type="text"
+          placeholder="Tìm kiếm bệnh viện, phòng khám, chuyên khoa…"
+        />
+        <button>Tìm kiếm</button>
+      </div>
+    </section>
+
+    <main>
+      <section class="section hospitals">
+        <div class="section-header">
+          <div>
+            <h2>Danh sách bệnh viện</h2>
+            <p>Khám phá các bệnh viện uy tín trên toàn quốc.</p>
+          </div>
+          <a href="facility.html" class="see-more">Xem thêm &gt;</a>
+        </div>
+        <div class="cards hospital-cards">
+          <article class="card reveal">
+            <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 1" />
+            <h3>Bệnh viện Trung ương</h3>
+            <p>Địa chỉ: 123 Trần Hưng Đạo, Hà Nội</p>
+            <p>Giờ làm việc: 7:00 - 20:00</p>
+          </article>
+          <article class="card reveal">
+            <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 2" />
+            <h3>Bệnh viện An Khang</h3>
+            <p>Địa chỉ: 45 Nguyễn Văn Linh, Đà Nẵng</p>
+            <p>Giờ làm việc: 7:30 - 19:30</p>
+          </article>
+          <article class="card reveal">
+            <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 3" />
+            <h3>Bệnh viện Sài Gòn</h3>
+            <p>Địa chỉ: 210 Lê Lợi, TP.HCM</p>
+            <p>Giờ làm việc: 8:00 - 21:00</p>
+          </article>
+          <article class="card reveal">
+            <img src="https://via.placeholder.com/300x200" alt="Bệnh viện 4" />
+            <h3>Bệnh viện Hoa Sen</h3>
+            <p>Địa chỉ: 56 Nguyễn Thị Minh Khai, Cần Thơ</p>
+            <p>Giờ làm việc: 7:00 - 18:00</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section clinics">
+        <div class="section-header">
+          <div>
+            <h2>Danh sách phòng khám</h2>
+            <p>Lựa chọn phòng khám phù hợp với nhu cầu của bạn.</p>
+          </div>
+          <a href="facility.html" class="see-more">Xem thêm &gt;</a>
+        </div>
+        <div class="cards clinic-cards">
+          <article class="clinic card reveal">
+            <img src="https://via.placeholder.com/80" alt="Phòng khám 1" />
+            <div>
+              <h3>Phòng khám An Tâm</h3>
+              <p>99 Phan Đình Phùng, Huế</p>
+            </div>
+          </article>
+          <article class="clinic card reveal">
+            <img src="https://via.placeholder.com/80" alt="Phòng khám 2" />
+            <div>
+              <h3>Phòng khám Gia Đình</h3>
+              <p>12 Lý Thường Kiệt, Hà Nội</p>
+            </div>
+          </article>
+          <article class="clinic card reveal">
+            <img src="https://via.placeholder.com/80" alt="Phòng khám 3" />
+            <div>
+              <h3>Phòng khám Sức Khỏe+</h3>
+              <p>78 Nguyễn Huệ, TP.HCM</p>
+            </div>
+          </article>
+          <article class="clinic card reveal">
+            <img src="https://via.placeholder.com/80" alt="Phòng khám 4" />
+            <div>
+              <h3>Phòng khám Thiện Tâm</h3>
+              <p>34 Lê Duẩn, Đà Nẵng</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section specialties">
+        <div class="section-header">
+          <div>
+            <h2>Danh sách chuyên khoa</h2>
+            <p>Chọn chuyên khoa để đặt lịch khám nhanh chóng.</p>
+          </div>
+        </div>
+        <div class="specialty-grid">
+          <div class="specialty reveal">
+            <span>🫀</span>
+            <p>Tim mạch</p>
+          </div>
+          <div class="specialty reveal">
+            <span>🧠</span>
+            <p>Thần kinh</p>
+          </div>
+          <div class="specialty reveal">
+            <span>🦴</span>
+            <p>Cơ xương khớp</p>
+          </div>
+          <div class="specialty reveal">
+            <span>👶</span>
+            <p>Nhi khoa</p>
+          </div>
+          <div class="specialty reveal">
+            <span>👁️</span>
+            <p>Mắt</p>
+          </div>
+          <div class="specialty reveal">
+            <span>🦷</span>
+            <p>Nha khoa</p>
+          </div>
+          <div class="specialty reveal">
+            <span>🩺</span>
+            <p>Đa khoa</p>
+          </div>
+          <div class="specialty reveal">
+            <span>👩‍⚕️</span>
+            <p>Sản phụ khoa</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Medicare © 2024</p>
+      <p>123 Đường Sức Khỏe, Quận 1, TP.HCM</p>
+      <p>Email: contact@medicare.vn</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
+

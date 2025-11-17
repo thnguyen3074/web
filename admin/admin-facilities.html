@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare Admin - Quản lý cơ sở y tế</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-body">
+    <header class="admin-header">
+      <div class="admin-logo">Medicare Admin</div>
+      <div class="admin-header-actions">
+        <button class="btn-admin-logout" onclick="window.location.href='admin-login.html'">
+          Đăng xuất
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <nav class="admin-nav">
+          <a href="admin-dashboard.html" class="nav-item">
+            <span>📊</span> Dashboard
+          </a>
+          <a href="admin-facilities.html" class="nav-item active">
+            <span>🏥</span> Cơ sở y tế
+          </a>
+          <a href="admin-specialties.html" class="nav-item">
+            <span>⚕️</span> Chuyên khoa
+          </a>
+          <a href="admin-appointments.html" class="nav-item">
+            <span>📅</span> Lịch hẹn
+          </a>
+          <a href="admin-users.html" class="nav-item">
+            <span>👥</span> Người dùng
+          </a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <div class="admin-content">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý cơ sở y tế</h1>
+            <button class="btn-admin-primary" onclick="openModal('facilityModal')">
+              + Thêm cơ sở y tế
+            </button>
+          </div>
+
+          <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="hospital">Bệnh viện</button>
+            <button class="tab-btn" data-tab="clinic">Phòng khám</button>
+          </div>
+
+          <div class="tab-content active" id="hospital-tab">
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Địa chỉ</th>
+                    <th>Số điện thoại</th>
+                    <th>Giờ làm việc</th>
+                    <th>Chức năng</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Bệnh viện Quốc tế Medicare</td>
+                    <td>123 Đường Sức Khỏe, Quận 1, TP.HCM</td>
+                    <td>(028) 1234 5678</td>
+                    <td>7:00 - 21:00</td>
+                    <td>
+                      <button class="btn-edit" onclick="editFacility(1)">Edit</button>
+                      <button class="btn-delete" onclick="deleteFacility(1)">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Bệnh viện Đa khoa Tâm Đức</td>
+                    <td>68 Lý Thường Kiệt, Hà Nội</td>
+                    <td>(024) 9876 5432</td>
+                    <td>7:30 - 19:30</td>
+                    <td>
+                      <button class="btn-edit" onclick="editFacility(2)">Edit</button>
+                      <button class="btn-delete" onclick="deleteFacility(2)">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Bệnh viện Chuyên tim An Tâm</td>
+                    <td>45 Nguyễn Thông, Quận 3, TP.HCM</td>
+                    <td>(028) 5555 1234</td>
+                    <td>8:00 - 20:00</td>
+                    <td>
+                      <button class="btn-edit" onclick="editFacility(3)">Edit</button>
+                      <button class="btn-delete" onclick="deleteFacility(3)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-content" id="clinic-tab">
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Địa chỉ</th>
+                    <th>Số điện thoại</th>
+                    <th>Giờ làm việc</th>
+                    <th>Chức năng</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Phòng khám Tim mạch An Tâm</td>
+                    <td>99 Phan Đình Phùng, Huế</td>
+                    <td>(0234) 123 456</td>
+                    <td>8:00 - 20:00</td>
+                    <td>
+                      <button class="btn-edit" onclick="editFacility(1)">Edit</button>
+                      <button class="btn-delete" onclick="deleteFacility(1)">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Phòng khám Tim Sofia</td>
+                    <td>89 Pasteur, Quận 1, TP.HCM</td>
+                    <td>(028) 7777 8888</td>
+                    <td>8:00 - 17:30</td>
+                    <td>
+                      <button class="btn-edit" onclick="editFacility(2)">Edit</button>
+                      <button class="btn-delete" onclick="deleteFacility(2)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal thêm/sửa cơ sở y tế -->
+    <div id="facilityModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Thêm cơ sở y tế</h2>
+          <span class="close" onclick="closeModal('facilityModal')">&times;</span>
+        </div>
+        <form class="modal-form" data-validate="true">
+          <div class="form-group">
+            <label for="facility-name">Tên cơ sở y tế</label>
+            <input type="text" id="facility-name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="facility-address">Địa chỉ</label>
+            <input type="text" id="facility-address" name="address" required />
+          </div>
+          <div class="form-group">
+            <label for="facility-phone">Số điện thoại</label>
+            <input type="tel" id="facility-phone" name="phone" required />
+          </div>
+          <div class="form-group">
+            <label for="facility-hours">Giờ làm việc</label>
+            <input type="text" id="facility-hours" name="hours" placeholder="VD: 7:00 - 21:00" required />
+          </div>
+          <div class="form-group">
+            <label for="facility-description">Mô tả</label>
+            <textarea id="facility-description" name="description" rows="4"></textarea>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeModal('facilityModal')">Hủy</button>
+            <button type="submit" class="btn-admin-primary">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
+

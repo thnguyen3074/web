@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare Admin - Quản lý người dùng</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-body">
+    <header class="admin-header">
+      <div class="admin-logo">Medicare Admin</div>
+      <div class="admin-header-actions">
+        <button class="btn-admin-logout" onclick="window.location.href='admin-login.html'">
+          Đăng xuất
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <nav class="admin-nav">
+          <a href="admin-dashboard.html" class="nav-item">
+            <span>📊</span> Dashboard
+          </a>
+          <a href="admin-facilities.html" class="nav-item">
+            <span>🏥</span> Cơ sở y tế
+          </a>
+          <a href="admin-specialties.html" class="nav-item">
+            <span>⚕️</span> Chuyên khoa
+          </a>
+          <a href="admin-appointments.html" class="nav-item">
+            <span>📅</span> Lịch hẹn
+          </a>
+          <a href="admin-users.html" class="nav-item active">
+            <span>👥</span> Người dùng
+          </a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <div class="admin-content">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý người dùng</h1>
+          </div>
+
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên người dùng</th>
+                  <th>Email</th>
+                  <th>Số điện thoại</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Nguyễn Văn A</td>
+                  <td>nguyenvana@email.com</td>
+                  <td>0901234567</td>
+                  <td><span class="status-badge active">Hoạt động</span></td>
+                  <td>
+                    <button class="btn-edit" onclick="editUser(1)">Edit</button>
+                    <button class="btn-delete" onclick="deleteUser(1)">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>tranthib@email.com</td>
+                  <td>0987654321</td>
+                  <td><span class="status-badge active">Hoạt động</span></td>
+                  <td>
+                    <button class="btn-edit" onclick="editUser(2)">Edit</button>
+                    <button class="btn-delete" onclick="deleteUser(2)">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Lê Văn C</td>
+                  <td>levanc@email.com</td>
+                  <td>0912345678</td>
+                  <td><span class="status-badge inactive">Khóa</span></td>
+                  <td>
+                    <button class="btn-edit" onclick="editUser(3)">Edit</button>
+                    <button class="btn-delete" onclick="deleteUser(3)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare Admin - Đăng nhập</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-login-page">
+    <div class="login-container">
+      <div class="login-card">
+        <h1>Medicare Admin</h1>
+        <p class="login-subtitle">Đăng nhập vào hệ thống quản trị</p>
+        <form class="admin-login-form" data-validate="true">
+          <div class="form-group">
+            <label for="admin-username">Tên đăng nhập</label>
+            <input
+              type="text"
+              id="admin-username"
+              name="username"
+              placeholder="Nhập tên đăng nhập"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="admin-password">Mật khẩu</label>
+            <input
+              type="password"
+              id="admin-password"
+              name="password"
+              placeholder="Nhập mật khẩu"
+              required
+            />
+          </div>
+          <button type="submit" class="btn-admin-primary">Đăng nhập</button>
+        </form>
+      </div>
+    </div>
+    <script src="admin.js"></script>
+  </body>
+</html>
+

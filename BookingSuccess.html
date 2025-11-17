@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare - Đặt lịch thành công</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">Medicare</div>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="facility.html">Cơ sở y tế</a>
+        <a href="Specialty.html">Chuyên khoa</a>
+        <a href="About.html">Giới thiệu</a>
+        <a href="Contact.html">Liên hệ</a>
+      </nav>
+      <div class="auth">
+        <a href="login.html" class="auth-link">Đăng nhập</a>
+        <a href="register.html" class="auth-link signup">Đăng ký</a>
+      </div>
+      <button class="menu-toggle" aria-label="Mở menu">☰</button>
+    </header>
+
+    <main class="page success-page">
+      <section class="success-container">
+        <div class="success-icon">✓</div>
+        <h1>Đặt lịch thành công!</h1>
+        <p class="success-message">
+          Cảm ơn bạn! Lịch hẹn của bạn đã được ghi nhận.
+        </p>
+
+        <div class="success-card">
+          <h3>Thông tin lịch hẹn</h3>
+          <div class="success-info">
+            <p><strong>Cơ sở y tế:</strong> <span id="success-facility">-</span></p>
+            <p><strong>Chuyên khoa:</strong> <span id="success-specialty">-</span></p>
+            <p><strong>Ngày khám:</strong> <span id="success-date">-</span></p>
+            <p><strong>Giờ khám:</strong> <span id="success-time">-</span></p>
+          </div>
+        </div>
+
+        <div class="success-actions">
+          <a href="index.html" class="btn-primary">Về trang chủ</a>
+          <a href="MyAppointments.html" class="btn-secondary">Xem lịch hẹn của tôi</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Medicare © 2024</p>
+      <p>123 Đường Sức Khỏe, Quận 1, TP.HCM</p>
+      <p>Email: contact@medicare.vn</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
+

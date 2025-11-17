@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare - Xác nhận đặt lịch</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">Medicare</div>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="facility.html">Cơ sở y tế</a>
+        <a href="Specialty.html">Chuyên khoa</a>
+        <a href="About.html">Giới thiệu</a>
+        <a href="Contact.html">Liên hệ</a>
+      </nav>
+      <div class="auth">
+        <a href="login.html" class="auth-link">Đăng nhập</a>
+        <a href="register.html" class="auth-link signup">Đăng ký</a>
+      </div>
+      <button class="menu-toggle" aria-label="Mở menu">☰</button>
+    </header>
+
+    <main class="page booking-confirm-page">
+      <section class="page-hero">
+        <h1>Xác nhận thông tin đặt lịch</h1>
+        <p>Vui lòng kiểm tra lại thông tin trước khi xác nhận.</p>
+      </section>
+
+      <section class="confirm-card">
+        <div class="confirm-section">
+          <h3>Thông tin cơ sở y tế</h3>
+          <div class="confirm-info">
+            <p><strong>Cơ sở y tế:</strong> <span id="confirm-facility">-</span></p>
+            <p><strong>Chuyên khoa:</strong> <span id="confirm-specialty">-</span></p>
+          </div>
+        </div>
+
+        <div class="confirm-section">
+          <h3>Thời gian khám</h3>
+          <div class="confirm-info">
+            <p><strong>Ngày khám:</strong> <span id="confirm-date">-</span></p>
+            <p><strong>Giờ khám:</strong> <span id="confirm-time">-</span></p>
+          </div>
+        </div>
+
+        <div class="confirm-section">
+          <h3>Thông tin cá nhân</h3>
+          <div class="confirm-info">
+            <p><strong>Họ và tên:</strong> <span id="confirm-name">-</span></p>
+            <p><strong>Email:</strong> <span id="confirm-email">-</span></p>
+            <p><strong>Số điện thoại:</strong> <span id="confirm-phone">-</span></p>
+            <p><strong>Triệu chứng:</strong> <span id="confirm-symptoms">-</span></p>
+          </div>
+        </div>
+
+        <div class="confirm-actions">
+          <a href="Booking.html" class="btn-secondary">Quay lại chỉnh sửa</a>
+          <button class="btn-primary" onclick="confirmBooking()">Xác nhận đặt lịch</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Medicare © 2024</p>
+      <p>123 Đường Sức Khỏe, Quận 1, TP.HCM</p>
+      <p>Email: contact@medicare.vn</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
+

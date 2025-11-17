@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare - Đăng nhập</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">Medicare</div>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="facility.html">Cơ sở y tế</a>
+        <a href="Specialty.html">Chuyên khoa</a>
+        <a href="About.html">Giới thiệu</a>
+        <a href="Contact.html">Liên hệ</a>
+      </nav>
+      <div class="auth">
+        <a href="login.html" class="auth-link">Đăng nhập</a>
+        <a href="register.html" class="auth-link signup">Đăng ký</a>
+      </div>
+      <button class="menu-toggle" aria-label="Mở menu">☰</button>
+    </header>
+
+    <main class="auth-page">
+      <div class="auth-card">
+        <h1>Đăng nhập</h1>
+        <p class="auth-desc">Chào mừng bạn trở lại với Medicare.</p>
+        <form class="auth-form" data-validate="true">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input
+              type="email"
+              id="login-email"
+              name="email"
+              placeholder="Nhập email của bạn"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Mật khẩu</label>
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              placeholder="Nhập mật khẩu"
+              required
+            />
+          </div>
+          <button type="submit" class="btn-primary">Đăng nhập</button>
+        </form>
+        <p class="form-note">
+          Chưa có tài khoản?
+          <a href="register.html">Đăng ký ngay</a>
+        </p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>Medicare © 2024</p>
+      <p>123 Đường Sức Khỏe, Quận 1, TP.HCM</p>
+      <p>Email: contact@medicare.vn</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
+

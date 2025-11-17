@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicare Admin - Quản lý chuyên khoa</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-body">
+    <header class="admin-header">
+      <div class="admin-logo">Medicare Admin</div>
+      <div class="admin-header-actions">
+        <button class="btn-admin-logout" onclick="window.location.href='admin-login.html'">
+          Đăng xuất
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <nav class="admin-nav">
+          <a href="admin-dashboard.html" class="nav-item">
+            <span>📊</span> Dashboard
+          </a>
+          <a href="admin-facilities.html" class="nav-item">
+            <span>🏥</span> Cơ sở y tế
+          </a>
+          <a href="admin-specialties.html" class="nav-item active">
+            <span>⚕️</span> Chuyên khoa
+          </a>
+          <a href="admin-appointments.html" class="nav-item">
+            <span>📅</span> Lịch hẹn
+          </a>
+          <a href="admin-users.html" class="nav-item">
+            <span>👥</span> Người dùng
+          </a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <div class="admin-content">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý chuyên khoa</h1>
+            <button class="btn-admin-primary" onclick="openModal('specialtyModal')">
+              + Thêm chuyên khoa
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên chuyên khoa</th>
+                  <th>Icon</th>
+                  <th>Chức năng</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Tim mạch</td>
+                  <td>
+                    <img src="https://via.placeholder.com/40" alt="Icon" class="specialty-icon" />
+                  </td>
+                  <td>
+                    <button class="btn-edit" onclick="editSpecialty(1)">Edit</button>
+                    <button class="btn-delete" onclick="deleteSpecialty(1)">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Da liễu</td>
+                  <td>
+                    <img src="https://via.placeholder.com/40" alt="Icon" class="specialty-icon" />
+                  </td>
+                  <td>
+                    <button class="btn-edit" onclick="editSpecialty(2)">Edit</button>
+                    <button class="btn-delete" onclick="deleteSpecialty(2)">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Tai mũi họng</td>
+                  <td>
+                    <img src="https://via.placeholder.com/40" alt="Icon" class="specialty-icon" />
+                  </td>
+                  <td>
+                    <button class="btn-edit" onclick="editSpecialty(3)">Edit</button>
+                    <button class="btn-delete" onclick="deleteSpecialty(3)">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Nội tổng quát</td>
+                  <td>
+                    <img src="https://via.placeholder.com/40" alt="Icon" class="specialty-icon" />
+                  </td>
+                  <td>
+                    <button class="btn-edit" onclick="editSpecialty(4)">Edit</button>
+                    <button class="btn-delete" onclick="deleteSpecialty(4)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal thêm/sửa chuyên khoa -->
+    <div id="specialtyModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Thêm chuyên khoa</h2>
+          <span class="close" onclick="closeModal('specialtyModal')">&times;</span>
+        </div>
+        <form class="modal-form" data-validate="true">
+          <div class="form-group">
+            <label for="specialty-name">Tên chuyên khoa</label>
+            <input type="text" id="specialty-name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="specialty-icon">URL Icon</label>
+            <input type="text" id="specialty-icon" name="icon" placeholder="https://..." />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeModal('specialtyModal')">Hủy</button>
+            <button type="submit" class="btn-admin-primary">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
+
