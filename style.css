@@ -179,7 +179,7 @@ main {
 }
 
 .hospital-cards {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, 250px);
 }
 
 .card {
@@ -205,25 +205,12 @@ main {
 }
 
 .clinic-cards {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.clinic {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.clinic img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
+  grid-template-columns: repeat(auto-fit, 250px);
 }
 
 .specialty-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, 190px);
   gap: 16px;
 }
 
@@ -445,30 +432,9 @@ main {
 }
 
 .facility-grid {
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 285px);
   gap: 24px;
-}
-
-.result-grid-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-@media (max-width: 1200px) {
-  .result-grid-4 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 900px) {
-  .result-grid-4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .result-grid-4 {
-    grid-template-columns: 1fr;
-  }
 }
 
 .facility-card {
@@ -483,8 +449,7 @@ main {
 
 .facility-card img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  border-radius: 10px;
 }
 
 .facility-card:hover {
@@ -523,44 +488,6 @@ main {
   opacity: 0.9;
 }
 
-.clinic-grid {
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-}
-
-.clinic-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 16px;
-  align-items: center;
-  padding: 18px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.clinic-card img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.clinic-card h3 {
-  font-size: 18px;
-  margin-bottom: 4px;
-}
-
-.clinic-card p {
-  color: #5a6575;
-}
-
-.clinic-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
-}
-
 .btn-link {
   text-decoration: none;
   color: var(--primary);
@@ -572,10 +499,9 @@ main {
   gap: 24px;
 }
 
-.facility-banner img {
-  width: 100%;
+.facility-image img {
+  width: 50%;
   border-radius: 16px;
-  object-fit: cover;
 }
 
 .facility-info {
@@ -618,47 +544,6 @@ main {
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-.doctor-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.doctor-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.doctor-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.doctor-card img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.doctor-card span {
-  color: #5a6575;
-}
-
-.doctor-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.16);
 }
 
 .booking-page {
@@ -797,10 +682,11 @@ main {
 }
 
 .about-hero-media img {
-  width: 100%;
+  width: 90%;
   border-radius: 16px;
   box-shadow: var(--shadow);
-  object-fit: cover;
+  display: block;
+  margin: 0 auto; 
 }
 
 .about-grid {
@@ -895,50 +781,6 @@ main {
   outline: none;
 }
 
-@media (max-width: 900px) {
-  .nav,
-  .auth {
-    display: none;
-  }
-
-  .menu-toggle {
-    display: block;
-    color: var(--primary);
-  }
-
-  .nav.open,
-  .auth.open {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 70px;
-    right: 40px;
-    background: #fff;
-    box-shadow: var(--shadow);
-    padding: 16px;
-    border-radius: 12px;
-  }
-}
-
-@media (max-width: 600px) {
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .search-wrapper {
-    flex-direction: column;
-  }
-
-  .search-wrapper button {
-    width: 100%;
-  }
-
-  .auth-card {
-    padding: 28px 24px;
-  }
-}
-
 /* ========== USER PROFILE PAGE ========== */
 .user-profile-page {
   gap: 24px;
@@ -992,94 +834,6 @@ main {
   color: #5a6575;
 }
 
-.profile-actions {
-  display: flex;
-  gap: 12px;
-  width: 100%;
-  justify-content: center;
-}
-
-/* ========== MODAL ========== */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  align-items: center;
-  justify-content: center;
-}
-
-.modal.active {
-  display: flex;
-}
-
-.modal-content {
-  background: #fff;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.modal-header h2 {
-  font-size: 20px;
-}
-
-.close {
-  font-size: 28px;
-  font-weight: 300;
-  color: #64748b;
-  cursor: pointer;
-  line-height: 1;
-}
-
-.close:hover {
-  color: var(--text);
-}
-
-.modal-form {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.btn-cancel {
-  background: #e2e8f0;
-  color: var(--text);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
-}
-
-.btn-cancel:hover {
-  background: #cbd5e1;
-}
-
 /* ========== APPOINTMENTS PAGE ========== */
 .appointments-page {
   gap: 32px;
@@ -1098,7 +852,7 @@ main {
 
 .appointments-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, 300px);
   gap: 20px;
 }
 
@@ -1128,29 +882,6 @@ main {
   font-size: 18px;
   font-weight: 600;
   color: var(--primary);
-}
-
-.appointment-status {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.appointment-status.upcoming {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-.appointment-status.completed {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.appointment-status.cancelled {
-  background: #fee2e2;
-  color: #991b1b;
 }
 
 .appointment-info {
@@ -1315,23 +1046,3 @@ main {
   justify-content: center;
   flex-wrap: wrap;
 }
-
-@media (max-width: 600px) {
-  .profile-actions {
-    flex-direction: column;
-  }
-
-  .confirm-actions {
-    flex-direction: column;
-  }
-
-  .success-actions {
-    flex-direction: column;
-  }
-
-  .info-item {
-    flex-direction: column;
-    gap: 4px;
-  }
-}
-

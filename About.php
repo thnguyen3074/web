@@ -36,7 +36,7 @@ include 'header.php';
         </div>
         <div class="about-hero-media">
             <img
-                src="https://via.placeholder.com/520x320"
+                src="images/facilities/default.jpg"
                 alt="Medicare platform"
             />
         </div>

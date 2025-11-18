@@ -46,7 +46,7 @@ $type_text = ($facility['type'] == 'hospital') ? 'Bệnh viện' : 'Phòng khám
 ?>
 
 <main class="facility-detail-page">
-    <section class="facility-banner">
+    <section class="facility-image">
         <?php if (!empty($facility['image'])): ?>
             <img src="<?php echo htmlspecialchars($facility['image']); ?>" alt="Banner <?php echo htmlspecialchars($facility['name']); ?>" />
         <?php else: ?>

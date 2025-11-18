@@ -58,7 +58,7 @@ function getTypeText($type) {
         </p>
     </section>
 
-    <section class="facility-grid result-grid-4">
+    <section class="facility-grid">
         <?php if (empty($facilities)): ?>
             <p>Chưa có cơ sở y tế nào cho chuyên khoa này.</p>
         <?php else: ?>
