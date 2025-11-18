@@ -15,6 +15,30 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+$success_message = '';
+$error_message = '';
+
+// Xử lý hủy lịch hẹn
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_appointment'], $_POST['appointment_id'])) {
+    $appointment_id = intval($_POST['appointment_id']);
+
+    $stmt = mysqli_prepare($conn, "UPDATE appointments SET status = 'canceled' WHERE appointment_id = ? AND user_id = ? AND status IN ('pending','confirmed')");
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, 'ii', $appointment_id, $user_id);
+        if (mysqli_stmt_execute($stmt)) {
+            if (mysqli_stmt_affected_rows($stmt) > 0) {
+                $success_message = 'Lịch hẹn đã được hủy thành công.';
+            } else {
+                $error_message = 'Không thể hủy lịch hẹn này. Có thể lịch đã được xử lý.';
+            }
+        } else {
+            $error_message = 'Đã xảy ra lỗi khi hủy lịch hẹn. Vui lòng thử lại.';
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+        $error_message = 'Không thể chuẩn bị yêu cầu hủy lịch.';
+    }
+}
 
 // Lấy danh sách lịch hẹn của user
 $appointments = [];
@@ -70,6 +94,12 @@ function formatStatus($status) {
     </section>
 
     <section class="appointments-section">
+        <?php if (!empty($success_message)): ?>
+            <div class="alert alert-success"><?php echo htmlspecialchars($success_message); ?></div>
+        <?php elseif (!empty($error_message)): ?>
+            <div class="alert alert-error"><?php echo htmlspecialchars($error_message); ?></div>
+        <?php endif; ?>
+
         <h2>Lịch hẹn sắp tới</h2>
         <div class="appointments-grid" id="upcoming-appointments">
             <?php if (empty($upcoming)): ?>
@@ -90,7 +120,10 @@ function formatStatus($status) {
                             <p><strong>Triệu chứng:</strong> <?php echo htmlspecialchars($appointment['symptoms']); ?></p>
                         </div>
                         <div class="appointment-actions">
-                            <button class="btn-secondary" onclick="alert('Chức năng hủy lịch đang được phát triển')">Hủy lịch</button>
+                            <form method="post" onsubmit="return confirm('Bạn có chắc chắn muốn hủy lịch hẹn này?');">
+                                <input type="hidden" name="appointment_id" value="<?php echo (int) $appointment['appointment_id']; ?>">
+                                <button type="submit" name="cancel_appointment" class="btn-secondary">Hủy lịch</button>
+                            </form>
                         </div>
                     </article>
                 <?php endforeach; ?>
