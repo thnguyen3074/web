@@ -107,3 +107,72 @@ function openChangePasswordModal() {
 // The rest of the booking and appointment logic is now handled server-side
 // via the PHP modules (Booking.php, MyAppointments.php).
 
+function initSearchSuggestions() {
+  const searchInput = document.getElementById("search-input");
+  const suggestionsDiv = document.getElementById("search-suggestions");
+  const searchForm = document.getElementById("search-form");
+  let timeoutId;
+
+  if (!searchInput || !suggestionsDiv || !searchForm) {
+    return;
+  }
+
+  searchInput.addEventListener("input", () => {
+    const keyword = searchInput.value.trim();
+
+    clearTimeout(timeoutId);
+
+    if (keyword.length < 2) {
+      suggestionsDiv.style.display = "none";
+      return;
+    }
+
+    timeoutId = setTimeout(() => {
+      fetch(`search_suggestions.php?keyword=${encodeURIComponent(keyword)}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.length) {
+            suggestionsDiv.style.display = "none";
+            return;
+          }
+
+          let html = "";
+          data.forEach((item) => {
+            html +=
+              '<div style="padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #eee;" onmouseover="this.style.background=\'#f5f5f5\'" onmouseout="this.style.background=\'white\'" onclick="window.location.href=\'' +
+              item.url +
+              '\'">';
+            html += "<strong>" + item.name + "</strong>";
+            html +=
+              '<span style="color: #666; margin-left: 10px; font-size: 14px;">(' +
+              item.type_text +
+              ")</span>";
+            html += "</div>";
+          });
+
+          suggestionsDiv.innerHTML = html;
+          suggestionsDiv.style.display = "block";
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          suggestionsDiv.style.display = "none";
+        });
+    }, 300);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (
+      !searchInput.contains(event.target) &&
+      !suggestionsDiv.contains(event.target)
+    ) {
+      suggestionsDiv.style.display = "none";
+    }
+  });
+
+  searchForm.addEventListener("submit", () => {
+    suggestionsDiv.style.display = "none";
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initSearchSuggestions);
+

@@ -57,69 +57,6 @@ if ($result_specialties) {
     </div>
 </section>
 
-<script>
-// AJAX Search Suggestions
-(function() {
-    const searchInput = document.getElementById('search-input');
-    const suggestionsDiv = document.getElementById('search-suggestions');
-    let timeoutId;
-
-    if (!searchInput || !suggestionsDiv) return;
-
-    searchInput.addEventListener('input', function() {
-        const keyword = this.value.trim();
-
-        // Xóa timeout cũ
-        clearTimeout(timeoutId);
-
-        // Nếu từ khóa quá ngắn, ẩn suggestions
-        if (keyword.length < 2) {
-            suggestionsDiv.style.display = 'none';
-            return;
-        }
-
-        // Đợi 300ms sau khi người dùng ngừng gõ
-        timeoutId = setTimeout(function() {
-            fetch('search_suggestions.php?keyword=' + encodeURIComponent(keyword))
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        suggestionsDiv.style.display = 'none';
-                        return;
-                    }
-
-                    let html = '';
-                    data.forEach(function(item) {
-                        html += '<div style="padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #eee;" onmouseover="this.style.background=\'#f5f5f5\'" onmouseout="this.style.background=\'white\'" onclick="window.location.href=\'' + item.url + '\'">';
-                        html += '<strong>' + item.name + '</strong>';
-                        html += '<span style="color: #666; margin-left: 10px; font-size: 14px;">(' + item.type_text + ')</span>';
-                        html += '</div>';
-                    });
-
-                    suggestionsDiv.innerHTML = html;
-                    suggestionsDiv.style.display = 'block';
-                })
-                .catch(function(error) {
-                    console.error('Error:', error);
-                    suggestionsDiv.style.display = 'none';
-                });
-        }, 300);
-    });
-
-    // Ẩn suggestions khi click ra ngoài
-    document.addEventListener('click', function(e) {
-        if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
-            suggestionsDiv.style.display = 'none';
-        }
-    });
-
-    // Ẩn suggestions khi submit form
-    document.getElementById('search-form').addEventListener('submit', function() {
-        suggestionsDiv.style.display = 'none';
-    });
-})();
-</script>
-
 <main>
     <section class="section hospitals">
         <div class="section-header">
