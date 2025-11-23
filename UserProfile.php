@@ -36,6 +36,9 @@ if (!empty($user['created_at'])) {
 // Lấy thông báo từ URL
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 $error = isset($_GET['error']) ? $_GET['error'] : '';
+
+// Kiểm tra chế độ chỉnh sửa
+$edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1';
 ?>
 
 <main class="page user-profile-page">
@@ -44,51 +47,103 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
     </section>
 
     <?php if ($success == 'password'): ?>
-        <div style="background: #d4edda; color: #155724; padding: 12px; border-radius: 4px; margin: 20px auto; max-width: 800px; border: 1px solid #c3e6cb;">
-            Đổi mật khẩu thành công!
-        </div>
+        <div class="alert alert-success">Đổi mật khẩu thành công!</div>
+    <?php elseif ($success == 'profile'): ?>
+        <div class="alert alert-success">Cập nhật thông tin thành công!</div>
     <?php endif; ?>
 
     <?php if ($error == 'old_password'): ?>
-        <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin: 20px auto; max-width: 800px; border: 1px solid #fcc;">
-            Mật khẩu cũ không đúng.
-        </div>
+        <div class="alert alert-error">Mật khẩu cũ không đúng.</div>
     <?php elseif ($error == 'password_length'): ?>
-        <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin: 20px auto; max-width: 800px; border: 1px solid #fcc;">
-            Mật khẩu mới phải có ít nhất 6 ký tự.
-        </div>
+        <div class="alert alert-error">Mật khẩu mới phải có ít nhất 6 ký tự.</div>
     <?php elseif ($error == 'password_mismatch'): ?>
-        <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin: 20px auto; max-width: 800px; border: 1px solid #fcc;">
-            Mật khẩu mới và xác nhận không khớp.
-        </div>
+        <div class="alert alert-error">Mật khẩu mới và xác nhận không khớp.</div>
+    <?php elseif ($error == 'empty'): ?>
+        <div class="alert alert-error">Vui lòng điền đầy đủ thông tin.</div>
+    <?php elseif ($error == 'update_failed'): ?>
+        <div class="alert alert-error">Có lỗi xảy ra khi cập nhật thông tin.</div>
     <?php endif; ?>
 
     <section class="profile-card">
-        <div class="profile-avatar">
-            <img src="images/users/default.png" alt="Avatar" onerror="this.src='https://via.placeholder.com/120'" />
-        </div>
-        <div class="profile-info">
-            <h2><?php echo htmlspecialchars($user['fullname']); ?></h2>
-            <div class="info-item">
-                <strong>Email:</strong>
-                <span><?php echo htmlspecialchars($user['email']); ?></span>
+        <?php if (!$edit_mode): ?>
+            <!-- Chế độ xem -->
+            <div class="profile-avatar">
+                <img src="images/users/default.png" alt="Avatar" onerror="this.src='https://via.placeholder.com/120'" />
             </div>
-            <div class="info-item">
-                <strong>Số điện thoại:</strong>
-                <span><?php echo htmlspecialchars($user['phone']); ?></span>
+            
+            <div class="profile-header">
+                <h2><?php echo htmlspecialchars($user['fullname']); ?></h2>
             </div>
-            <?php if (!empty($created_date)): ?>
+            
+            <div class="profile-info">
                 <div class="info-item">
-                    <strong>Ngày tạo tài khoản:</strong>
-                    <span><?php echo $created_date; ?></span>
+                    <strong>Email:</strong>
+                    <span><?php echo htmlspecialchars($user['email']); ?></span>
                 </div>
-            <?php endif; ?>
-        </div>
-        <div class="profile-actions">
-            <a href="change_password.php" class="btn-primary" style="text-decoration: none; display: inline-block; text-align: center;">
-                Đổi mật khẩu
-            </a>
-        </div>
+                <div class="info-item">
+                    <strong>Số điện thoại:</strong>
+                    <span><?php echo htmlspecialchars($user['phone']); ?></span>
+                </div>
+                <?php if (!empty($created_date)): ?>
+                    <div class="info-item">
+                        <strong>Ngày tạo tài khoản:</strong>
+                        <span><?php echo $created_date; ?></span>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="profile-actions">
+                <a href="?edit=1" class="btn-primary">Chỉnh sửa</a>
+                <a href="change_password.php" class="btn-primary">Đổi mật khẩu</a>
+            </div>
+        <?php else: ?>
+            <!-- Chế độ chỉnh sửa -->
+            <div class="profile-header">
+                <h2>Chỉnh sửa thông tin</h2>
+            </div>
+
+            <form action="update_profile.php" method="POST" class="profile-form">
+                <div class="form-group">
+                    <label for="fullname">Họ và tên</label>
+                    <input 
+                        type="text" 
+                        id="fullname" 
+                        name="fullname" 
+                        value="<?php echo htmlspecialchars($user['fullname']); ?>" 
+                        required 
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        value="<?php echo htmlspecialchars($user['email']); ?>" 
+                        disabled
+                        style="background: #f5f5f5; cursor: not-allowed;"
+                    />
+                    <small>Email không thể thay đổi</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        value="<?php echo htmlspecialchars($user['phone']); ?>" 
+                        required 
+                    />
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Lưu thay đổi</button>
+                    <a href="UserProfile.php" class="btn-cancel">Hủy</a>
+                </div>
+            </form>
+        <?php endif; ?>
     </section>
 </main>
 

@@ -27,15 +27,18 @@ if ($result) {
 
     <section class="specialty-grid-large">
         <?php if (empty($specialties)): ?>
-            <p>Chưa có chuyên khoa nào trong hệ thống.</p>
+            <h3>Chưa có chuyên khoa nào</h3>
+            <p>Hiện tại chưa có chuyên khoa nào trong hệ thống.</p>
         <?php else: ?>
             <?php foreach ($specialties as $specialty): ?>
-                <a class="specialty-card reveal" href="SpecialtyResult.php?id=<?php echo $specialty['specialty_id']; ?>">
-                    <?php if (!empty($specialty['icon'])): ?>
-                        <img src="<?php echo htmlspecialchars($specialty['icon']); ?>" alt="<?php echo htmlspecialchars($specialty['specialty_name']); ?>" />
-                    <?php else: ?>
-                        <img src="images/specialties/default.png" alt="<?php echo htmlspecialchars($specialty['specialty_name']); ?>" />
-                    <?php endif; ?>
+                <a class="specialty-card reveal" href="SpecialtyResult.php?id=<?php echo $specialty['specialty_id']; ?>" style="text-decoration: none; color: inherit;">
+                    <div class="specialty-icon-wrapper">
+                        <?php if (!empty($specialty['icon'])): ?>
+                            <img src="<?php echo htmlspecialchars($specialty['icon']); ?>" alt="<?php echo htmlspecialchars($specialty['specialty_name']); ?>" />
+                        <?php else: ?>
+                            <img src="images/specialties/default.png" alt="<?php echo htmlspecialchars($specialty['specialty_name']); ?>" />
+                        <?php endif; ?>
+                    </div>
                     <h3><?php echo htmlspecialchars($specialty['specialty_name']); ?></h3>
                 </a>
             <?php endforeach; ?>

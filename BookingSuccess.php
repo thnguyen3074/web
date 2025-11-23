@@ -83,9 +83,7 @@ $formatted_date = $date_obj->format('d/m/Y');
         <div class="success-actions">
             <a href="index.php" class="btn-primary">Về trang chủ</a>
             <?php if ($isLoggedIn): ?>
-                <a href="MyAppointments.php" class="btn-secondary">Xem lịch hẹn của tôi</a>
-            <?php else: ?>
-                <a href="login.php" class="btn-secondary">Đăng nhập để quản lý lịch hẹn</a>
+                <a href="MyAppointments.php" class="btn-primary">Xem lịch hẹn của tôi</a>
             <?php endif; ?>
         </div>
     </section>

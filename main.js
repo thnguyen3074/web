@@ -1,17 +1,3 @@
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.2 }
-);
-
-document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-
 const menuToggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector(".nav");
 const auth = document.querySelector(".auth");
@@ -107,72 +93,70 @@ function openChangePasswordModal() {
 // The rest of the booking and appointment logic is now handled server-side
 // via the PHP modules (Booking.php, MyAppointments.php).
 
-function initSearchSuggestions() {
-  const searchInput = document.getElementById("search-input");
-  const suggestionsDiv = document.getElementById("search-suggestions");
-  const searchForm = document.getElementById("search-form");
-  let timeoutId;
 
-  if (!searchInput || !suggestionsDiv || !searchForm) {
-    return;
-  }
+// ========== SLIDER FUNCTIONALITY (CHUNG CHO CẢ 3 KHU VỰC) ==========
+function initSliders() {
+  const sliderContainers = document.querySelectorAll(".slider-container");
 
-  searchInput.addEventListener("input", () => {
-    const keyword = searchInput.value.trim();
+  sliderContainers.forEach((container) => {
+    const sliderWrapper = container.querySelector(".slider-wrapper");
+    const sliderTrack = container.querySelector(".slider-track");
+    const leftBtn = container.querySelector(".slider-btn-left");
+    const rightBtn = container.querySelector(".slider-btn-right");
 
-    clearTimeout(timeoutId);
-
-    if (keyword.length < 2) {
-      suggestionsDiv.style.display = "none";
+    if (!sliderWrapper || !sliderTrack || !leftBtn || !rightBtn) {
       return;
     }
 
-    timeoutId = setTimeout(() => {
-      fetch(`search_suggestions.php?keyword=${encodeURIComponent(keyword)}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data.length) {
-            suggestionsDiv.style.display = "none";
-            return;
-          }
+    // Hàm cập nhật trạng thái nút
+    function updateButtonStates() {
+      const scrollLeft = sliderWrapper.scrollLeft;
+      const scrollWidth = sliderWrapper.scrollWidth;
+      const clientWidth = sliderWrapper.clientWidth;
 
-          let html = "";
-          data.forEach((item) => {
-            html +=
-              '<div style="padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #eee;" onmouseover="this.style.background=\'#f5f5f5\'" onmouseout="this.style.background=\'white\'" onclick="window.location.href=\'' +
-              item.url +
-              '\'">';
-            html += "<strong>" + item.name + "</strong>";
-            html +=
-              '<span style="color: #666; margin-left: 10px; font-size: 14px;">(' +
-              item.type_text +
-              ")</span>";
-            html += "</div>";
-          });
+      // Ẩn/hiện nút trái
+      if (scrollLeft <= 0) {
+        leftBtn.disabled = true;
+      } else {
+        leftBtn.disabled = false;
+      }
 
-          suggestionsDiv.innerHTML = html;
-          suggestionsDiv.style.display = "block";
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          suggestionsDiv.style.display = "none";
-        });
-    }, 300);
-  });
-
-  document.addEventListener("click", (event) => {
-    if (
-      !searchInput.contains(event.target) &&
-      !suggestionsDiv.contains(event.target)
-    ) {
-      suggestionsDiv.style.display = "none";
+      // Ẩn/hiện nút phải
+      if (scrollLeft + clientWidth >= scrollWidth - 10) {
+        rightBtn.disabled = true;
+      } else {
+        rightBtn.disabled = false;
+      }
     }
-  });
 
-  searchForm.addEventListener("submit", () => {
-    suggestionsDiv.style.display = "none";
+    // Cuộn trái
+    leftBtn.addEventListener("click", () => {
+      const cardWidth = sliderTrack.querySelector(".slider-card")?.offsetWidth || 274; // 250px + 24px gap
+      sliderWrapper.scrollBy({
+        left: -cardWidth,
+        behavior: "smooth",
+      });
+    });
+
+    // Cuộn phải
+    rightBtn.addEventListener("click", () => {
+      const cardWidth = sliderTrack.querySelector(".slider-card")?.offsetWidth || 274; // 250px + 24px gap
+      sliderWrapper.scrollBy({
+        left: cardWidth,
+        behavior: "smooth",
+      });
+    });
+
+    // Cập nhật trạng thái khi cuộn
+    sliderWrapper.addEventListener("scroll", updateButtonStates);
+
+    // Cập nhật trạng thái khi resize
+    window.addEventListener("resize", updateButtonStates);
+
+    // Cập nhật trạng thái ban đầu
+    updateButtonStates();
   });
 }
 
-document.addEventListener("DOMContentLoaded", initSearchSuggestions);
+document.addEventListener("DOMContentLoaded", initSliders);
 

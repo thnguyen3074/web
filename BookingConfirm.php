@@ -114,12 +114,24 @@ $formatted_date = $date_obj->format('d/m/Y');
         <div class="confirm-section">
             <h3>Thông tin triệu chứng</h3>
             <div class="confirm-info">
-                <p><strong>Triệu chứng:</strong> <?php echo nl2br(htmlspecialchars($symptoms)); ?></p>
+                <p><?php echo nl2br(htmlspecialchars($symptoms)); ?></p>
             </div>
         </div>
 
         <div class="confirm-actions">
-            <a href="Booking.php?facility_id=<?php echo $facility_id; ?>" class="btn-secondary">Quay lại chỉnh sửa</a>
+            <form action="Booking.php" method="POST" style="display: inline;">
+                <input type="hidden" name="facility_id" value="<?php echo $facility_id; ?>" />
+                <input type="hidden" name="specialty_id" value="<?php echo $specialty_id; ?>" />
+                <input type="hidden" name="appointment_date" value="<?php echo htmlspecialchars($appointment_date); ?>" />
+                <input type="hidden" name="appointment_time" value="<?php echo htmlspecialchars($appointment_time); ?>" />
+                <input type="hidden" name="symptoms" value="<?php echo htmlspecialchars($symptoms); ?>" />
+                <?php if (!$isLoggedIn): ?>
+                    <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" />
+                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>" />
+                    <input type="hidden" name="phone" value="<?php echo htmlspecialchars($phone); ?>" />
+                <?php endif; ?>
+                <button type="submit" class="btn-primary">Quay lại chỉnh sửa</button>
+            </form>
             <form action="booking_process.php" method="POST" style="display: inline;">
                 <input type="hidden" name="facility_id" value="<?php echo $facility_id; ?>" />
                 <input type="hidden" name="specialty_id" value="<?php echo $specialty_id; ?>" />

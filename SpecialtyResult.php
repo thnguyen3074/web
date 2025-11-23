@@ -60,22 +60,46 @@ function getTypeText($type) {
 
     <section class="facility-grid">
         <?php if (empty($facilities)): ?>
-            <p>Chưa có cơ sở y tế nào cho chuyên khoa này.</p>
+            <div class="empty-state">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <h3>Chưa có cơ sở y tế nào</h3>
+                <p>Hiện tại chưa có cơ sở y tế nào cung cấp dịch vụ chuyên khoa này.</p>
+            </div>
         <?php else: ?>
             <?php foreach ($facilities as $facility): ?>
-                <article class="facility-card reveal">
-                    <?php if (!empty($facility['image'])): ?>
-                        <img src="<?php echo htmlspecialchars($facility['image']); ?>" alt="<?php echo htmlspecialchars($facility['name']); ?>" />
-                    <?php else: ?>
-                        <img src="images/facilities/default.jpg" alt="<?php echo htmlspecialchars($facility['name']); ?>" />
-                    <?php endif; ?>
+                <a href="FacilityDetail.php?id=<?php echo $facility['facility_id']; ?>" class="facility-card reveal" style="text-decoration: none; color: inherit;">
+                    <div class="card-image-wrapper">
+                        <?php if (!empty($facility['image'])): ?>
+                            <img src="<?php echo htmlspecialchars($facility['image']); ?>" alt="<?php echo htmlspecialchars($facility['name']); ?>" />
+                        <?php else: ?>
+                            <img src="images/facilities/default.jpg" alt="<?php echo htmlspecialchars($facility['name']); ?>" />
+                        <?php endif; ?>
+                    </div>
                     <div class="card-body">
                         <h3><?php echo htmlspecialchars($facility['name']); ?></h3>
-                        <p><?php echo htmlspecialchars($facility['address']); ?></p>
-                        <p>Giờ làm việc: <?php echo htmlspecialchars($facility['working_hours']); ?></p>
-                        <a href="FacilityDetail.php?id=<?php echo $facility['facility_id']; ?>" class="btn-secondary">Xem chi tiết</a>
+                        <div class="card-info">
+                            <div class="info-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span><?php echo htmlspecialchars($facility['address']); ?></span>
+                            </div>
+                            <?php if (!empty($facility['working_hours'])): ?>
+                                <div class="info-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    <span><?php echo htmlspecialchars($facility['working_hours']); ?></span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                </article>
+                </a>
             <?php endforeach; ?>
         <?php endif; ?>
     </section>

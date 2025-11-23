@@ -23,26 +23,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
 <main class="page auth-page">
     <div class="auth-card">
         <h1>Đổi mật khẩu</h1>
-        <p class="auth-desc">Vui lòng nhập mật khẩu cũ và mật khẩu mới của bạn.</p>
-        
-        <?php if ($error == 'old_password'): ?>
-            <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
-                Mật khẩu cũ không đúng. Vui lòng thử lại.
-            </div>
-        <?php elseif ($error == 'password_length'): ?>
-            <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
-                Mật khẩu mới phải có ít nhất 6 ký tự.
-            </div>
-        <?php elseif ($error == 'password_mismatch'): ?>
-            <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
-                Mật khẩu mới và xác nhận không khớp. Vui lòng thử lại.
-            </div>
-        <?php elseif ($error == 'empty'): ?>
-            <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
-                Vui lòng điền đầy đủ thông tin.
-            </div>
-        <?php endif; ?>
-        
+        <p class="auth-desc">Vui lòng nhập mật khẩu cũ và mật khẩu mới của bạn.</p>        
         <form class="auth-form" action="change_password_process.php" method="POST" id="changePasswordForm">
             <div class="form-group">
                 <label for="old-password">Mật khẩu cũ</label>

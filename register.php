@@ -19,7 +19,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
 ?>
 
 <main class="auth-page">
-    <div class="auth-card">
+    <div class="auth-card auth-card-register">
         <h1>Tạo tài khoản</h1>
         <p class="auth-desc">Đăng ký để đặt lịch khám nhanh chóng trên Medicare.</p>
         
@@ -38,45 +38,49 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
         <?php endif; ?>
         
         <form class="auth-form" action="register_process.php" method="POST" data-validate="true" id="registerForm">
-            <div class="form-group">
-                <label for="register-name">Họ và tên</label>
-                <input
-                    type="text"
-                    id="register-name"
-                    name="fullname"
-                    placeholder="Nhập họ và tên"
-                    required
-                />
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="register-name">Họ và tên</label>
+                    <input
+                        type="text"
+                        id="register-name"
+                        name="fullname"
+                        placeholder="Nhập họ và tên"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input
+                        type="email"
+                        id="register-email"
+                        name="email"
+                        placeholder="Nhập email"
+                        required
+                    />
+                </div>
             </div>
-            <div class="form-group">
-                <label for="register-email">Email</label>
-                <input
-                    type="email"
-                    id="register-email"
-                    name="email"
-                    placeholder="Nhập email"
-                    required
-                />
-            </div>
-            <div class="form-group">
-                <label for="register-phone">Số điện thoại</label>
-                <input
-                    type="tel"
-                    id="register-phone"
-                    name="phone"
-                    placeholder="Nhập số điện thoại"
-                    required
-                />
-            </div>
-            <div class="form-group">
-                <label for="register-password">Mật khẩu</label>
-                <input
-                    type="password"
-                    id="register-password"
-                    name="password"
-                    placeholder="Tạo mật khẩu"
-                    required
-                />
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="register-phone">Số điện thoại</label>
+                    <input
+                        type="tel"
+                        id="register-phone"
+                        name="phone"
+                        placeholder="Nhập số điện thoại"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Mật khẩu</label>
+                    <input
+                        type="password"
+                        id="register-password"
+                        name="password"
+                        placeholder="Tạo mật khẩu"
+                        required
+                    />
+                </div>
             </div>
             <div class="form-group">
                 <label for="register-confirm">Xác nhận mật khẩu</label>

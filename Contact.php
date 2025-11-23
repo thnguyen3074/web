@@ -42,20 +42,24 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
         <div class="contact-info">
             <div class="contact-info-grid">
                 <article class="contact-info-card">
-                    <h3>Địa chỉ</h3>
-                    <p>123 Đường Sức Khỏe, Quận 1, TP.HCM</p>
+                    <h3>Địa chỉ văn phòng</h3>
+                    <p>70 Đường Tô Ký, Phường Tân Chánh Hiệp, Quận 12, TP.HCM</p>
+                    <p>Văn phòng làm việc: Thứ 2 - Thứ 6, 8:00 - 17:00</p>
                 </article>
                 <article class="contact-info-card">
-                    <h3>Hotline</h3>
-                    <p>1900 6767 (24/7)</p>
+                    <h3>Hotline hỗ trợ</h3>
+                    <p><b>1900 6767</b></p>
+                    <p>Hỗ trợ 24/7, miễn phí cuộc gọi</p>
                 </article>
                 <article class="contact-info-card">
-                    <h3>Email hỗ trợ</h3>
-                    <p>support@medicare.vn</p>
+                    <h3>Email liên hệ</h3>
+                    <p><b>support@medicare.vn</b></p>
+                    <p>Phản hồi trong vòng 24 giờ</p>
                 </article>
                 <article class="contact-info-card">
-                    <h3>Thời gian làm việc</h3>
+                    <h3>Thời gian hỗ trợ</h3>
                     <p>Thứ 2 - Chủ nhật: 7:00 - 21:00</p>
+                    <p>Hotline hoạt động 24/7</p>
                 </article>
             </div>
         </div>

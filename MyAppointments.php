@@ -122,7 +122,7 @@ function formatStatus($status) {
                         <div class="appointment-actions">
                             <form method="post" onsubmit="return confirm('Bạn có chắc chắn muốn hủy lịch hẹn này?');">
                                 <input type="hidden" name="appointment_id" value="<?php echo (int) $appointment['appointment_id']; ?>">
-                                <button type="submit" name="cancel_appointment" class="btn-secondary">Hủy lịch</button>
+                                <button type="submit" name="cancel_appointment" class="btn-primary">Hủy lịch</button>
                             </form>
                         </div>
                     </article>
