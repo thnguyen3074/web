@@ -65,7 +65,7 @@ $formatted_date = $date_obj->format('d/m/Y');
                 <p><strong>Chuyên khoa:</strong> <?php echo htmlspecialchars($appointment['specialty_name']); ?></p>
                 <p><strong>Ngày khám:</strong> <?php echo htmlspecialchars($formatted_date); ?></p>
                 <p><strong>Giờ khám:</strong> <?php echo htmlspecialchars($appointment['appointment_time']); ?></p>
-                <p><strong>Triệu chứng:</strong> <?php echo nl2br(htmlspecialchars($appointment['symptoms'])); ?></p>
+                <p style="word-wrap: break-word; word-break: break-word; overflow-wrap: break-word;"><strong>Triệu chứng:</strong> <span style="white-space: pre-wrap;"><?php echo nl2br(htmlspecialchars($appointment['symptoms'])); ?></span></p>
                 <p><strong>Trạng thái:</strong> 
                     <?php 
                     $status_text = [

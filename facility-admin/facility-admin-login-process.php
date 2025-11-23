@@ -4,7 +4,7 @@
  */
 
 session_start();
-require_once 'config.php';
+require_once '../config.php';
 
 // Kiểm tra method POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -51,7 +51,7 @@ if ($facility_admin && password_verify($password, $facility_admin['password'])) 
     $_SESSION['facility_name'] = $facility_admin['facility_name'];
     
     // Redirect về dashboard
-    header('Location: facility-admin/facility-admin-dashboard.php');
+    header('Location: facility-admin-dashboard.php');
     exit();
 } else {
     // Email hoặc mật khẩu không đúng

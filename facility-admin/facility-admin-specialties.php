@@ -26,12 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
 }
 
 // Xử lý xóa chuyên khoa khỏi cơ sở
+$confirm_remove = isset($_GET['confirm_remove']) && is_numeric($_GET['confirm_remove']);
 if (isset($_GET['remove']) && is_numeric($_GET['remove'])) {
     $specialty_id = intval($_GET['remove']);
-    $sql_delete = "DELETE FROM facility_specialty WHERE facility_id = $facility_id AND specialty_id = $specialty_id";
-    mysqli_query($conn, $sql_delete);
-    header('Location: facility-admin-specialties.php');
-    exit();
+    
+    // Nếu chưa xác nhận, hiển thị form xác nhận
+    if (!$confirm_remove) {
+        $show_remove_confirm = true;
+        $remove_specialty_id = $specialty_id;
+    } else {
+        $sql_delete = "DELETE FROM facility_specialty WHERE facility_id = $facility_id AND specialty_id = $specialty_id";
+        mysqli_query($conn, $sql_delete);
+        header('Location: facility-admin-specialties.php');
+        exit();
+    }
 }
 
 // Lấy danh sách chuyên khoa hiện có của cơ sở
@@ -69,6 +77,18 @@ if ($result_all_specialties) {
         <h1 class="page-title">Quản lý chuyên khoa</h1>
     </div>
 
+    <?php if (isset($show_remove_confirm) && $show_remove_confirm): ?>
+        <!-- Form xác nhận xóa chuyên khoa -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; max-width: 500px;">
+            <h2 style="margin-bottom: 15px; color: var(--admin-danger);">Xác nhận xóa chuyên khoa</h2>
+            <p style="margin-bottom: 20px;">Bạn có chắc muốn xóa chuyên khoa này khỏi cơ sở?</p>
+            <div style="display: flex; gap: 10px;">
+                <a href="facility-admin-specialties.php?remove=<?php echo $remove_specialty_id; ?>&confirm_remove=1" class="btn-delete" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Xác nhận xóa</a>
+                <a href="facility-admin-specialties.php" class="btn-admin-secondary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Hủy bỏ</a>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <div style="margin-bottom: 30px;">
         <h2 style="margin-bottom: 15px;">Chuyên khoa hiện có</h2>
         <div class="table-container">
@@ -91,7 +111,7 @@ if ($result_all_specialties) {
                                 <td><?php echo $specialty['specialty_id']; ?></td>
                                 <td><?php echo htmlspecialchars($specialty['specialty_name']); ?></td>
                                 <td>
-                                    <a href="facility-admin-specialties.php?remove=<?php echo $specialty['specialty_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa chuyên khoa này khỏi cơ sở?')">Xóa</a>
+                                    <a href="facility-admin-specialties.php?remove=<?php echo $specialty['specialty_id']; ?>" class="btn-delete" style="text-decoration: none; padding: 6px 12px; display: inline-block;">Xóa</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

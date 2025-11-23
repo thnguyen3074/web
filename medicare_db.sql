@@ -127,6 +127,9 @@ INSERT INTO `admins` (`admin_id`, `email`, `password`, `name`, `created_at`) VAL
 CREATE TABLE `appointments` (
   `appointment_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `patient_name` varchar(100) DEFAULT NULL,
+  `patient_email` varchar(100) DEFAULT NULL,
+  `patient_phone` varchar(20) DEFAULT NULL,
   `facility_id` int(11) NOT NULL,
   `specialty_id` int(11) NOT NULL,
   `appointment_date` date NOT NULL,
@@ -141,23 +144,23 @@ CREATE TABLE `appointments` (
 -- Dumping data for table `appointments`
 --
 
-INSERT INTO `appointments` (`appointment_id`, `user_id`, `facility_id`, `specialty_id`, `appointment_date`, `appointment_time`, `symptoms`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, '2024-12-20', '08:00:00', 'Đau ngực, khó thở', 'pending', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(2, 2, 2, 3, '2024-12-25', '09:30:00', 'Nổi mẩn đỏ trên da', 'confirmed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(3, 1, 3, 1, '2024-12-22', '14:00:00', 'Khám tim định kỳ', 'confirmed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(4, 4, 5, 3, '2024-12-21', '10:30:00', 'Trẻ sốt cao, ho nhiều', 'pending', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(5, 5, 6, 7, '2024-12-23', '15:00:00', 'Mắt mờ, nhức mắt', 'confirmed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(6, 6, 11, 4, '2024-12-24', '09:00:00', 'Khám tổng quát', 'pending', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(7, 7, 14, 5, '2024-12-26', '11:00:00', 'Đau họng, nghẹt mũi', 'confirmed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(8, 8, 16, 8, '2024-12-27', '14:30:00', 'Đau răng, sưng nướu', 'pending', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(9, 3, 9, 1, '2024-12-10', '10:00:00', 'Khám định kỳ', 'completed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(10, 2, 13, 2, '2024-12-05', '16:00:00', 'Nổi mụn, ngứa da', 'completed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(11, 9, 15, 7, '2024-12-08', '13:00:00', 'Khám mắt định kỳ', 'completed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(12, 10, 17, 10, '2024-12-12', '09:00:00', 'Đau khớp gối', 'completed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(13, 4, 2, 1, '2024-11-28', '08:30:00', 'Đau tim', 'canceled', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(14, 5, 12, 3, '2024-12-01', '10:00:00', 'Trẻ ho, sốt', 'canceled', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
-(15, NULL, 3, 6, '2025-11-07', '08:00:00', 'dsadas', 'pending', '2025-11-19 15:21:34', '2025-11-19 15:21:34'),
-(16, NULL, 2, 3, '2025-11-07', '08:00:00', 'sadasdasd', 'pending', '2025-11-19 15:22:08', '2025-11-19 15:22:08');
+INSERT INTO `appointments` (`appointment_id`, `user_id`, `patient_name`, `patient_email`, `patient_phone`, `facility_id`, `specialty_id`, `appointment_date`, `appointment_time`, `symptoms`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Nguyễn Văn A', 'nguyenvana@email.com', '0901234567', 1, 1, '2024-12-20', '08:00:00', 'Đau ngực, khó thở', 'pending', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(2, 2, 'Trần Thị B', 'tranthib@email.com', '0987654321', 2, 3, '2024-12-25', '09:30:00', 'Nổi mẩn đỏ trên da', 'confirmed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(3, 1, 'Nguyễn Văn A', 'nguyenvana@email.com', '0901234567', 3, 1, '2024-12-22', '14:00:00', 'Khám tim định kỳ', 'confirmed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(4, 4, 'Phạm Thị D', 'phamthid@email.com', '0923456789', 5, 3, '2024-12-21', '10:30:00', 'Trẻ sốt cao, ho nhiều', 'pending', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(5, 5, 'Hoàng Văn E', 'hoangvane@email.com', '0934567890', 6, 7, '2024-12-23', '15:00:00', 'Mắt mờ, nhức mắt', 'confirmed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(6, 6, 'Võ Thị F', 'vothif@email.com', '0945678901', 11, 4, '2024-12-24', '09:00:00', 'Khám tổng quát', 'pending', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(7, 7, 'Đặng Văn G', 'dangvang@email.com', '0956789012', 14, 5, '2024-12-26', '11:00:00', 'Đau họng, nghẹt mũi', 'confirmed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(8, 8, 'Bùi Thị H', 'buithih@email.com', '0967890123', 16, 8, '2024-12-27', '14:30:00', 'Đau răng, sưng nướu', 'pending', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(9, 3, 'Lê Văn C', 'levanc@email.com', '0912345678', 9, 1, '2024-12-10', '10:00:00', 'Khám định kỳ', 'completed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(10, 2, 'Trần Thị B', 'tranthib@email.com', '0987654321', 13, 2, '2024-12-05', '16:00:00', 'Nổi mụn, ngứa da', 'completed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(11, 9, 'Ngô Văn I', 'ngovani@email.com', '0978901234', 15, 7, '2024-12-08', '13:00:00', 'Khám mắt định kỳ', 'completed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(12, 10, 'Lý Thị K', 'lythik@email.com', '0989012345', 17, 10, '2024-12-12', '09:00:00', 'Đau khớp gối', 'completed', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(13, 4, 'Phạm Thị D', 'phamthid@email.com', '0923456789', 2, 1, '2024-11-28', '08:30:00', 'Đau tim', 'canceled', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(14, 5, 'Hoàng Văn E', 'hoangvane@email.com', '0934567890', 12, 3, '2024-12-01', '10:00:00', 'Trẻ ho, sốt', 'canceled', '2025-11-18 13:14:44', '2025-11-18 13:14:44'),
+(15, NULL, 'Khách hàng', 'guest1@example.com', '0123456789', 3, 6, '2025-11-07', '08:00:00', 'dsadas', 'pending', '2025-11-19 15:21:34', '2025-11-19 15:21:34'),
+(16, NULL, 'Khách hàng', 'guest2@example.com', '0987654321', 2, 3, '2025-11-07', '08:00:00', 'sadasdasd', 'pending', '2025-11-19 15:22:08', '2025-11-19 15:22:08');
 
 --
 -- Triggers `appointments`

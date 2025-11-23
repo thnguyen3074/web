@@ -297,6 +297,24 @@ body {
   opacity: 0.9;
 }
 
+.btn-admin-secondary {
+  background: #6c757d;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-admin-secondary:hover {
+  opacity: 0.9;
+  color: #fff;
+}
+
 .btn-edit {
   background: var(--admin-primary);
   color: #fff;
@@ -378,9 +396,15 @@ body {
   color: #065f46;
 }
 
-.status-badge.cancelled {
+.status-badge.cancelled,
+.status-badge.canceled {
   background: #fee2e2;
   color: #991b1b;
+}
+
+.status-badge.completed {
+  background: #dbeafe;
+  color: #1e40af;
 }
 
 .status-badge.active {
@@ -407,8 +431,9 @@ body {
   justify-content: center;
 }
 
+/* Hỗ trợ cả hai cách: class active và style.display */
 .modal.active {
-  display: flex;
+  display: flex !important;
 }
 
 .modal-content {

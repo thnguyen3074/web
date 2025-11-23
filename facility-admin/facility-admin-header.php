@@ -11,22 +11,23 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Kiểm tra facility admin đã đăng nhập chưa
 if (!isset($_SESSION['facility_admin_id'])) {
-    header('Location: ../facility-admin-login.php');
+    header('Location: facility-admin-login.php');
     exit();
 }
 
 // Kiểm tra facility_id có tồn tại không
-if (isset($_SESSION['facility_id'])) {
+// Chỉ kiểm tra nếu chưa có kết nối database (tránh đóng kết nối sớm)
+if (isset($_SESSION['facility_id']) && !isset($conn)) {
     require_once '../config.php';
     $check_facility = "SELECT facility_id FROM facilities WHERE facility_id = " . intval($_SESSION['facility_id']);
     $result_check = mysqli_query($conn, $check_facility);
     if (mysqli_num_rows($result_check) == 0) {
         // Facility đã bị xóa, đăng xuất
         session_destroy();
-        header('Location: ../facility-admin-login.php');
+        header('Location: facility-admin-login.php');
         exit();
     }
-    mysqli_close($conn);
+    // Không đóng kết nối ở đây vì các file khác cần sử dụng
 }
 
 $facility_admin_name = isset($_SESSION['facility_admin_name']) ? $_SESSION['facility_admin_name'] : 'Admin';
@@ -54,13 +55,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <aside class="admin-sidebar">
             <nav class="admin-nav">
                 <a href="facility-admin-dashboard.php" class="nav-item <?php echo ($current_page == 'facility-admin-dashboard.php') ? 'active' : ''; ?>">
-                    <span>📊</span> Dashboard
+                    <span>📊</span> Tổng quan
                 </a>
                 <a href="facility-admin-appointments.php" class="nav-item <?php echo ($current_page == 'facility-admin-appointments.php') ? 'active' : ''; ?>">
                     <span>📅</span> Lịch hẹn
                 </a>
                 <a href="facility-admin-specialties.php" class="nav-item <?php echo ($current_page == 'facility-admin-specialties.php') ? 'active' : ''; ?>">
                     <span>⚕️</span> Chuyên khoa
+                </a>
+                <a href="facility-admin-facility.php" class="nav-item <?php echo ($current_page == 'facility-admin-facility.php') ? 'active' : ''; ?>">
+                    <span>🏥</span> Thông tin cơ sở
+                </a>
+                <a href="facility-admin-profile.php" class="nav-item <?php echo ($current_page == 'facility-admin-profile.php') ? 'active' : ''; ?>">
+                    <span>👤</span> Tài khoản
                 </a>
             </nav>
         </aside>

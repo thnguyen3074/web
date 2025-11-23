@@ -120,72 +120,43 @@ if ($result_specialties) {
                 <h3>Thông tin cá nhân</h3>
                 <?php if ($isLoggedIn && $user): ?>
                     <!-- User đã đăng nhập - tự động điền thông tin từ database, cho phép chỉnh sửa -->
-                    <div class="form-group">
-                        <label for="booking-name">Họ và tên</label>
-                        <input
-                            type="text"
-                            id="booking-name"
-                            name="fullname"
-                            value="<?php echo htmlspecialchars(!empty($prev_fullname) ? $prev_fullname : $user['fullname']); ?>"
-                            required
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="booking-email">Email</label>
-                        <input
-                            type="email"
-                            id="booking-email"
-                            name="email"
-                            value="<?php echo htmlspecialchars(!empty($prev_email) ? $prev_email : $user['email']); ?>"
-                            required
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="booking-phone">Số điện thoại</label>
-                        <input
-                            type="tel"
-                            id="booking-phone"
-                            name="phone"
-                            value="<?php echo htmlspecialchars(!empty($prev_phone) ? $prev_phone : $user['phone']); ?>"
-                            required
-                        />
-                    </div>
-                <?php else: ?>
-                    <!-- User chưa đăng nhập - yêu cầu nhập thông tin -->
-                    <div class="form-group">
-                        <label for="booking-name">Họ và tên</label>
-                        <input
-                            type="text"
-                            id="booking-name"
-                            name="fullname"
-                            placeholder="Nhập họ và tên"
-                            value="<?php echo htmlspecialchars($prev_fullname); ?>"
-                            required
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="booking-email">Email</label>
-                        <input
-                            type="email"
-                            id="booking-email"
-                            name="email"
-                            placeholder="Nhập email"
-                            value="<?php echo htmlspecialchars($prev_email); ?>"
-                            required
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="booking-phone">Số điện thoại</label>
-                        <input
-                            type="tel"
-                            id="booking-phone"
-                            name="phone"
-                            placeholder="Nhập số điện thoại"
-                            value="<?php echo htmlspecialchars($prev_phone); ?>"
-                            required
-                        />
-                    </div>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                        Thông tin đã được tự động điền từ tài khoản của bạn. Bạn có thể chỉnh sửa nếu cần.
+                    </p>
                 <?php endif; ?>
+                <div class="form-group">
+                    <label for="booking-name">Họ và tên</label>
+                    <input
+                        type="text"
+                        id="booking-name"
+                        name="fullname"
+                        placeholder="Nhập họ và tên"
+                        value="<?php echo htmlspecialchars(!empty($prev_fullname) ? $prev_fullname : ($isLoggedIn && $user ? $user['fullname'] : '')); ?>"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="booking-email">Email</label>
+                    <input
+                        type="email"
+                        id="booking-email"
+                        name="email"
+                        placeholder="Nhập email"
+                        value="<?php echo htmlspecialchars(!empty($prev_email) ? $prev_email : ($isLoggedIn && $user ? $user['email'] : '')); ?>"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="booking-phone">Số điện thoại</label>
+                    <input
+                        type="tel"
+                        id="booking-phone"
+                        name="phone"
+                        placeholder="Nhập số điện thoại"
+                        value="<?php echo htmlspecialchars(!empty($prev_phone) ? $prev_phone : ($isLoggedIn && $user ? $user['phone'] : '')); ?>"
+                        required
+                    />
+                </div>
             </div>
 
             <div class="booking-section">

@@ -21,22 +21,24 @@ $error_message = '';
 // Xử lý hủy lịch hẹn
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_appointment'], $_POST['appointment_id'])) {
     $appointment_id = intval($_POST['appointment_id']);
-
-    $stmt = mysqli_prepare($conn, "UPDATE appointments SET status = 'canceled' WHERE appointment_id = ? AND user_id = ? AND status IN ('pending','confirmed')");
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 'ii', $appointment_id, $user_id);
-        if (mysqli_stmt_execute($stmt)) {
-            if (mysqli_stmt_affected_rows($stmt) > 0) {
-                $success_message = 'Lịch hẹn đã được hủy thành công.';
-            } else {
-                $error_message = 'Không thể hủy lịch hẹn này. Có thể lịch đã được xử lý.';
-            }
+    $user_id_escaped = intval($user_id);
+    
+    // Kiểm tra lịch hẹn thuộc về user này và có thể hủy
+    $sql_check = "SELECT appointment_id FROM appointments WHERE appointment_id = $appointment_id AND user_id = $user_id_escaped AND status IN ('pending','confirmed')";
+    $result_check = mysqli_query($conn, $sql_check);
+    
+    if ($result_check && mysqli_num_rows($result_check) > 0) {
+        // Cập nhật trạng thái thành canceled
+        $sql_update = "UPDATE appointments SET status = 'canceled' WHERE appointment_id = $appointment_id AND user_id = $user_id_escaped";
+        $result_update = mysqli_query($conn, $sql_update);
+        
+        if ($result_update && mysqli_affected_rows($conn) > 0) {
+            $success_message = 'Lịch hẹn đã được hủy thành công.';
         } else {
             $error_message = 'Đã xảy ra lỗi khi hủy lịch hẹn. Vui lòng thử lại.';
         }
-        mysqli_stmt_close($stmt);
     } else {
-        $error_message = 'Không thể chuẩn bị yêu cầu hủy lịch.';
+        $error_message = 'Không thể hủy lịch hẹn này. Có thể lịch đã được xử lý hoặc không thuộc về bạn.';
     }
 }
 
@@ -117,10 +119,10 @@ function formatStatus($status) {
                             <p><strong>Chuyên khoa:</strong> <?php echo htmlspecialchars($appointment['specialty_name']); ?></p>
                             <p><strong>Ngày khám:</strong> <?php echo formatDate($appointment['appointment_date']); ?></p>
                             <p><strong>Giờ khám:</strong> <?php echo htmlspecialchars($appointment['appointment_time']); ?></p>
-                            <p><strong>Triệu chứng:</strong> <?php echo htmlspecialchars($appointment['symptoms']); ?></p>
+                            <p style="word-wrap: break-word; word-break: break-word; overflow-wrap: break-word;"><strong>Triệu chứng:</strong> <span style="white-space: pre-wrap;"><?php echo htmlspecialchars($appointment['symptoms']); ?></span></p>
                         </div>
                         <div class="appointment-actions">
-                            <form method="post" onsubmit="return confirm('Bạn có chắc chắn muốn hủy lịch hẹn này?');">
+                            <form method="post" action="MyAppointments.php">
                                 <input type="hidden" name="appointment_id" value="<?php echo (int) $appointment['appointment_id']; ?>">
                                 <button type="submit" name="cancel_appointment" class="btn-primary">Hủy lịch</button>
                             </form>
@@ -149,7 +151,7 @@ function formatStatus($status) {
                             <p><strong>Chuyên khoa:</strong> <?php echo htmlspecialchars($appointment['specialty_name']); ?></p>
                             <p><strong>Ngày khám:</strong> <?php echo formatDate($appointment['appointment_date']); ?></p>
                             <p><strong>Giờ khám:</strong> <?php echo htmlspecialchars($appointment['appointment_time']); ?></p>
-                            <p><strong>Triệu chứng:</strong> <?php echo htmlspecialchars($appointment['symptoms']); ?></p>
+                            <p style="word-wrap: break-word; word-break: break-word; overflow-wrap: break-word;"><strong>Triệu chứng:</strong> <span style="white-space: pre-wrap;"><?php echo htmlspecialchars($appointment['symptoms']); ?></span></p>
                         </div>
                     </article>
                 <?php endforeach; ?>

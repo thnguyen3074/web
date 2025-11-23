@@ -17,11 +17,12 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     // Xóa facility
     $sql_delete = "DELETE FROM facilities WHERE facility_id = $facility_id";
     mysqli_query($conn, $sql_delete);
-    header('Location: admin-facilities.php');
+    $redirect_tab = isset($_GET['tab']) ? '?tab=' . $_GET['tab'] : '';
+    header('Location: admin-facilities.php' . $redirect_tab);
     exit();
 }
 
-// Xử lý tạo tài khoản Facility Admin
+// Xử lý tạo tài khoản quản trị viên cơ sở y tế
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'create_facility_admin') {
     $facility_id = intval($_POST['facility_id']);
     $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
@@ -36,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         exit();
     }
     
-    // Kiểm tra facility đã có admin chưa
-    $check_facility_admin = "SELECT admin_id FROM facility_admins WHERE facility_id = $facility_id";
-    $result_check_facility = mysqli_query($conn, $check_facility_admin);
-    if (mysqli_num_rows($result_check_facility) > 0) {
-        header('Location: admin-facilities.php?error=facility_has_admin');
+    // Kiểm tra email trùng với admins
+    $check_email_admin = "SELECT admin_id FROM admins WHERE email = '$email'";
+    $result_check_admin = mysqli_query($conn, $check_email_admin);
+    if (mysqli_num_rows($result_check_admin) > 0) {
+        header('Location: admin-facilities.php?error=email_exists');
         exit();
     }
     
@@ -53,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     $password_hash = mysqli_real_escape_string($conn, $password_hash);
     $sql_insert = "INSERT INTO facility_admins (facility_id, fullname, email, password) VALUES ($facility_id, '$fullname', '$email', '$password_hash')";
     mysqli_query($conn, $sql_insert);
-    header('Location: admin-facilities.php?success=facility_admin_created');
+    $redirect_tab = isset($_GET['tab']) ? '&tab=' . $_GET['tab'] : '';
+    header('Location: admin-facilities.php?success=facility_admin_created' . $redirect_tab);
     exit();
 }
 
@@ -122,16 +124,65 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (!isset($_POST['action']) || $_POST[
         }
         mysqli_query($conn, $sql_insert);
     }
-    header('Location: admin-facilities.php');
+    $redirect_tab = isset($_POST['tab']) ? '?tab=' . $_POST['tab'] : (isset($_GET['tab']) ? '?tab=' . $_GET['tab'] : '');
+    header('Location: admin-facilities.php' . $redirect_tab);
     exit();
 }
 
-// Lấy danh sách bệnh viện và kiểm tra đã có facility admin chưa
+// Lấy tham số tìm kiếm, edit, tab
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$edit_id = isset($_GET['edit']) && is_numeric($_GET['edit']) ? intval($_GET['edit']) : 0;
+$create_admin_id = isset($_GET['create_admin']) && is_numeric($_GET['create_admin']) ? intval($_GET['create_admin']) : 0;
+$tab = isset($_GET['tab']) && in_array($_GET['tab'], ['hospital', 'clinic']) ? $_GET['tab'] : 'hospital';
+$show_form = isset($_GET['add']) || $edit_id > 0;
+$show_admin_form = $create_admin_id > 0;
+
+// Lấy thông tin facility để sửa
+$edit_facility = null;
+if ($edit_id > 0) {
+    $sql_edit = "SELECT * FROM facilities WHERE facility_id = $edit_id";
+    $result_edit = mysqli_query($conn, $sql_edit);
+    if ($result_edit && mysqli_num_rows($result_edit) > 0) {
+        $edit_facility = mysqli_fetch_assoc($result_edit);
+    } else {
+        $edit_id = 0;
+        $show_form = false;
+    }
+}
+
+// Lấy thông tin facility để tạo admin
+$create_admin_facility = null;
+if ($create_admin_id > 0) {
+    $sql_fac = "SELECT * FROM facilities WHERE facility_id = $create_admin_id";
+    $result_fac = mysqli_query($conn, $sql_fac);
+    if ($result_fac && mysqli_num_rows($result_fac) > 0) {
+        $create_admin_facility = mysqli_fetch_assoc($result_fac);
+    } else {
+        $create_admin_id = 0;
+        $show_admin_form = false;
+    }
+}
+
+// Xây dựng điều kiện WHERE
+$where_conditions_hospital = ["f.type = 'hospital'"];
+$where_conditions_clinic = ["f.type = 'clinic'"];
+
+if (!empty($search)) {
+    $search_escaped = mysqli_real_escape_string($conn, $search);
+    $search_condition = "(f.name LIKE '%$search_escaped%' OR f.address LIKE '%$search_escaped%' OR f.phone LIKE '%$search_escaped%')";
+    $where_conditions_hospital[] = $search_condition;
+    $where_conditions_clinic[] = $search_condition;
+}
+
+$where_hospital = implode(' AND ', $where_conditions_hospital);
+$where_clinic = implode(' AND ', $where_conditions_clinic);
+
+// Lấy danh sách bệnh viện và số lượng admin
 $hospitals = [];
 $sql_hospitals = "SELECT f.*, 
-                         (SELECT COUNT(*) FROM facility_admins WHERE facility_id = f.facility_id) AS has_admin
+                         (SELECT COUNT(*) FROM facility_admins WHERE facility_id = f.facility_id) AS admin_count
                   FROM facilities f 
-                  WHERE f.type = 'hospital' 
+                  WHERE $where_hospital
                   ORDER BY f.facility_id DESC";
 $result_hospitals = mysqli_query($conn, $sql_hospitals);
 if ($result_hospitals) {
@@ -140,12 +191,12 @@ if ($result_hospitals) {
     }
 }
 
-// Lấy danh sách phòng khám và kiểm tra đã có facility admin chưa
+// Lấy danh sách phòng khám và số lượng admin
 $clinics = [];
 $sql_clinics = "SELECT f.*, 
-                       (SELECT COUNT(*) FROM facility_admins WHERE facility_id = f.facility_id) AS has_admin
+                       (SELECT COUNT(*) FROM facility_admins WHERE facility_id = f.facility_id) AS admin_count
                 FROM facilities f 
-                WHERE f.type = 'clinic' 
+                WHERE $where_clinic
                 ORDER BY f.facility_id DESC";
 $result_clinics = mysqli_query($conn, $sql_clinics);
 if ($result_clinics) {
@@ -162,18 +213,20 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
 <div class="admin-content">
     <div class="page-header">
         <h1 class="page-title">Quản lý cơ sở y tế</h1>
-        <button class="btn-admin-primary" onclick="openModal('facilityModal')">
-            + Thêm cơ sở y tế
-        </button>
+        <?php if (!$show_form && !$show_admin_form): ?>
+            <a href="admin-facilities.php?add=1&tab=<?php echo $tab; ?>" class="btn-admin-primary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+                + Thêm cơ sở y tế
+            </a>
+        <?php else: ?>
+            <a href="admin-facilities.php?tab=<?php echo $tab; ?>" class="btn-admin-secondary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+                ← Quay lại
+            </a>
+        <?php endif; ?>
     </div>
 
     <?php if ($error == 'email_exists'): ?>
         <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
             Email này đã được sử dụng. Vui lòng chọn email khác.
-        </div>
-    <?php elseif ($error == 'facility_has_admin'): ?>
-        <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
-            Cơ sở này đã có tài khoản quản trị viên. Mỗi cơ sở chỉ có thể có 1 tài khoản quản trị.
         </div>
     <?php elseif ($error == 'password_required'): ?>
         <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
@@ -187,243 +240,195 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
         </div>
     <?php endif; ?>
 
-    <div class="admin-tabs">
-        <button class="tab-btn active" data-tab="hospital" onclick="switchTab('hospital')">Bệnh viện</button>
-        <button class="tab-btn" data-tab="clinic" onclick="switchTab('clinic')">Phòng khám</button>
-    </div>
-
-    <div class="tab-content active" id="hospital-tab">
-        <div class="table-container">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên</th>
-                        <th>Địa chỉ</th>
-                        <th>Số điện thoại</th>
-                        <th>Giờ làm việc</th>
-                        <th>Chức năng</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($hospitals)): ?>
-                        <tr>
-                            <td colspan="6">Chưa có bệnh viện nào.</td>
-                        </tr>
-                    <?php else: ?>
-                        <?php foreach ($hospitals as $hospital): ?>
-                            <tr>
-                                <td><?php echo $hospital['facility_id']; ?></td>
-                                <td><?php echo htmlspecialchars($hospital['name']); ?></td>
-                                <td><?php echo htmlspecialchars($hospital['address']); ?></td>
-                                <td><?php echo htmlspecialchars($hospital['phone']); ?></td>
-                                <td><?php echo htmlspecialchars($hospital['working_hours']); ?></td>
-                                <td>
-                                    <button class="btn-edit" onclick="editFacility(<?php echo $hospital['facility_id']; ?>, '<?php echo htmlspecialchars($hospital['name'], ENT_QUOTES); ?>', 'hospital', '<?php echo htmlspecialchars($hospital['address'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($hospital['phone'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($hospital['working_hours'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($hospital['description'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($hospital['image'] ?? '', ENT_QUOTES); ?>')">Edit</button>
-                                    <a href="admin-facilities.php?delete=<?php echo $hospital['facility_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa cơ sở này?')">Delete</a>
-                                    <?php if ($hospital['has_admin'] == 0): ?>
-                                        <button class="btn-confirm" onclick="openFacilityAdminModal(<?php echo $hospital['facility_id']; ?>, '<?php echo htmlspecialchars($hospital['name'], ENT_QUOTES); ?>')" style="margin-left: 5px;">Tạo Facility Admin</button>
-                                    <?php else: ?>
-                                        <span style="color: #28a745; font-size: 14px; margin-left: 5px;">✓ Đã có admin</span>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="tab-content" id="clinic-tab">
-        <div class="table-container">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên</th>
-                        <th>Địa chỉ</th>
-                        <th>Số điện thoại</th>
-                        <th>Giờ làm việc</th>
-                        <th>Chức năng</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($clinics)): ?>
-                        <tr>
-                            <td colspan="6">Chưa có phòng khám nào.</td>
-                        </tr>
-                    <?php else: ?>
-                        <?php foreach ($clinics as $clinic): ?>
-                            <tr>
-                                <td><?php echo $clinic['facility_id']; ?></td>
-                                <td><?php echo htmlspecialchars($clinic['name']); ?></td>
-                                <td><?php echo htmlspecialchars($clinic['address']); ?></td>
-                                <td><?php echo htmlspecialchars($clinic['phone']); ?></td>
-                                <td><?php echo htmlspecialchars($clinic['working_hours']); ?></td>
-                                <td>
-                                    <button class="btn-edit" onclick="editFacility(<?php echo $clinic['facility_id']; ?>, '<?php echo htmlspecialchars($clinic['name'], ENT_QUOTES); ?>', 'clinic', '<?php echo htmlspecialchars($clinic['address'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($clinic['phone'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($clinic['working_hours'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($clinic['description'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($clinic['image'] ?? '', ENT_QUOTES); ?>')">Edit</button>
-                                    <a href="admin-facilities.php?delete=<?php echo $clinic['facility_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa cơ sở này?')">Delete</a>
-                                    <?php if ($clinic['has_admin'] == 0): ?>
-                                        <button class="btn-confirm" onclick="openFacilityAdminModal(<?php echo $clinic['facility_id']; ?>, '<?php echo htmlspecialchars($clinic['name'], ENT_QUOTES); ?>')" style="margin-left: 5px;">Tạo Facility Admin</button>
-                                    <?php else: ?>
-                                        <span style="color: #28a745; font-size: 14px; margin-left: 5px;">✓ Đã có admin</span>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- Modal thêm/sửa cơ sở y tế -->
-<div id="facilityModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 id="modal-title">Thêm cơ sở y tế</h2>
-            <span class="close" onclick="closeModal('facilityModal')">&times;</span>
-        </div>
-        <form class="modal-form" method="POST" action="admin-facilities.php" enctype="multipart/form-data">
-            <input type="hidden" name="facility_id" id="facility-id" />
-            <div class="form-group">
-                <label for="facility-name">Tên cơ sở y tế</label>
-                <input type="text" id="facility-name" name="name" required />
-            </div>
-            <div class="form-group">
-                <label for="facility-type">Loại</label>
-                <select id="facility-type" name="type" required>
-                    <option value="hospital">Bệnh viện</option>
-                    <option value="clinic">Phòng khám</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="facility-address">Địa chỉ</label>
-                <input type="text" id="facility-address" name="address" required />
-            </div>
-            <div class="form-group">
-                <label for="facility-phone">Số điện thoại</label>
-                <input type="tel" id="facility-phone" name="phone" required />
-            </div>
-            <div class="form-group">
-                <label for="facility-hours">Giờ làm việc</label>
-                <input type="text" id="facility-hours" name="working_hours" placeholder="VD: 7:00 - 21:00" required />
-            </div>
-            <div class="form-group">
-                <label for="facility-description">Mô tả</label>
-                <textarea id="facility-description" name="description" rows="4"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="facility-image">Ảnh cơ sở y tế</label>
-                <input type="file" id="facility-image" name="image" accept="image/jpeg,image/jpg,image/png" />
-                <small>Chỉ chấp nhận file JPG, PNG (tối đa 5MB)</small>
-                <div id="current-image-preview" style="margin-top: 10px;"></div>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="btn-cancel" onclick="closeModal('facilityModal')">Hủy</button>
-                <button type="submit" class="btn-admin-primary">Lưu</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Modal tạo Facility Admin -->
-<div id="facilityAdminModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Tạo tài khoản Facility Admin</h2>
-            <span class="close" onclick="closeModal('facilityAdminModal')">&times;</span>
-        </div>
-        <form class="modal-form" method="POST" action="admin-facilities.php">
-            <input type="hidden" name="action" value="create_facility_admin" />
-            <input type="hidden" name="facility_id" id="facility-admin-facility-id" />
+    <?php if ($show_admin_form): ?>
+        <!-- Form tạo quản trị viên cơ sở y tế -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <h2 style="margin-bottom: 20px;">Tạo tài khoản quản trị viên cơ sở y tế</h2>
             <div style="background: #e7f3ff; padding: 12px; border-radius: 4px; margin-bottom: 16px;">
-                <strong>Cơ sở y tế:</strong> <span id="facility-admin-facility-name"></span>
+                <strong>Cơ sở y tế:</strong> <?php echo htmlspecialchars($create_admin_facility['name']); ?>
             </div>
-            <div class="form-group">
-                <label for="facility-admin-fullname">Họ và tên</label>
-                <input type="text" id="facility-admin-fullname" name="fullname" required />
+            <form method="POST" action="admin-facilities.php">
+                <input type="hidden" name="action" value="create_facility_admin" />
+                <input type="hidden" name="facility_id" value="<?php echo $create_admin_id; ?>" />
+                <div class="form-group">
+                    <label for="facility-admin-fullname">Họ và tên <span style="color: red;">*</span></label>
+                    <input type="text" id="facility-admin-fullname" name="fullname" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="form-group">
+                    <label for="facility-admin-email">Email <span style="color: red;">*</span></label>
+                    <input type="email" id="facility-admin-email" name="email" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="form-group">
+                    <label for="facility-admin-password">Mật khẩu <span style="color: red;">*</span></label>
+                    <input type="password" id="facility-admin-password" name="password" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                    <small>Mật khẩu sẽ được mã hóa trước khi lưu vào database</small>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <a href="admin-facilities.php?tab=<?php echo $tab; ?>" class="btn-cancel" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Hủy</a>
+                    <button type="submit" class="btn-admin-primary">Tạo tài khoản</button>
+                </div>
+            </form>
+        </div>
+    <?php elseif ($show_form): ?>
+        <!-- Form thêm/sửa cơ sở y tế -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <h2 style="margin-bottom: 20px;"><?php echo $edit_id > 0 ? 'Chỉnh sửa cơ sở y tế' : 'Thêm cơ sở y tế mới'; ?></h2>
+            <form method="POST" action="admin-facilities.php" enctype="multipart/form-data">
+                <?php if ($edit_id > 0): ?>
+                    <input type="hidden" name="facility_id" value="<?php echo $edit_id; ?>" />
+                <?php endif; ?>
+                <div class="form-group">
+                    <label for="facility-name">Tên cơ sở y tế <span style="color: red;">*</span></label>
+                    <input type="text" id="facility-name" name="name" value="<?php echo $edit_facility ? htmlspecialchars($edit_facility['name']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="form-group">
+                    <label for="facility-type">Loại <span style="color: red;">*</span></label>
+                    <select id="facility-type" name="type" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <option value="hospital" <?php echo ($edit_facility && $edit_facility['type'] == 'hospital') ? 'selected' : ''; ?>>Bệnh viện</option>
+                        <option value="clinic" <?php echo ($edit_facility && $edit_facility['type'] == 'clinic') ? 'selected' : ''; ?>>Phòng khám</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="facility-address">Địa chỉ <span style="color: red;">*</span></label>
+                    <input type="text" id="facility-address" name="address" value="<?php echo $edit_facility ? htmlspecialchars($edit_facility['address']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="form-group">
+                    <label for="facility-phone">Số điện thoại <span style="color: red;">*</span></label>
+                    <input type="tel" id="facility-phone" name="phone" value="<?php echo $edit_facility ? htmlspecialchars($edit_facility['phone']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="form-group">
+                    <label for="facility-hours">Giờ làm việc <span style="color: red;">*</span></label>
+                    <input type="text" id="facility-hours" name="working_hours" value="<?php echo $edit_facility ? htmlspecialchars($edit_facility['working_hours']) : ''; ?>" placeholder="VD: 7:00 - 21:00" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="form-group">
+                    <label for="facility-description">Mô tả</label>
+                    <textarea id="facility-description" name="description" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"><?php echo $edit_facility ? htmlspecialchars($edit_facility['description']) : ''; ?></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="facility-image">Ảnh cơ sở y tế</label>
+                    <input type="file" id="facility-image" name="image" accept="image/jpeg,image/jpg,image/png" />
+                    <small>Chỉ chấp nhận file JPG, PNG (tối đa 5MB)</small>
+                    <?php if ($edit_facility && !empty($edit_facility['image'])): ?>
+                        <div style="margin-top: 10px;">
+                            <p>Ảnh hiện tại:</p>
+                            <img src="../<?php echo htmlspecialchars($edit_facility['image']); ?>" alt="Current image" style="max-width: 200px; max-height: 150px; border: 1px solid #ddd; padding: 5px;" />
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <a href="admin-facilities.php?tab=<?php echo $tab; ?>" class="btn-cancel" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Hủy</a>
+                    <button type="submit" class="btn-admin-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    <?php else: ?>
+        <!-- Form tìm kiếm -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <form method="GET" action="admin-facilities.php" style="display: flex; gap: 10px; align-items: end;">
+                <input type="hidden" name="tab" value="<?php echo htmlspecialchars($tab); ?>" />
+                <div style="flex: 1;">
+                    <label for="search" style="display: block; margin-bottom: 5px; font-weight: 500;">Tìm kiếm</label>
+                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên, địa chỉ, số điện thoại..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div>
+                    <button type="submit" class="btn-admin-primary" style="padding: 8px 20px;">Tìm kiếm</button>
+                    <a href="admin-facilities.php?tab=<?php echo htmlspecialchars($tab); ?>" class="btn-admin-secondary" style="padding: 8px 20px; text-decoration: none; display: inline-block;">Xóa bộ lọc</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="admin-tabs">
+            <a href="admin-facilities.php?tab=hospital<?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?>" class="tab-btn <?php echo $tab == 'hospital' ? 'active' : ''; ?>" style="text-decoration: none; padding: 12px 20px; display: inline-block;">Bệnh viện</a>
+            <a href="admin-facilities.php?tab=clinic<?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?>" class="tab-btn <?php echo $tab == 'clinic' ? 'active' : ''; ?>" style="text-decoration: none; padding: 12px 20px; display: inline-block;">Phòng khám</a>
+        </div>
+
+        <?php if ($tab == 'hospital'): ?>
+            <div class="tab-content active" id="hospital-tab">
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên</th>
+                                <th>Địa chỉ</th>
+                                <th>Số điện thoại</th>
+                                <th>Giờ làm việc</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($hospitals)): ?>
+                                <tr>
+                                    <td colspan="6">Chưa có bệnh viện nào.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($hospitals as $hospital): ?>
+                                    <tr>
+                                        <td><?php echo $hospital['facility_id']; ?></td>
+                                        <td><?php echo htmlspecialchars($hospital['name']); ?></td>
+                                        <td><?php echo htmlspecialchars($hospital['address']); ?></td>
+                                        <td><?php echo htmlspecialchars($hospital['phone']); ?></td>
+                                        <td><?php echo htmlspecialchars($hospital['working_hours']); ?></td>
+                                <td>
+                                    <a href="admin-facilities.php?edit=<?php echo $hospital['facility_id']; ?>&tab=<?php echo $tab; ?>" class="btn-edit" style="text-decoration: none; padding: 6px 12px; display: inline-block;">Sửa</a>
+                                    <a href="admin-facilities.php?delete=<?php echo $hospital['facility_id']; ?>&tab=<?php echo $tab; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa cơ sở này?')">Xóa</a>
+                                    <a href="admin-facilities.php?create_admin=<?php echo $hospital['facility_id']; ?>&tab=<?php echo $tab; ?>" class="btn-confirm" style="text-decoration: none; padding: 6px 12px; display: inline-block; margin-left: 5px;">Tạo quản trị viên</a>
+                                    <?php if ($hospital['admin_count'] > 0): ?>
+                                        <span style="color: #28a745; font-size: 14px; margin-left: 5px;">✓ <?php echo $hospital['admin_count']; ?> admin</span>
+                                    <?php endif; ?>
+                                </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="facility-admin-email">Email</label>
-                <input type="email" id="facility-admin-email" name="email" required />
+        <?php else: ?>
+            <div class="tab-content active" id="clinic-tab">
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên</th>
+                                <th>Địa chỉ</th>
+                                <th>Số điện thoại</th>
+                                <th>Giờ làm việc</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($clinics)): ?>
+                                <tr>
+                                    <td colspan="6">Chưa có phòng khám nào.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($clinics as $clinic): ?>
+                                    <tr>
+                                        <td><?php echo $clinic['facility_id']; ?></td>
+                                        <td><?php echo htmlspecialchars($clinic['name']); ?></td>
+                                        <td><?php echo htmlspecialchars($clinic['address']); ?></td>
+                                        <td><?php echo htmlspecialchars($clinic['phone']); ?></td>
+                                        <td><?php echo htmlspecialchars($clinic['working_hours']); ?></td>
+                                <td>
+                                    <a href="admin-facilities.php?edit=<?php echo $clinic['facility_id']; ?>&tab=<?php echo $tab; ?>" class="btn-edit" style="text-decoration: none; padding: 6px 12px; display: inline-block;">Sửa</a>
+                                    <a href="admin-facilities.php?delete=<?php echo $clinic['facility_id']; ?>&tab=<?php echo $tab; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa cơ sở này?')">Xóa</a>
+                                    <a href="admin-facilities.php?create_admin=<?php echo $clinic['facility_id']; ?>&tab=<?php echo $tab; ?>" class="btn-confirm" style="text-decoration: none; padding: 6px 12px; display: inline-block; margin-left: 5px;">Tạo quản trị viên</a>
+                                    <?php if ($clinic['admin_count'] > 0): ?>
+                                        <span style="color: #28a745; font-size: 14px; margin-left: 5px;">✓ <?php echo $clinic['admin_count']; ?> admin</span>
+                                    <?php endif; ?>
+                                </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="facility-admin-password">Mật khẩu</label>
-                <input type="password" id="facility-admin-password" name="password" required />
-                <small>Mật khẩu sẽ được mã hóa trước khi lưu vào database</small>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="btn-cancel" onclick="closeModal('facilityAdminModal')">Hủy</button>
-                <button type="submit" class="btn-admin-primary">Tạo tài khoản</button>
-            </div>
-        </form>
-    </div>
+        <?php endif; ?>
+    <?php endif; ?>
 </div>
-
-<script>
-function openFacilityAdminModal(facilityId, facilityName) {
-    document.getElementById('facility-admin-facility-id').value = facilityId;
-    document.getElementById('facility-admin-facility-name').textContent = facilityName;
-    document.getElementById('facility-admin-fullname').value = '';
-    document.getElementById('facility-admin-email').value = '';
-    document.getElementById('facility-admin-password').value = '';
-    document.getElementById('facilityAdminModal').style.display = 'block';
-}
-
-function openModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-    document.getElementById('facility-id').value = '';
-    document.getElementById('modal-title').textContent = 'Thêm cơ sở y tế';
-    document.getElementById('facility-name').value = '';
-    document.getElementById('facility-type').value = 'hospital';
-    document.getElementById('facility-address').value = '';
-    document.getElementById('facility-phone').value = '';
-    document.getElementById('facility-hours').value = '';
-    document.getElementById('facility-description').value = '';
-    document.getElementById('facility-image').value = '';
-    document.getElementById('current-image-preview').innerHTML = '';
-}
-
-function editFacility(id, name, type, address, phone, hours, description, image) {
-    document.getElementById('facility-id').value = id;
-    document.getElementById('modal-title').textContent = 'Chỉnh sửa cơ sở y tế';
-    document.getElementById('facility-name').value = name;
-    document.getElementById('facility-type').value = type;
-    document.getElementById('facility-address').value = address;
-    document.getElementById('facility-phone').value = phone;
-    document.getElementById('facility-hours').value = hours;
-    document.getElementById('facility-description').value = description;
-    document.getElementById('facility-image').value = '';
-    
-    // Hiển thị ảnh hiện tại
-    const preview = document.getElementById('current-image-preview');
-    if (image && image.trim() !== '') {
-        preview.innerHTML = '<p>Ảnh hiện tại:</p><img src="../' + image + '" alt="Current image" style="max-width: 200px; max-height: 150px; border: 1px solid #ddd; padding: 5px;" />';
-    } else {
-        preview.innerHTML = '<p>Chưa có ảnh</p>';
-    }
-    
-    document.getElementById('facilityModal').style.display = 'block';
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-}
-
-function switchTab(tab) {
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-    });
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.getElementById(tab + '-tab').classList.add('active');
-    event.target.classList.add('active');
-}
-</script>
 
 <?php include 'admin-footer.php'; ?>
 

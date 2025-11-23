@@ -4,40 +4,42 @@
  * CRUD quản lý quản trị viên
  */
 
-$pageTitle = 'Quản lý quản trị viên';
+$pageTitle = 'Quản lý admin cơ sở y tế';
 require_once '../config.php';
 include 'admin-header.php';
 
-// Xử lý xóa admin
+// Xử lý xóa admin cơ sở y tế
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $admin_id = intval($_GET['delete']);
-    
-    // Không cho phép xóa chính mình
-    if ($admin_id == $_SESSION['admin_id']) {
-        header('Location: admin-admins.php?error=self_delete');
-        exit();
-    }
-    
-    $sql_delete = "DELETE FROM admins WHERE admin_id = $admin_id";
+    $sql_delete = "DELETE FROM facility_admins WHERE admin_id = $admin_id";
     mysqli_query($conn, $sql_delete);
     header('Location: admin-admins.php');
     exit();
 }
 
-// Xử lý thêm/sửa admin
+// Xử lý thêm/sửa admin cơ sở y tế
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+    $facility_id = isset($_POST['facility_id']) ? intval($_POST['facility_id']) : 0;
     
     if (isset($_POST['admin_id']) && is_numeric($_POST['admin_id'])) {
-        // Update
+        // Cập nhật admin cơ sở y tế
         $admin_id = intval($_POST['admin_id']);
         
         // Kiểm tra email trùng (trừ chính admin đang sửa)
-        $check_email = "SELECT admin_id FROM admins WHERE email = '$email' AND admin_id != $admin_id";
+        $check_email = "SELECT admin_id FROM facility_admins WHERE email = '$email' AND admin_id != $admin_id";
         $result_check = mysqli_query($conn, $check_email);
         if (mysqli_num_rows($result_check) > 0) {
+            header('Location: admin-admins.php?error=email_exists');
+            exit();
+        }
+        
+        // Kiểm tra email trùng với admins
+        $check_email_admin = "SELECT admin_id FROM admins WHERE email = '$email'";
+        $result_check_admin = mysqli_query($conn, $check_email_admin);
+        if (mysqli_num_rows($result_check_admin) > 0) {
             header('Location: admin-admins.php?error=email_exists');
             exit();
         }
@@ -46,18 +48,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Cập nhật cả mật khẩu
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             $password_hash = mysqli_real_escape_string($conn, $password_hash);
-            $sql_update = "UPDATE admins SET name = '$name', email = '$email', password = '$password_hash' WHERE admin_id = $admin_id";
+            $sql_update = "UPDATE facility_admins SET fullname = '$fullname', email = '$email', password = '$password_hash' WHERE admin_id = $admin_id";
         } else {
             // Giữ nguyên mật khẩu cũ
-            $sql_update = "UPDATE admins SET name = '$name', email = '$email' WHERE admin_id = $admin_id";
+            $sql_update = "UPDATE facility_admins SET fullname = '$fullname', email = '$email' WHERE admin_id = $admin_id";
         }
         mysqli_query($conn, $sql_update);
     } else {
-        // Insert
+        // Thêm mới admin cơ sở y tế
+        if ($facility_id <= 0) {
+            header('Location: admin-admins.php?error=facility_required');
+            exit();
+        }
+        
         // Kiểm tra email trùng
-        $check_email = "SELECT admin_id FROM admins WHERE email = '$email'";
+        $check_email = "SELECT admin_id FROM facility_admins WHERE email = '$email'";
         $result_check = mysqli_query($conn, $check_email);
         if (mysqli_num_rows($result_check) > 0) {
+            header('Location: admin-admins.php?error=email_exists');
+            exit();
+        }
+        
+        // Kiểm tra email trùng với admins
+        $check_email_admin = "SELECT admin_id FROM admins WHERE email = '$email'";
+        $result_check_admin = mysqli_query($conn, $check_email_admin);
+        if (mysqli_num_rows($result_check_admin) > 0) {
             header('Location: admin-admins.php?error=email_exists');
             exit();
         }
@@ -69,20 +84,66 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
         $password_hash = mysqli_real_escape_string($conn, $password_hash);
-        $sql_insert = "INSERT INTO admins (name, email, password) VALUES ('$name', '$email', '$password_hash')";
+        $sql_insert = "INSERT INTO facility_admins (facility_id, fullname, email, password) VALUES ($facility_id, '$fullname', '$email', '$password_hash')";
         mysqli_query($conn, $sql_insert);
     }
     header('Location: admin-admins.php');
     exit();
 }
 
-// Lấy danh sách admins
-$admins = [];
-$sql = "SELECT * FROM admins ORDER BY admin_id DESC";
-$result = mysqli_query($conn, $sql);
-if ($result) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $admins[] = $row;
+// Lấy tham số tìm kiếm và edit
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$edit_id = isset($_GET['edit']) && is_numeric($_GET['edit']) ? intval($_GET['edit']) : 0;
+$show_form = isset($_GET['add']) || $edit_id > 0;
+
+// Lấy thông tin admin để sửa
+$edit_admin = null;
+if ($edit_id > 0) {
+    $sql_edit = "SELECT fa.*, f.name AS facility_name, f.type AS facility_type
+                 FROM facility_admins fa
+                 JOIN facilities f ON fa.facility_id = f.facility_id
+                 WHERE fa.admin_id = $edit_id";
+    $result_edit = mysqli_query($conn, $sql_edit);
+    if ($result_edit && mysqli_num_rows($result_edit) > 0) {
+        $edit_admin = mysqli_fetch_assoc($result_edit);
+    } else {
+        $edit_id = 0;
+        $show_form = false;
+    }
+}
+
+// Xây dựng điều kiện WHERE cho admin cơ sở y tế
+$where_conditions = [];
+if (!empty($search)) {
+    $search_escaped = mysqli_real_escape_string($conn, $search);
+    $where_conditions[] = "(fa.fullname LIKE '%$search_escaped%' OR fa.email LIKE '%$search_escaped%' OR f.name LIKE '%$search_escaped%')";
+}
+$where_clause = !empty($where_conditions) ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
+
+// Lấy danh sách admin cơ sở y tế với thông tin cơ sở
+$facility_admins = [];
+$sql_facility = "SELECT fa.*, f.name AS facility_name, f.type AS facility_type
+                 FROM facility_admins fa
+                 JOIN facilities f ON fa.facility_id = f.facility_id
+                 $where_clause
+                 ORDER BY fa.admin_id DESC";
+$result_facility = mysqli_query($conn, $sql_facility);
+if ($result_facility) {
+    while ($row = mysqli_fetch_assoc($result_facility)) {
+        $facility_admins[] = $row;
+    }
+}
+
+// Lấy danh sách cơ sở y tế để tạo admin mới
+$facilities = [];
+$sql_facilities = "SELECT f.*, 
+                          (SELECT COUNT(*) FROM facility_admins WHERE facility_id = f.facility_id) AS admin_count
+                   FROM facilities f 
+                   ORDER BY f.name";
+$result_facilities = mysqli_query($conn, $sql_facilities);
+if ($result_facilities) {
+    while ($row = mysqli_fetch_assoc($result_facilities)) {
+        $facilities[] = $row;
     }
 }
 
@@ -92,10 +153,16 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
 
 <div class="admin-content">
     <div class="page-header">
-        <h1 class="page-title">Quản lý quản trị viên</h1>
-        <button class="btn-admin-primary" onclick="openModal('adminModal')">
-            + Thêm quản trị viên
-        </button>
+        <h1 class="page-title">Quản lý admin cơ sở y tế</h1>
+        <?php if (!$show_form): ?>
+            <a href="admin-admins.php?add=1" class="btn-admin-primary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+                + Thêm admin cơ sở y tế
+            </a>
+        <?php else: ?>
+            <a href="admin-admins.php" class="btn-admin-secondary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+                ← Quay lại
+            </a>
+        <?php endif; ?>
     </div>
 
     <?php if ($error == 'email_exists'): ?>
@@ -106,42 +173,113 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
         <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
             Vui lòng nhập mật khẩu khi tạo admin mới.
         </div>
-    <?php elseif ($error == 'self_delete'): ?>
+    <?php elseif ($error == 'facility_required'): ?>
         <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
-            Bạn không thể xóa chính tài khoản của mình.
+            Vui lòng chọn cơ sở y tế.
         </div>
     <?php endif; ?>
 
-    <div class="table-container">
+    <?php if ($show_form): ?>
+        <!-- Form thêm/sửa admin cơ sở y tế -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <h2 style="margin-bottom: 20px;"><?php echo $edit_id > 0 ? 'Chỉnh sửa admin cơ sở y tế' : 'Thêm admin cơ sở y tế mới'; ?></h2>
+            <form method="POST" action="admin-admins.php">
+                <?php if ($edit_id > 0): ?>
+                    <input type="hidden" name="admin_id" value="<?php echo $edit_id; ?>" />
+                <?php endif; ?>
+                <div class="form-group">
+                    <label for="facility-admin-facility">Cơ sở y tế <span style="color: red;">*</span></label>
+                <select id="facility-admin-facility" name="facility_id" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" <?php echo $edit_id > 0 ? 'disabled' : ''; ?>>
+                    <option value="">Chọn cơ sở y tế</option>
+                    <?php foreach ($facilities as $facility): ?>
+                        <?php if ($edit_id > 0 && $edit_admin['facility_id'] == $facility['facility_id']): ?>
+                            <option value="<?php echo $facility['facility_id']; ?>" selected>
+                                <?php echo htmlspecialchars($facility['name']); ?> (<?php echo ($facility['type'] == 'hospital') ? 'Bệnh viện' : 'Phòng khám'; ?>)
+                                <?php if ($facility['admin_count'] > 0): ?>
+                                    - Đã có <?php echo $facility['admin_count']; ?> admin
+                                <?php endif; ?>
+                            </option>
+                        <?php else: ?>
+                            <option value="<?php echo $facility['facility_id']; ?>">
+                                <?php echo htmlspecialchars($facility['name']); ?> (<?php echo ($facility['type'] == 'hospital') ? 'Bệnh viện' : 'Phòng khám'; ?>)
+                                <?php if ($facility['admin_count'] > 0): ?>
+                                    - Đã có <?php echo $facility['admin_count']; ?> admin
+                                <?php endif; ?>
+                            </option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+                <?php if ($edit_id > 0): ?>
+                    <input type="hidden" name="facility_id" value="<?php echo $edit_admin['facility_id']; ?>" />
+                    <small>Không thể thay đổi cơ sở y tế khi chỉnh sửa</small>
+                <?php else: ?>
+                    <small>Bạn có thể tạo nhiều admin cho cùng một cơ sở y tế</small>
+                <?php endif; ?>
+                </div>
+                <div class="form-group">
+                    <label for="facility-admin-name">Họ và tên <span style="color: red;">*</span></label>
+                    <input type="text" id="facility-admin-name" name="fullname" value="<?php echo $edit_admin ? htmlspecialchars($edit_admin['fullname']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="form-group">
+                    <label for="facility-admin-email">Email <span style="color: red;">*</span></label>
+                    <input type="email" id="facility-admin-email" name="email" value="<?php echo $edit_admin ? htmlspecialchars($edit_admin['email']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="form-group">
+                    <label for="facility-admin-password">Mật khẩu</label>
+                    <input type="password" id="facility-admin-password" name="password" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" <?php echo $edit_id == 0 ? 'required' : ''; ?> />
+                    <small><?php echo $edit_id > 0 ? 'Để trống nếu không muốn đổi mật khẩu' : 'Bắt buộc khi tạo mới'; ?></small>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <a href="admin-admins.php" class="btn-cancel" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Hủy</a>
+                    <button type="submit" class="btn-admin-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    <?php else: ?>
+        <!-- Form tìm kiếm -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <form method="GET" action="admin-admins.php" style="display: flex; gap: 10px; align-items: end;">
+                <div style="flex: 1;">
+                    <label for="search" style="display: block; margin-bottom: 5px; font-weight: 500;">Tìm kiếm</label>
+                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên, email, cơ sở y tế..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div>
+                    <button type="submit" class="btn-admin-primary" style="padding: 8px 20px;">Tìm kiếm</button>
+                    <a href="admin-admins.php" class="btn-admin-secondary" style="padding: 8px 20px; text-decoration: none; display: inline-block;">Xóa bộ lọc</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-container">
         <table class="admin-table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Tên</th>
                     <th>Email</th>
+                    <th>Cơ sở y tế</th>
+                    <th>Loại</th>
                     <th>Ngày tạo</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if (empty($admins)): ?>
+                <?php if (empty($facility_admins)): ?>
                     <tr>
-                        <td colspan="5">Chưa có quản trị viên nào.</td>
+                        <td colspan="7">Chưa có admin cơ sở y tế nào.</td>
                     </tr>
                 <?php else: ?>
-                    <?php foreach ($admins as $admin): ?>
+                    <?php foreach ($facility_admins as $facility_admin): ?>
                         <tr>
-                            <td><?php echo $admin['admin_id']; ?></td>
-                            <td><?php echo htmlspecialchars($admin['name']); ?></td>
-                            <td><?php echo htmlspecialchars($admin['email']); ?></td>
-                            <td><?php echo date('d/m/Y', strtotime($admin['created_at'])); ?></td>
+                            <td><?php echo $facility_admin['admin_id']; ?></td>
+                            <td><?php echo htmlspecialchars($facility_admin['fullname']); ?></td>
+                            <td><?php echo htmlspecialchars($facility_admin['email']); ?></td>
+                            <td><?php echo htmlspecialchars($facility_admin['facility_name']); ?></td>
+                            <td><?php echo ($facility_admin['facility_type'] == 'hospital') ? 'Bệnh viện' : 'Phòng khám'; ?></td>
+                            <td><?php echo date('d/m/Y', strtotime($facility_admin['created_at'])); ?></td>
                             <td>
-                                <button class="btn-edit" onclick="editAdmin(<?php echo $admin['admin_id']; ?>, '<?php echo htmlspecialchars($admin['name'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($admin['email'], ENT_QUOTES); ?>')">Edit</button>
-                                <?php if ($admin['admin_id'] != $_SESSION['admin_id']): ?>
-                                    <a href="admin-admins.php?delete=<?php echo $admin['admin_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa quản trị viên này?')">Delete</a>
-                                <?php else: ?>
-                                    <span style="color: #999; font-size: 14px;">(Tài khoản của bạn)</span>
-                                <?php endif; ?>
+                                <a href="admin-admins.php?edit=<?php echo $facility_admin['admin_id']; ?>" class="btn-edit" style="text-decoration: none; padding: 6px 12px; display: inline-block;">Sửa</a>
+                                <a href="admin-admins.php?delete=<?php echo $facility_admin['admin_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa admin cơ sở y tế này?')">Xóa</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -149,65 +287,8 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
             </tbody>
         </table>
     </div>
+    <?php endif; ?>
 </div>
-
-<!-- Modal thêm/sửa admin -->
-<div id="adminModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 id="modal-title">Thêm quản trị viên</h2>
-            <span class="close" onclick="closeModal('adminModal')">&times;</span>
-        </div>
-        <form class="modal-form" method="POST" action="admin-admins.php">
-            <input type="hidden" name="admin_id" id="admin-id" />
-            <div class="form-group">
-                <label for="admin-name">Tên quản trị viên</label>
-                <input type="text" id="admin-name" name="name" required />
-            </div>
-            <div class="form-group">
-                <label for="admin-email">Email</label>
-                <input type="email" id="admin-email" name="email" required />
-            </div>
-            <div class="form-group">
-                <label for="admin-password">Mật khẩu</label>
-                <input type="password" id="admin-password" name="password" />
-                <small id="password-hint">Để trống nếu không muốn đổi mật khẩu (khi sửa)</small>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="btn-cancel" onclick="closeModal('adminModal')">Hủy</button>
-                <button type="submit" class="btn-admin-primary">Lưu</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-function openModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-    document.getElementById('admin-id').value = '';
-    document.getElementById('modal-title').textContent = 'Thêm quản trị viên';
-    document.getElementById('admin-name').value = '';
-    document.getElementById('admin-email').value = '';
-    document.getElementById('admin-password').value = '';
-    document.getElementById('admin-password').required = true;
-    document.getElementById('password-hint').style.display = 'none';
-}
-
-function editAdmin(id, name, email) {
-    document.getElementById('admin-id').value = id;
-    document.getElementById('modal-title').textContent = 'Chỉnh sửa quản trị viên';
-    document.getElementById('admin-name').value = name;
-    document.getElementById('admin-email').value = email;
-    document.getElementById('admin-password').value = '';
-    document.getElementById('admin-password').required = false;
-    document.getElementById('password-hint').style.display = 'block';
-    document.getElementById('adminModal').style.display = 'block';
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-}
-</script>
 
 <?php include 'admin-footer.php'; ?>
 

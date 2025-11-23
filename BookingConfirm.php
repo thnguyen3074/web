@@ -24,7 +24,7 @@ $appointment_date = isset($_POST['appointment_date']) ? trim($_POST['appointment
 $appointment_time = isset($_POST['appointment_time']) ? trim($_POST['appointment_time']) : '';
 $symptoms = isset($_POST['symptoms']) ? trim($_POST['symptoms']) : '';
 
-// Lấy thông tin cá nhân (nếu user chưa đăng nhập)
+// Lấy thông tin cá nhân từ form (luôn yêu cầu nhập, kể cả khi đã đăng nhập)
 $fullname = isset($_POST['fullname']) ? trim($_POST['fullname']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
@@ -35,8 +35,8 @@ if ($facility_id <= 0 || $specialty_id <= 0 || empty($appointment_date) || empty
     exit();
 }
 
-// Nếu chưa đăng nhập, phải có đầy đủ thông tin cá nhân
-if (!$isLoggedIn && (empty($fullname) || empty($email) || empty($phone))) {
+// Luôn yêu cầu đầy đủ thông tin cá nhân (kể cả khi đã đăng nhập)
+if (empty($fullname) || empty($email) || empty($phone)) {
     header('Location: Booking.php?facility_id=' . $facility_id);
     exit();
 }
@@ -92,29 +92,16 @@ $formatted_date = $date_obj->format('d/m/Y');
         <div class="confirm-section">
             <h3>Thông tin cá nhân</h3>
             <div class="confirm-info">
-                <?php if ($isLoggedIn): ?>
-                    <?php
-                    // Lấy thông tin user từ session
-                    $user_id = $_SESSION['user_id'];
-                    $sql_user = "SELECT fullname, email, phone FROM users WHERE user_id = $user_id";
-                    $result_user = mysqli_query($conn, $sql_user);
-                    $user_info = mysqli_fetch_assoc($result_user);
-                    ?>
-                    <p><strong>Họ và tên:</strong> <?php echo htmlspecialchars($user_info['fullname']); ?></p>
-                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user_info['email']); ?></p>
-                    <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($user_info['phone']); ?></p>
-                <?php else: ?>
-                    <p><strong>Họ và tên:</strong> <?php echo htmlspecialchars($fullname); ?></p>
-                    <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
-                    <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($phone); ?></p>
-                <?php endif; ?>
+                <p><strong>Họ và tên:</strong> <?php echo htmlspecialchars($fullname); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
+                <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($phone); ?></p>
             </div>
         </div>
 
         <div class="confirm-section">
             <h3>Thông tin triệu chứng</h3>
             <div class="confirm-info">
-                <p><?php echo nl2br(htmlspecialchars($symptoms)); ?></p>
+                <p style="word-wrap: break-word; word-break: break-word; overflow-wrap: break-word; white-space: pre-wrap;"><?php echo nl2br(htmlspecialchars($symptoms)); ?></p>
             </div>
         </div>
 
@@ -125,11 +112,9 @@ $formatted_date = $date_obj->format('d/m/Y');
                 <input type="hidden" name="appointment_date" value="<?php echo htmlspecialchars($appointment_date); ?>" />
                 <input type="hidden" name="appointment_time" value="<?php echo htmlspecialchars($appointment_time); ?>" />
                 <input type="hidden" name="symptoms" value="<?php echo htmlspecialchars($symptoms); ?>" />
-                <?php if (!$isLoggedIn): ?>
-                    <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" />
-                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>" />
-                    <input type="hidden" name="phone" value="<?php echo htmlspecialchars($phone); ?>" />
-                <?php endif; ?>
+                <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" />
+                <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>" />
+                <input type="hidden" name="phone" value="<?php echo htmlspecialchars($phone); ?>" />
                 <button type="submit" class="btn-primary">Quay lại chỉnh sửa</button>
             </form>
             <form action="booking_process.php" method="POST" style="display: inline;">
@@ -138,11 +123,9 @@ $formatted_date = $date_obj->format('d/m/Y');
                 <input type="hidden" name="appointment_date" value="<?php echo htmlspecialchars($appointment_date); ?>" />
                 <input type="hidden" name="appointment_time" value="<?php echo htmlspecialchars($appointment_time); ?>" />
                 <input type="hidden" name="symptoms" value="<?php echo htmlspecialchars($symptoms); ?>" />
-                <?php if (!$isLoggedIn): ?>
-                    <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" />
-                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>" />
-                    <input type="hidden" name="phone" value="<?php echo htmlspecialchars($phone); ?>" />
-                <?php endif; ?>
+                <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" />
+                <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>" />
+                <input type="hidden" name="phone" value="<?php echo htmlspecialchars($phone); ?>" />
                 <button type="submit" class="btn-primary">Xác nhận đặt lịch</button>
             </form>
         </div>

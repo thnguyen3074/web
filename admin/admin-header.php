@@ -39,7 +39,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <aside class="admin-sidebar">
             <nav class="admin-nav">
                 <a href="admin-dashboard.php" class="nav-item <?php echo ($current_page == 'admin-dashboard.php') ? 'active' : ''; ?>">
-                    <span>📊</span> Dashboard
+                    <span>📊</span> Tổng quan
                 </a>
                 <a href="admin-facilities.php" class="nav-item <?php echo ($current_page == 'admin-facilities.php') ? 'active' : ''; ?>">
                     <span>🏥</span> Cơ sở y tế

@@ -85,9 +85,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 
+// Lấy tham số tìm kiếm và edit
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$edit_id = isset($_GET['edit']) && is_numeric($_GET['edit']) ? intval($_GET['edit']) : 0;
+$show_form = isset($_GET['add']) || $edit_id > 0;
+
+// Lấy thông tin chuyên khoa để sửa
+$edit_specialty = null;
+if ($edit_id > 0) {
+    $sql_edit = "SELECT * FROM specialties WHERE specialty_id = $edit_id";
+    $result_edit = mysqli_query($conn, $sql_edit);
+    if ($result_edit && mysqli_num_rows($result_edit) > 0) {
+        $edit_specialty = mysqli_fetch_assoc($result_edit);
+    } else {
+        $edit_id = 0;
+        $show_form = false;
+    }
+}
+
+// Xây dựng điều kiện WHERE
+$where_conditions = [];
+if (!empty($search)) {
+    $search_escaped = mysqli_real_escape_string($conn, $search);
+    $where_conditions[] = "specialty_name LIKE '%$search_escaped%'";
+}
+$where_clause = !empty($where_conditions) ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
+
 // Lấy danh sách chuyên khoa
 $specialties = [];
-$sql = "SELECT * FROM specialties ORDER BY specialty_name";
+$sql = "SELECT * FROM specialties $where_clause ORDER BY specialty_name";
 $result = mysqli_query($conn, $sql);
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
@@ -99,12 +125,68 @@ if ($result) {
 <div class="admin-content">
     <div class="page-header">
         <h1 class="page-title">Quản lý chuyên khoa</h1>
-        <button class="btn-admin-primary" onclick="openModal('specialtyModal')">
-            + Thêm chuyên khoa
-        </button>
+        <?php if (!$show_form): ?>
+            <a href="admin-specialties.php?add=1" class="btn-admin-primary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+                + Thêm chuyên khoa
+            </a>
+        <?php else: ?>
+            <a href="admin-specialties.php" class="btn-admin-secondary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+                ← Quay lại
+            </a>
+        <?php endif; ?>
     </div>
 
-    <div class="table-container">
+    <?php if ($show_form): ?>
+        <!-- Form thêm/sửa chuyên khoa -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <h2 style="margin-bottom: 20px;"><?php echo $edit_id > 0 ? 'Chỉnh sửa chuyên khoa' : 'Thêm chuyên khoa mới'; ?></h2>
+            <form method="POST" action="admin-specialties.php" enctype="multipart/form-data">
+                <?php if ($edit_id > 0): ?>
+                    <input type="hidden" name="specialty_id" value="<?php echo $edit_id; ?>" />
+                <?php endif; ?>
+                <div class="form-group">
+                    <label for="specialty-name">Tên chuyên khoa <span style="color: red;">*</span></label>
+                    <input type="text" id="specialty-name" name="specialty_name" value="<?php echo $edit_specialty ? htmlspecialchars($edit_specialty['specialty_name']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                </div>
+                <div class="form-group">
+                    <label for="specialty-icon">Icon chuyên khoa</label>
+                    <input type="file" id="specialty-icon" name="icon" accept="image/jpeg,image/jpg,image/png" />
+                    <small>Chỉ chấp nhận file JPG, PNG (tối đa 5MB)</small>
+                    <?php if ($edit_specialty && !empty($edit_specialty['icon'])): ?>
+                        <?php 
+                        $icon_path = str_replace('\\', '/', $edit_specialty['icon']);
+                        if (strpos($icon_path, '../') !== 0 && strpos($icon_path, 'http') !== 0) {
+                            $icon_path = '../' . $icon_path;
+                        }
+                        ?>
+                        <div style="margin-top: 10px;">
+                            <p>Icon hiện tại:</p>
+                            <img src="<?php echo htmlspecialchars($icon_path); ?>" alt="Current icon" style="max-width: 100px; max-height: 100px; border: 1px solid #ddd; padding: 5px;" onerror="this.src='../images/specialties/default.png'; this.onerror=null;" />
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <a href="admin-specialties.php" class="btn-cancel" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Hủy</a>
+                    <button type="submit" class="btn-admin-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    <?php else: ?>
+        <!-- Form tìm kiếm -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <form method="GET" action="admin-specialties.php" style="display: flex; gap: 10px; align-items: end;">
+                <div style="flex: 1;">
+                    <label for="search" style="display: block; margin-bottom: 5px; font-weight: 500;">Tìm kiếm</label>
+                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên chuyên khoa..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div>
+                    <button type="submit" class="btn-admin-primary" style="padding: 8px 20px;">Tìm kiếm</button>
+                    <a href="admin-specialties.php" class="btn-admin-secondary" style="padding: 8px 20px; text-decoration: none; display: inline-block;">Xóa bộ lọc</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-container">
         <table class="admin-table">
             <thead>
                 <tr>
@@ -126,14 +208,22 @@ if ($result) {
                             <td><?php echo htmlspecialchars($specialty['specialty_name']); ?></td>
                             <td>
                                 <?php if (!empty($specialty['icon'])): ?>
-                                    <img src="<?php echo htmlspecialchars($specialty['icon']); ?>" alt="Icon" class="specialty-icon" />
+                                    <?php 
+                                    // Sửa đường dẫn icon (thay backslash thành forward slash và thêm ../ nếu cần)
+                                    $icon_path = str_replace('\\', '/', $specialty['icon']);
+                                    // Nếu đường dẫn không bắt đầu bằng ../ thì thêm vào
+                                    if (strpos($icon_path, '../') !== 0 && strpos($icon_path, 'http') !== 0) {
+                                        $icon_path = '../' . $icon_path;
+                                    }
+                                    ?>
+                                    <img src="<?php echo htmlspecialchars($icon_path); ?>" alt="Icon" class="specialty-icon" onerror="this.src='../images/specialties/default.png'; this.onerror=null;" />
                                 <?php else: ?>
                                     <span>Chưa có icon</span>
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <button class="btn-edit" onclick="editSpecialty(<?php echo $specialty['specialty_id']; ?>, '<?php echo htmlspecialchars($specialty['specialty_name'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($specialty['icon'], ENT_QUOTES); ?>')">Edit</button>
-                                <a href="admin-specialties.php?delete=<?php echo $specialty['specialty_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa chuyên khoa này?')">Delete</a>
+                                <a href="admin-specialties.php?edit=<?php echo $specialty['specialty_id']; ?>" class="btn-edit" style="text-decoration: none; padding: 6px 12px; display: inline-block;">Sửa</a>
+                                <a href="admin-specialties.php?delete=<?php echo $specialty['specialty_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa chuyên khoa này?')">Xóa</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -141,66 +231,8 @@ if ($result) {
             </tbody>
         </table>
     </div>
+    <?php endif; ?>
 </div>
-
-<!-- Modal thêm/sửa chuyên khoa -->
-<div id="specialtyModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 id="modal-title">Thêm chuyên khoa</h2>
-            <span class="close" onclick="closeModal('specialtyModal')">&times;</span>
-        </div>
-        <form class="modal-form" method="POST" action="admin-specialties.php" enctype="multipart/form-data">
-            <input type="hidden" name="specialty_id" id="specialty-id" />
-            <div class="form-group">
-                <label for="specialty-name">Tên chuyên khoa</label>
-                <input type="text" id="specialty-name" name="specialty_name" required />
-            </div>
-            <div class="form-group">
-                <label for="specialty-icon">Icon chuyên khoa</label>
-                <input type="file" id="specialty-icon" name="icon" accept="image/jpeg,image/jpg,image/png" />
-                <small>Chỉ chấp nhận file JPG, PNG (tối đa 5MB)</small>
-                <div id="current-icon-preview" style="margin-top: 10px;"></div>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="btn-cancel" onclick="closeModal('specialtyModal')">Hủy</button>
-                <button type="submit" class="btn-admin-primary">Lưu</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-function openModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-    document.getElementById('specialty-id').value = '';
-    document.getElementById('modal-title').textContent = 'Thêm chuyên khoa';
-    document.getElementById('specialty-name').value = '';
-    document.getElementById('specialty-icon').value = '';
-    document.getElementById('current-icon-preview').innerHTML = '';
-}
-
-function editSpecialty(id, name, icon) {
-    document.getElementById('specialty-id').value = id;
-    document.getElementById('modal-title').textContent = 'Chỉnh sửa chuyên khoa';
-    document.getElementById('specialty-name').value = name;
-    document.getElementById('specialty-icon').value = '';
-    
-    // Hiển thị icon hiện tại
-    const preview = document.getElementById('current-icon-preview');
-    if (icon && icon.trim() !== '') {
-        preview.innerHTML = '<p>Icon hiện tại:</p><img src="../' + icon + '" alt="Current icon" style="max-width: 100px; max-height: 100px; border: 1px solid #ddd; padding: 5px;" />';
-    } else {
-        preview.innerHTML = '<p>Chưa có icon</p>';
-    }
-    
-    document.getElementById('specialtyModal').style.display = 'block';
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-}
-</script>
 
 <?php include 'admin-footer.php'; ?>
 

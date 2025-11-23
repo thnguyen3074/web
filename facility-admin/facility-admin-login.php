@@ -8,7 +8,7 @@ session_start();
 
 // Nếu đã đăng nhập thì redirect về dashboard
 if (isset($_SESSION['facility_admin_id'])) {
-    header('Location: facility-admin/facility-admin-dashboard.php');
+    header('Location: facility-admin-dashboard.php');
     exit();
 }
 
@@ -20,7 +20,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Medicare Facility Admin - Đăng nhập</title>
-    <link rel="stylesheet" href="admin/admin.css" />
+    <link rel="stylesheet" href="../admin/admin.css" />
 </head>
 <body class="admin-login-page">
     <div class="login-container">
@@ -59,7 +59,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
             </form>
             
             <div style="margin-top: 20px; text-align: center;">
-                <a href="admin/admin-login.php" style="color: #0d6efd; text-decoration: none;">Đăng nhập Admin tổng</a>
+                <a href="../admin/admin-login.php" style="color: #0d6efd; text-decoration: none;">Đăng nhập Admin tổng</a>
             </div>
         </div>
     </div>
