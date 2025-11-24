@@ -25,7 +25,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
             <p class="login-subtitle">Đăng nhập vào hệ thống quản trị</p>
             
             <?php if ($error == '1'): ?>
-                <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
+                <div class="alert alert-error">
                     Email hoặc mật khẩu không đúng.
                 </div>
             <?php endif; ?>

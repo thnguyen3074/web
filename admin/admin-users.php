@@ -65,7 +65,7 @@ if ($result) {
     <div class="page-header">
         <h1 class="page-title">Quản lý người dùng</h1>
         <?php if ($show_form): ?>
-            <a href="admin-users.php" class="btn-admin-secondary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+            <a href="admin-users.php" class="btn-admin-secondary">
                 ← Quay lại
             </a>
         <?php endif; ?>
@@ -73,36 +73,36 @@ if ($result) {
 
     <?php if ($show_form): ?>
         <!-- Form chỉnh sửa user -->
-        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <h2 style="margin-bottom: 20px;">Chỉnh sửa người dùng</h2>
+        <div class="card">
+            <h2>Chỉnh sửa người dùng</h2>
             <form method="POST" action="admin-users.php">
                 <input type="hidden" name="action" value="update" />
                 <input type="hidden" name="user_id" value="<?php echo $edit_id; ?>" />
                 <div class="form-group">
-                    <label for="edit-fullname">Họ và tên <span style="color: red;">*</span></label>
-                    <input type="text" id="edit-fullname" name="fullname" value="<?php echo $edit_user ? htmlspecialchars($edit_user['fullname']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                    <label for="edit-fullname">Họ và tên <span class="text-red">*</span></label>
+                    <input type="text" id="edit-fullname" name="fullname" value="<?php echo $edit_user ? htmlspecialchars($edit_user['fullname']) : ''; ?>" required class="form-input" />
                 </div>
                 <div class="form-group">
-                    <label for="edit-phone">Số điện thoại <span style="color: red;">*</span></label>
-                    <input type="tel" id="edit-phone" name="phone" value="<?php echo $edit_user ? htmlspecialchars($edit_user['phone']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                    <label for="edit-phone">Số điện thoại <span class="text-red">*</span></label>
+                    <input type="tel" id="edit-phone" name="phone" value="<?php echo $edit_user ? htmlspecialchars($edit_user['phone']) : ''; ?>" required class="form-input" />
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <a href="admin-users.php" class="btn-cancel" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Hủy</a>
+                <div class="flex-gap" style="margin-top: 20px;">
+                    <a href="admin-users.php" class="btn-cancel">Hủy</a>
                     <button type="submit" class="btn-admin-primary">Lưu</button>
                 </div>
             </form>
         </div>
     <?php else: ?>
         <!-- Form tìm kiếm -->
-        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <form method="GET" action="admin-users.php" style="display: flex; gap: 10px; align-items: end;">
-                <div style="flex: 1;">
-                    <label for="search" style="display: block; margin-bottom: 5px; font-weight: 500;">Tìm kiếm</label>
-                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên, email, số điện thoại..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        <div class="card">
+            <form method="GET" action="admin-users.php" class="form-row">
+                <div class="form-field">
+                    <label for="search" class="form-label">Tìm kiếm</label>
+                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên, email, số điện thoại..." class="form-input-sm">
                 </div>
-                <div>
-                    <button type="submit" class="btn-admin-primary" style="padding: 8px 20px;">Tìm kiếm</button>
-                    <a href="admin-users.php" class="btn-admin-secondary" style="padding: 8px 20px; text-decoration: none; display: inline-block;">Xóa bộ lọc</a>
+                <div class="flex-gap">
+                    <button type="submit" class="btn-admin-primary">Tìm kiếm</button>
+                    <a href="admin-users.php" class="btn-admin-secondary">Xóa bộ lọc</a>
                 </div>
             </form>
         </div>
@@ -133,7 +133,7 @@ if ($result) {
                             <td><?php echo htmlspecialchars($user['phone']); ?></td>
                             <td><?php echo date('d/m/Y', strtotime($user['created_at'])); ?></td>
                             <td>
-                                <a href="admin-users.php?edit=<?php echo $user['user_id']; ?>" class="btn-edit" style="text-decoration: none; padding: 6px 12px; display: inline-block;">Sửa</a>
+                                <a href="admin-users.php?edit=<?php echo $user['user_id']; ?>" class="btn-edit btn-sm">Sửa</a>
                                 <a href="admin-users.php?delete=<?php echo $user['user_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa người dùng này?')">Xóa</a>
                             </td>
                         </tr>

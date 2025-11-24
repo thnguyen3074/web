@@ -104,12 +104,12 @@ $formatted_date = $date_obj->format('d/m/Y');
         <div class="confirm-section">
             <h3>Thông tin triệu chứng</h3>
             <div class="confirm-info">
-                <p style="word-wrap: break-word; word-break: break-word; overflow-wrap: break-word; white-space: pre-wrap;"><?php echo nl2br(htmlspecialchars($symptoms)); ?></p>
+                <p class="text-wrap-break white-space-pre"><?php echo nl2br(htmlspecialchars($symptoms)); ?></p>
             </div>
         </div>
 
         <div class="confirm-actions">
-            <form action="Booking.php" method="POST" style="display: inline;">
+            <form action="Booking.php" method="POST" class="form-inline">
                 <input type="hidden" name="facility_id" value="<?php echo $facility_id; ?>" />
                 <input type="hidden" name="specialty_id" value="<?php echo $specialty_id; ?>" />
                 <input type="hidden" name="appointment_date" value="<?php echo htmlspecialchars($appointment_date); ?>" />
@@ -120,7 +120,7 @@ $formatted_date = $date_obj->format('d/m/Y');
                 <input type="hidden" name="phone" value="<?php echo htmlspecialchars($phone); ?>" />
                 <button type="submit" class="btn-primary">Quay lại chỉnh sửa</button>
             </form>
-            <form action="booking_process.php" method="POST" style="display: inline;">
+            <form action="booking_process.php" method="POST" class="form-inline">
                 <input type="hidden" name="facility_id" value="<?php echo $facility_id; ?>" />
                 <input type="hidden" name="specialty_id" value="<?php echo $specialty_id; ?>" />
                 <input type="hidden" name="appointment_date" value="<?php echo htmlspecialchars($appointment_date); ?>" />

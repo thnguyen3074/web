@@ -221,6 +221,8 @@ body {
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
   transition: color 0.2s;
+  display: inline-block;
+  text-decoration: none;
 }
 
 .tab-btn:hover {
@@ -281,7 +283,8 @@ body {
   object-fit: cover;
 }
 
-/* BUTTONS */
+/* BUTTONS - Chuẩn hóa kích thước */
+/* Button chính - dùng cho submit, primary actions */
 .btn-admin-primary {
   background: var(--admin-primary);
   color: #fff;
@@ -290,24 +293,31 @@ body {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  font-size: 14px;
   transition: opacity 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
 }
 
 .btn-admin-primary:hover {
   opacity: 0.9;
 }
 
+/* Button phụ - dùng cho secondary actions */
 .btn-admin-secondary {
   background: #6c757d;
   color: #fff;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  font-size: 14px;
   transition: opacity 0.2s;
   display: inline-block;
   text-decoration: none;
+  text-align: center;
 }
 
 .btn-admin-secondary:hover {
@@ -315,66 +325,68 @@ body {
   color: #fff;
 }
 
+/* Button medium - dùng cho các button trong detail pages */
+.btn-md {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* Button actions - dùng chung cho edit, confirm, delete, cancel (kích thước nhỏ trong table) */
+.btn-edit,
+.btn-confirm,
+.btn-delete,
+.btn-cancel-action,
+.btn-sm {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+}
+
 .btn-edit {
   background: var(--admin-primary);
   color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-right: 8px;
-  transition: opacity 0.2s;
-}
-
-.btn-edit:hover {
-  opacity: 0.9;
-}
-
-.btn-delete {
-  background: var(--admin-danger);
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: opacity 0.2s;
-}
-
-.btn-delete:hover {
-  opacity: 0.9;
 }
 
 .btn-confirm {
   background: var(--admin-success);
   color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-right: 8px;
-  transition: opacity 0.2s;
 }
 
-.btn-confirm:hover {
-  opacity: 0.9;
+.btn-delete {
+  background: var(--admin-danger);
+  color: #fff;
 }
 
 .btn-cancel-action {
   background: var(--admin-warning);
   color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: opacity 0.2s;
 }
 
+.btn-edit:hover,
+.btn-confirm:hover,
+.btn-delete:hover,
 .btn-cancel-action:hover {
   opacity: 0.9;
+}
+
+/* Button spacing */
+.btn-sm + .btn-sm {
+  margin-left: 5px;
 }
 
 /* STATUS BADGES */
@@ -492,7 +504,11 @@ body {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  font-size: 14px;
   transition: background 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
 }
 
 .btn-cancel:hover {
@@ -531,4 +547,258 @@ body {
 .form-group textarea {
   resize: vertical;
   min-height: 100px;
+}
+
+/* ALERT MESSAGES */
+.alert {
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid;
+}
+
+.alert-error {
+  background: #fee;
+  color: #c33;
+  border-color: #fcc;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.alert-info {
+  background: #e7f3ff;
+}
+
+/* CARD/CONTAINER */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  margin-bottom: 20px;
+  color: var(--admin-primary);
+}
+
+.card h2:not(:first-child) {
+  margin-bottom: 15px;
+}
+
+/* TABLE STYLES */
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.info-table td:first-child {
+  font-weight: bold;
+  width: 200px;
+}
+
+.info-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* FLEX UTILITIES */
+.flex {
+  display: flex;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-wrap {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.flex-gap {
+  display: flex;
+  gap: 10px;
+}
+
+/* GRID UTILITIES */
+.grid {
+  display: grid;
+  gap: 20px;
+}
+
+/* FORM UTILITIES */
+.form-row,
+.flex-end {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-input,
+.form-input-sm {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-input {
+  padding: 10px;
+}
+
+.form-input-sm {
+  padding: 8px;
+}
+
+/* TEXT UTILITIES */
+.text-red {
+  color: red;
+}
+
+.text-success {
+  color: #28a745;
+}
+
+.text-muted {
+  color: #999;
+}
+
+.text-primary {
+  color: var(--admin-primary);
+}
+
+
+/* IMAGE UTILITIES */
+.img-preview,
+.img-preview-sm {
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
+.img-preview {
+  max-width: 200px;
+  max-height: 150px;
+}
+
+.img-preview-sm {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+/* CONTENT BOX */
+.content-box {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* BADGE */
+.badge {
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.badge-success {
+  color: #28a745;
+}
+
+/* CONTACT MESSAGES */
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.contact-stats {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.contact-stats span {
+  color: #666;
+  font-size: 14px;
+}
+
+.search-form-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+
+.text-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+.text-truncate,
+.text-wrap {
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.text-truncate {
+  max-width: 300px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-wrap {
+  max-width: 200px;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+/* APPOINTMENTS */
+.appointments-search-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  align-items: end;
+}
+
+.pagination-info {
+  padding: 8px 16px;
 }

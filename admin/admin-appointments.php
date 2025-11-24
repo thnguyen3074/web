@@ -133,15 +133,15 @@ function formatStatus($status) {
     </div>
 
     <!-- Form tìm kiếm và lọc -->
-    <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-        <form method="GET" action="admin-appointments.php" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end;">
+    <div class="card">
+        <form method="GET" action="admin-appointments.php" class="appointments-search-form">
             <div>
-                <label for="search" style="display: block; margin-bottom: 5px; font-weight: 500;">Tìm kiếm</label>
-                <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên, email, SĐT, cơ sở..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                <label for="search" class="form-label">Tìm kiếm</label>
+                <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên, email, SĐT, cơ sở..." class="form-input-sm">
             </div>
             <div>
-                <label for="status" style="display: block; margin-bottom: 5px; font-weight: 500;">Trạng thái</label>
-                <select id="status" name="status" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                <label for="status" class="form-label">Trạng thái</label>
+                <select id="status" name="status" class="form-input-sm">
                     <option value="">Tất cả</option>
                     <option value="pending" <?php echo $status_filter == 'pending' ? 'selected' : ''; ?>>Chờ xác nhận</option>
                     <option value="confirmed" <?php echo $status_filter == 'confirmed' ? 'selected' : ''; ?>>Đã xác nhận</option>
@@ -150,8 +150,8 @@ function formatStatus($status) {
                 </select>
             </div>
             <div>
-                <label for="facility_id" style="display: block; margin-bottom: 5px; font-weight: 500;">Cơ sở y tế</label>
-                <select id="facility_id" name="facility_id" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                <label for="facility_id" class="form-label">Cơ sở y tế</label>
+                <select id="facility_id" name="facility_id" class="form-input-sm">
                     <option value="">Tất cả</option>
                     <?php foreach ($facilities as $facility): ?>
                         <option value="<?php echo $facility['facility_id']; ?>" <?php echo $facility_filter == $facility['facility_id'] ? 'selected' : ''; ?>>
@@ -161,16 +161,16 @@ function formatStatus($status) {
                 </select>
             </div>
             <div>
-                <label for="date_from" style="display: block; margin-bottom: 5px; font-weight: 500;">Từ ngày</label>
-                <input type="date" id="date_from" name="date_from" value="<?php echo htmlspecialchars($date_from); ?>" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                <label for="date_from" class="form-label">Từ ngày</label>
+                <input type="date" id="date_from" name="date_from" value="<?php echo htmlspecialchars($date_from); ?>" class="form-input-sm">
             </div>
             <div>
-                <label for="date_to" style="display: block; margin-bottom: 5px; font-weight: 500;">Đến ngày</label>
-                <input type="date" id="date_to" name="date_to" value="<?php echo htmlspecialchars($date_to); ?>" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                <label for="date_to" class="form-label">Đến ngày</label>
+                <input type="date" id="date_to" name="date_to" value="<?php echo htmlspecialchars($date_to); ?>" class="form-input-sm">
             </div>
-            <div style="display: flex; gap: 10px;">
-                <button type="submit" class="btn-admin-primary" style="flex: 1;">Tìm kiếm</button>
-                <a href="admin-appointments.php" class="btn-admin-secondary" style="flex: 1; text-align: center; padding: 8px; text-decoration: none; display: inline-block;">Xóa bộ lọc</a>
+            <div class="flex-gap">
+                <button type="submit" class="btn-admin-primary">Tìm kiếm</button>
+                <a href="admin-appointments.php" class="btn-admin-secondary">Xóa bộ lọc</a>
             </div>
         </form>
     </div>
@@ -203,32 +203,32 @@ function formatStatus($status) {
                                 <?php if (!empty($appointment['display_name'])): ?>
                                     <?php echo htmlspecialchars($appointment['display_name']); ?>
                                     <?php if (!empty($appointment['display_email'])): ?>
-                                        <br><small style="color: #666;"><?php echo htmlspecialchars($appointment['display_email']); ?></small>
+                                        <br><small class="text-muted"><?php echo htmlspecialchars($appointment['display_email']); ?></small>
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <span style="color: #999;">Khách (chưa đăng ký)</span>
+                                    <span class="text-muted">Khách (chưa đăng ký)</span>
                                 <?php endif; ?>
                             </td>
                             <td><?php echo htmlspecialchars($appointment['facility_name']); ?></td>
                             <td><?php echo htmlspecialchars($appointment['specialty_name']); ?></td>
                             <td><?php echo formatDate($appointment['appointment_date']); ?></td>
                             <td><?php echo htmlspecialchars($appointment['appointment_time']); ?></td>
-                            <td style="max-width: 200px; word-wrap: break-word; word-break: break-word; overflow-wrap: break-word;"><?php echo htmlspecialchars(substr($appointment['symptoms'], 0, 50)) . (strlen($appointment['symptoms']) > 50 ? '...' : ''); ?></td>
+                            <td class="text-wrap"><?php echo htmlspecialchars(substr($appointment['symptoms'], 0, 50)) . (strlen($appointment['symptoms']) > 50 ? '...' : ''); ?></td>
                             <td>
                                 <span class="status-badge <?php echo $appointment['status']; ?>">
                                     <?php echo formatStatus($appointment['status']); ?>
                                 </span>
                             </td>
                             <td>
-                                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
-                                    <a href="admin-appointment-detail.php?id=<?php echo $appointment['appointment_id']; ?>" class="btn-admin-secondary" style="padding: 4px 8px; font-size: 12px; text-decoration: none;">Chi tiết</a>
+                                <div class="flex-wrap" style="gap: 5px;">
+                                    <a href="admin-appointment-detail.php?id=<?php echo $appointment['appointment_id']; ?>" class="btn-admin-secondary btn-sm">Chi tiết</a>
                                     <?php if ($appointment['status'] == 'pending'): ?>
-                                        <a href="admin-appointments.php?<?php echo http_build_query(array_merge($_GET, ['update_status' => $appointment['appointment_id'], 'status' => 'confirmed'])); ?>" class="btn-confirm" style="padding: 4px 8px; font-size: 12px;">Xác nhận</a>
+                                        <a href="admin-appointments.php?<?php echo http_build_query(array_merge($_GET, ['update_status' => $appointment['appointment_id'], 'status' => 'confirmed'])); ?>" class="btn-confirm btn-sm">Xác nhận</a>
                                     <?php endif; ?>
                                     <?php if ($appointment['status'] != 'canceled' && $appointment['status'] != 'completed'): ?>
-                                        <a href="admin-appointments.php?<?php echo http_build_query(array_merge($_GET, ['update_status' => $appointment['appointment_id'], 'status' => 'canceled'])); ?>" class="btn-cancel-action" style="padding: 4px 8px; font-size: 12px;" onclick="return confirm('Bạn có chắc muốn hủy lịch hẹn này?')">Hủy</a>
+                                        <a href="admin-appointments.php?<?php echo http_build_query(array_merge($_GET, ['update_status' => $appointment['appointment_id'], 'status' => 'canceled'])); ?>" class="btn-cancel-action btn-sm" onclick="return confirm('Bạn có chắc muốn hủy lịch hẹn này?')">Hủy</a>
                                     <?php endif; ?>
-                                    <a href="admin-appointments.php?<?php echo http_build_query(array_merge($_GET, ['delete' => $appointment['appointment_id']])); ?>" class="btn-delete" style="padding: 4px 8px; font-size: 12px;" onclick="return confirm('Bạn có chắc muốn xóa lịch hẹn này?')">Xóa</a>
+                                    <a href="admin-appointments.php?<?php echo http_build_query(array_merge($_GET, ['delete' => $appointment['appointment_id']])); ?>" class="btn-delete btn-sm" onclick="return confirm('Bạn có chắc muốn xóa lịch hẹn này?')">Xóa</a>
                                 </div>
                             </td>
                         </tr>
@@ -240,7 +240,7 @@ function formatStatus($status) {
 
     <!-- Phân trang -->
     <?php if ($total_pages > 1): ?>
-        <div style="margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 10px;">
+        <div class="pagination" style="gap: 10px;">
             <?php
             // Tạo query string cho filter
             $query_params = [];
@@ -253,16 +253,16 @@ function formatStatus($status) {
             ?>
             
             <?php if ($page > 1): ?>
-                <a href="admin-appointments.php?page=<?php echo ($page - 1); ?><?php echo $query_string; ?>" class="btn-admin-secondary" style="text-decoration: none; padding: 8px 16px;">← Trước</a>
+                <a href="admin-appointments.php?page=<?php echo ($page - 1); ?><?php echo $query_string; ?>" class="btn-admin-secondary">← Trước</a>
             <?php endif; ?>
             
-            <span style="padding: 8px 16px;">
+            <span class="pagination-info">
                 Trang <?php echo $page; ?> / <?php echo $total_pages; ?> 
                 (Tổng: <?php echo $total_records; ?> lịch hẹn)
             </span>
             
             <?php if ($page < $total_pages): ?>
-                <a href="admin-appointments.php?page=<?php echo ($page + 1); ?><?php echo $query_string; ?>" class="btn-admin-secondary" style="text-decoration: none; padding: 8px 16px;">Sau →</a>
+                <a href="admin-appointments.php?page=<?php echo ($page + 1); ?><?php echo $query_string; ?>" class="btn-admin-secondary">Sau →</a>
             <?php endif; ?>
         </div>
     <?php endif; ?>

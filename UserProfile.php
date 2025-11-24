@@ -113,7 +113,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1';
                         name="email" 
                         value="<?php echo htmlspecialchars($user['email']); ?>" 
                         disabled
-                        style="background: #f5f5f5; cursor: not-allowed;"
+                        class="input-disabled"
                     />
                     <small>Email không thể thay đổi</small>
                 </div>

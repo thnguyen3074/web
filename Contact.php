@@ -19,17 +19,17 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
     </section>
 
     <?php if ($success == '1'): ?>
-        <div style="background: #d4edda; color: #155724; padding: 12px; border-radius: 4px; margin: 20px auto; max-width: 800px; border: 1px solid #c3e6cb;">
+        <div class="alert alert-success">
             Gửi thành công! Chúng tôi sẽ liên hệ lại với bạn sớm nhất có thể.
         </div>
     <?php endif; ?>
 
     <?php if ($error == 'empty'): ?>
-        <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin: 20px auto; max-width: 800px; border: 1px solid #fcc;">
+        <div class="alert alert-error">
             Vui lòng điền đầy đủ thông tin.
         </div>
     <?php elseif ($error == 'send_failed'): ?>
-        <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin: 20px auto; max-width: 800px; border: 1px solid #fcc;">
+        <div class="alert alert-error">
             Có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại sau.
         </div>
     <?php endif; ?>

@@ -120,11 +120,11 @@ if ($result) {
     <div class="page-header">
         <h1 class="page-title">Quản lý chuyên khoa</h1>
         <?php if (!$show_form): ?>
-            <a href="admin-specialties.php?add=1" class="btn-admin-primary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+            <a href="admin-specialties.php?add=1" class="btn-admin-primary">
                 + Thêm chuyên khoa
             </a>
         <?php else: ?>
-            <a href="admin-specialties.php" class="btn-admin-secondary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+            <a href="admin-specialties.php" class="btn-admin-secondary">
                 ← Quay lại
             </a>
         <?php endif; ?>
@@ -132,15 +132,15 @@ if ($result) {
 
     <?php if ($show_form): ?>
         <!-- Form thêm/sửa chuyên khoa -->
-        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <h2 style="margin-bottom: 20px;"><?php echo $edit_id > 0 ? 'Chỉnh sửa chuyên khoa' : 'Thêm chuyên khoa mới'; ?></h2>
+        <div class="card">
+            <h2><?php echo $edit_id > 0 ? 'Chỉnh sửa chuyên khoa' : 'Thêm chuyên khoa mới'; ?></h2>
             <form method="POST" action="admin-specialties.php" enctype="multipart/form-data">
                 <?php if ($edit_id > 0): ?>
                     <input type="hidden" name="specialty_id" value="<?php echo $edit_id; ?>" />
                 <?php endif; ?>
                 <div class="form-group">
-                    <label for="specialty-name">Tên chuyên khoa <span style="color: red;">*</span></label>
-                    <input type="text" id="specialty-name" name="specialty_name" value="<?php echo $edit_specialty ? htmlspecialchars($edit_specialty['specialty_name']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                    <label for="specialty-name">Tên chuyên khoa <span class="text-red">*</span></label>
+                    <input type="text" id="specialty-name" name="specialty_name" value="<?php echo $edit_specialty ? htmlspecialchars($edit_specialty['specialty_name']) : ''; ?>" required class="form-input" />
                 </div>
                 <div class="form-group">
                     <label for="specialty-icon">Icon chuyên khoa</label>
@@ -155,27 +155,27 @@ if ($result) {
                         ?>
                         <div style="margin-top: 10px;">
                             <p>Icon hiện tại:</p>
-                            <img src="<?php echo htmlspecialchars($icon_path); ?>" alt="Current icon" style="max-width: 100px; max-height: 100px; border: 1px solid #ddd; padding: 5px;" onerror="this.src='../images/specialties/default.png'; this.onerror=null;" />
+                            <img src="<?php echo htmlspecialchars($icon_path); ?>" alt="Current icon" class="img-preview-sm" onerror="this.src='../images/specialties/default.png'; this.onerror=null;" />
                         </div>
                     <?php endif; ?>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <a href="admin-specialties.php" class="btn-cancel" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Hủy</a>
+                <div class="flex-gap" style="margin-top: 20px;">
+                    <a href="admin-specialties.php" class="btn-cancel">Hủy</a>
                     <button type="submit" class="btn-admin-primary">Lưu</button>
                 </div>
             </form>
         </div>
     <?php else: ?>
         <!-- Form tìm kiếm -->
-        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <form method="GET" action="admin-specialties.php" style="display: flex; gap: 10px; align-items: end;">
-                <div style="flex: 1;">
-                    <label for="search" style="display: block; margin-bottom: 5px; font-weight: 500;">Tìm kiếm</label>
-                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên chuyên khoa..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        <div class="card">
+            <form method="GET" action="admin-specialties.php" class="form-row">
+                <div class="form-field">
+                    <label for="search" class="form-label">Tìm kiếm</label>
+                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên chuyên khoa..." class="form-input-sm">
                 </div>
-                <div>
-                    <button type="submit" class="btn-admin-primary" style="padding: 8px 20px;">Tìm kiếm</button>
-                    <a href="admin-specialties.php" class="btn-admin-secondary" style="padding: 8px 20px; text-decoration: none; display: inline-block;">Xóa bộ lọc</a>
+                <div class="flex-gap">
+                    <button type="submit" class="btn-admin-primary">Tìm kiếm</button>
+                    <a href="admin-specialties.php" class="btn-admin-secondary">Xóa bộ lọc</a>
                 </div>
             </form>
         </div>
@@ -216,7 +216,7 @@ if ($result) {
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <a href="admin-specialties.php?edit=<?php echo $specialty['specialty_id']; ?>" class="btn-edit" style="text-decoration: none; padding: 6px 12px; display: inline-block;">Sửa</a>
+                                <a href="admin-specialties.php?edit=<?php echo $specialty['specialty_id']; ?>" class="btn-edit btn-sm">Sửa</a>
                                 <a href="admin-specialties.php?delete=<?php echo $specialty['specialty_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa chuyên khoa này?')">Xóa</a>
                             </td>
                         </tr>

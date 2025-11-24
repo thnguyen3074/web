@@ -180,13 +180,13 @@ function formatDate($date) {
     </div>
 
     <!-- Lịch hẹn gần đây -->
-    <div style="margin-top: 30px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <div class="card" style="margin-top: 30px;">
+        <div class="flex-between" style="margin-bottom: 15px;">
             <h2 style="margin: 0;">Lịch hẹn gần đây</h2>
-            <a href="admin-appointments.php" class="btn-admin-secondary" style="text-decoration: none; padding: 8px 16px;">Xem tất cả</a>
+            <a href="admin-appointments.php" class="btn-admin-secondary">Xem tất cả</a>
         </div>
         <?php if (empty($recent_appointments)): ?>
-            <p style="color: #999; text-align: center; padding: 20px;">Chưa có lịch hẹn nào.</p>
+            <p class="text-muted" style="text-align: center; padding: 20px;">Chưa có lịch hẹn nào.</p>
         <?php else: ?>
             <div class="table-container">
                 <table class="admin-table">
@@ -206,7 +206,7 @@ function formatDate($date) {
                         <?php foreach ($recent_appointments as $appointment): ?>
                             <tr>
                                 <td><?php echo $appointment['appointment_id']; ?></td>
-                                <td><?php echo !empty($appointment['display_name']) ? htmlspecialchars($appointment['display_name']) : '<span style="color: #999;">Khách</span>'; ?></td>
+                                <td><?php echo !empty($appointment['display_name']) ? htmlspecialchars($appointment['display_name']) : '<span class="text-muted">Khách</span>'; ?></td>
                                 <td><?php echo htmlspecialchars($appointment['facility_name']); ?></td>
                                 <td><?php echo htmlspecialchars($appointment['specialty_name']); ?></td>
                                 <td><?php echo formatDate($appointment['appointment_date']); ?></td>
@@ -225,7 +225,7 @@ function formatDate($date) {
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="admin-appointment-detail.php?id=<?php echo $appointment['appointment_id']; ?>" class="btn-admin-secondary" style="padding: 4px 8px; font-size: 12px; text-decoration: none;">Chi tiết</a>
+                                    <a href="admin-appointment-detail.php?id=<?php echo $appointment['appointment_id']; ?>" class="btn-admin-secondary btn-sm">Chi tiết</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

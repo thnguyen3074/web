@@ -74,48 +74,48 @@ function formatDateShort($date) {
 ?>
 
 <div class="admin-content">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div class="contact-header">
         <h1 class="page-title">Yêu cầu hỗ trợ</h1>
-        <div style="display: flex; gap: 10px; align-items: center;">
-            <span style="color: #666; font-size: 14px;">Tổng: <strong><?php echo $total_records; ?></strong> yêu cầu</span>
+        <div class="contact-stats">
+            <span>Tổng: <strong><?php echo $total_records; ?></strong> yêu cầu</span>
         </div>
     </div>
 
     <!-- Form tìm kiếm và lọc -->
-    <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-        <form method="GET" action="admin-contact-messages.php" style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; align-items: end;">
+    <div class="card">
+        <form method="GET" action="admin-contact-messages.php" class="search-form-grid">
             <div>
-                <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #333;">Tìm kiếm</label>
+                <label class="form-label">Tìm kiếm</label>
                 <input 
                     type="text" 
                     name="search" 
                     value="<?php echo htmlspecialchars($search); ?>" 
                     placeholder="Tên, email, chủ đề, nội dung..." 
-                    style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"
+                    class="form-input-sm"
                 />
             </div>
             <div>
-                <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #333;">Từ ngày</label>
+                <label class="form-label">Từ ngày</label>
                 <input 
                     type="date" 
                     name="date_from" 
                     value="<?php echo htmlspecialchars($date_from); ?>" 
-                    style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"
+                    class="form-input-sm"
                 />
             </div>
             <div>
-                <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #333;">Đến ngày</label>
+                <label class="form-label">Đến ngày</label>
                 <input 
                     type="date" 
                     name="date_to" 
                     value="<?php echo htmlspecialchars($date_to); ?>" 
-                    style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"
+                    class="form-input-sm"
                 />
             </div>
             <div>
-                <button type="submit" class="btn-admin-primary" style="padding: 8px 20px; height: fit-content;">Tìm kiếm</button>
+                <button type="submit" class="btn-admin-primary">Tìm kiếm</button>
                 <?php if (!empty($search) || !empty($date_from) || !empty($date_to)): ?>
-                    <a href="admin-contact-messages.php" class="btn-admin-secondary" style="display: inline-block; margin-top: 5px; padding: 8px 16px; text-decoration: none;">Xóa bộ lọc</a>
+                    <a href="admin-contact-messages.php" class="btn-admin-secondary">Xóa bộ lọc</a>
                 <?php endif; ?>
             </div>
         </form>
@@ -123,8 +123,8 @@ function formatDateShort($date) {
 
     <!-- Danh sách yêu cầu hỗ trợ -->
     <?php if (empty($messages)): ?>
-        <div style="background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;">
-            <p style="color: #999; font-size: 16px;">Không có yêu cầu hỗ trợ nào.</p>
+        <div class="card" style="text-align: center; padding: 40px;">
+            <p class="text-muted">Không có yêu cầu hỗ trợ nào.</p>
         </div>
     <?php else: ?>
         <div class="table-container">
@@ -146,18 +146,18 @@ function formatDateShort($date) {
                             <td><?php echo $msg['id']; ?></td>
                             <td><?php echo htmlspecialchars($msg['fullname']); ?></td>
                             <td>
-                                <a href="mailto:<?php echo htmlspecialchars($msg['email']); ?>" style="color: #007bff; text-decoration: none;">
+                                <a href="mailto:<?php echo htmlspecialchars($msg['email']); ?>" class="text-link">
                                     <?php echo htmlspecialchars($msg['email']); ?>
                                 </a>
                             </td>
                             <td><?php echo htmlspecialchars($msg['subject']); ?></td>
-                            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            <td class="text-truncate">
                                 <?php echo htmlspecialchars(mb_substr($msg['message'], 0, 100)) . (mb_strlen($msg['message']) > 100 ? '...' : ''); ?>
                             </td>
                             <td><?php echo formatDate($msg['created_at']); ?></td>
                             <td>
-                                <a href="admin-contact-detail.php?id=<?php echo $msg['id']; ?>" class="btn-admin-secondary" style="padding: 4px 8px; font-size: 12px; text-decoration: none; margin-right: 5px;">Chi tiết</a>
-                                <a href="admin-contact-messages.php?delete=<?php echo $msg['id']; ?>" class="btn-delete" style="padding: 4px 8px; font-size: 12px; text-decoration: none;" onclick="return confirm('Bạn có chắc muốn xóa yêu cầu hỗ trợ này?')">Xóa</a>
+                                <a href="admin-contact-detail.php?id=<?php echo $msg['id']; ?>" class="btn-admin-secondary btn-sm">Chi tiết</a>
+                                <a href="admin-contact-messages.php?delete=<?php echo $msg['id']; ?>" class="btn-delete btn-sm" onclick="return confirm('Bạn có chắc muốn xóa yêu cầu hỗ trợ này?')">Xóa</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -167,9 +167,9 @@ function formatDateShort($date) {
 
         <!-- Phân trang -->
         <?php if ($total_pages > 1): ?>
-            <div style="margin-top: 20px; display: flex; justify-content: center; gap: 5px;">
+            <div class="pagination">
                 <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($date_from) ? '&date_from=' . urlencode($date_from) : ''; ?><?php echo !empty($date_to) ? '&date_to=' . urlencode($date_to) : ''; ?>" class="btn-admin-secondary" style="padding: 8px 16px; text-decoration: none;">‹ Trước</a>
+                    <a href="?page=<?php echo $page - 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($date_from) ? '&date_from=' . urlencode($date_from) : ''; ?><?php echo !empty($date_to) ? '&date_to=' . urlencode($date_to) : ''; ?>" class="btn-admin-secondary">‹ Trước</a>
                 <?php endif; ?>
                 
                 <?php
@@ -178,14 +178,13 @@ function formatDateShort($date) {
                 for ($i = $start_page; $i <= $end_page; $i++):
                 ?>
                     <a href="?page=<?php echo $i; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($date_from) ? '&date_from=' . urlencode($date_from) : ''; ?><?php echo !empty($date_to) ? '&date_to=' . urlencode($date_to) : ''; ?>" 
-                       class="btn-admin-<?php echo $i == $page ? 'primary' : 'secondary'; ?>" 
-                       style="padding: 8px 16px; text-decoration: none;">
+                       class="btn-admin-<?php echo $i == $page ? 'primary' : 'secondary'; ?>">
                         <?php echo $i; ?>
                     </a>
                 <?php endfor; ?>
                 
                 <?php if ($page < $total_pages): ?>
-                    <a href="?page=<?php echo $page + 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($date_from) ? '&date_from=' . urlencode($date_from) : ''; ?><?php echo !empty($date_to) ? '&date_to=' . urlencode($date_to) : ''; ?>" class="btn-admin-secondary" style="padding: 8px 16px; text-decoration: none;">Sau ›</a>
+                    <a href="?page=<?php echo $page + 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($date_from) ? '&date_from=' . urlencode($date_from) : ''; ?><?php echo !empty($date_to) ? '&date_to=' . urlencode($date_to) : ''; ?>" class="btn-admin-secondary">Sau ›</a>
                 <?php endif; ?>
             </div>
         <?php endif; ?>

@@ -147,41 +147,41 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
     <div class="page-header">
         <h1 class="page-title">Quản lý admin cơ sở y tế</h1>
         <?php if (!$show_form): ?>
-            <a href="admin-admins.php?add=1" class="btn-admin-primary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+            <a href="admin-admins.php?add=1" class="btn-admin-primary">
                 + Thêm admin cơ sở y tế
             </a>
         <?php else: ?>
-            <a href="admin-admins.php" class="btn-admin-secondary" style="text-decoration: none; padding: 10px 20px; display: inline-block;">
+            <a href="admin-admins.php" class="btn-admin-secondary">
                 ← Quay lại
             </a>
         <?php endif; ?>
     </div>
 
     <?php if ($error == 'email_exists'): ?>
-        <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
+        <div class="alert alert-error">
             Email này đã được sử dụng. Vui lòng chọn email khác.
         </div>
     <?php elseif ($error == 'password_required'): ?>
-        <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
+        <div class="alert alert-error">
             Vui lòng nhập mật khẩu khi tạo admin mới.
         </div>
     <?php elseif ($error == 'facility_required'): ?>
-        <div style="background: #fee; color: #c33; padding: 12px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #fcc;">
+        <div class="alert alert-error">
             Vui lòng chọn cơ sở y tế.
         </div>
     <?php endif; ?>
 
     <?php if ($show_form): ?>
         <!-- Form thêm/sửa admin cơ sở y tế -->
-        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <h2 style="margin-bottom: 20px;"><?php echo $edit_id > 0 ? 'Chỉnh sửa admin cơ sở y tế' : 'Thêm admin cơ sở y tế mới'; ?></h2>
+        <div class="card">
+            <h2><?php echo $edit_id > 0 ? 'Chỉnh sửa admin cơ sở y tế' : 'Thêm admin cơ sở y tế mới'; ?></h2>
             <form method="POST" action="admin-admins.php">
                 <?php if ($edit_id > 0): ?>
                     <input type="hidden" name="admin_id" value="<?php echo $edit_id; ?>" />
                 <?php endif; ?>
                 <div class="form-group">
-                    <label for="facility-admin-facility">Cơ sở y tế <span style="color: red;">*</span></label>
-                <select id="facility-admin-facility" name="facility_id" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" <?php echo $edit_id > 0 ? 'disabled' : ''; ?>>
+                    <label for="facility-admin-facility">Cơ sở y tế <span class="text-red">*</span></label>
+                <select id="facility-admin-facility" name="facility_id" required class="form-input" <?php echo $edit_id > 0 ? 'disabled' : ''; ?>>
                     <option value="">Chọn cơ sở y tế</option>
                     <?php foreach ($facilities as $facility): ?>
                         <?php if ($edit_id > 0 && $edit_admin['facility_id'] == $facility['facility_id']): ?>
@@ -209,35 +209,35 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
                 <?php endif; ?>
                 </div>
                 <div class="form-group">
-                    <label for="facility-admin-name">Họ và tên <span style="color: red;">*</span></label>
-                    <input type="text" id="facility-admin-name" name="fullname" value="<?php echo $edit_admin ? htmlspecialchars($edit_admin['fullname']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                    <label for="facility-admin-name">Họ và tên <span class="text-red">*</span></label>
+                    <input type="text" id="facility-admin-name" name="fullname" value="<?php echo $edit_admin ? htmlspecialchars($edit_admin['fullname']) : ''; ?>" required class="form-input" />
                 </div>
                 <div class="form-group">
-                    <label for="facility-admin-email">Email <span style="color: red;">*</span></label>
-                    <input type="email" id="facility-admin-email" name="email" value="<?php echo $edit_admin ? htmlspecialchars($edit_admin['email']) : ''; ?>" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" />
+                    <label for="facility-admin-email">Email <span class="text-red">*</span></label>
+                    <input type="email" id="facility-admin-email" name="email" value="<?php echo $edit_admin ? htmlspecialchars($edit_admin['email']) : ''; ?>" required class="form-input" />
                 </div>
                 <div class="form-group">
                     <label for="facility-admin-password">Mật khẩu</label>
-                    <input type="password" id="facility-admin-password" name="password" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" <?php echo $edit_id == 0 ? 'required' : ''; ?> />
+                    <input type="password" id="facility-admin-password" name="password" class="form-input" <?php echo $edit_id == 0 ? 'required' : ''; ?> />
                     <small><?php echo $edit_id > 0 ? 'Để trống nếu không muốn đổi mật khẩu' : 'Bắt buộc khi tạo mới'; ?></small>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <a href="admin-admins.php" class="btn-cancel" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Hủy</a>
+                <div class="flex-gap" style="margin-top: 20px;">
+                    <a href="admin-admins.php" class="btn-cancel">Hủy</a>
                     <button type="submit" class="btn-admin-primary">Lưu</button>
                 </div>
             </form>
         </div>
     <?php else: ?>
         <!-- Form tìm kiếm -->
-        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <form method="GET" action="admin-admins.php" style="display: flex; gap: 10px; align-items: end;">
-                <div style="flex: 1;">
-                    <label for="search" style="display: block; margin-bottom: 5px; font-weight: 500;">Tìm kiếm</label>
-                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên, email, cơ sở y tế..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        <div class="card">
+            <form method="GET" action="admin-admins.php" class="form-row">
+                <div class="form-field">
+                    <label for="search" class="form-label">Tìm kiếm</label>
+                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Tên, email, cơ sở y tế..." class="form-input-sm">
                 </div>
-                <div>
-                    <button type="submit" class="btn-admin-primary" style="padding: 8px 20px;">Tìm kiếm</button>
-                    <a href="admin-admins.php" class="btn-admin-secondary" style="padding: 8px 20px; text-decoration: none; display: inline-block;">Xóa bộ lọc</a>
+                <div class="flex-gap">
+                    <button type="submit" class="btn-admin-primary">Tìm kiếm</button>
+                    <a href="admin-admins.php" class="btn-admin-secondary">Xóa bộ lọc</a>
                 </div>
             </form>
         </div>
@@ -270,7 +270,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
                             <td><?php echo ($facility_admin['facility_type'] == 'hospital') ? 'Bệnh viện' : 'Phòng khám'; ?></td>
                             <td><?php echo date('d/m/Y', strtotime($facility_admin['created_at'])); ?></td>
                             <td>
-                                <a href="admin-admins.php?edit=<?php echo $facility_admin['admin_id']; ?>" class="btn-edit" style="text-decoration: none; padding: 6px 12px; display: inline-block;">Sửa</a>
+                                <a href="admin-admins.php?edit=<?php echo $facility_admin['admin_id']; ?>" class="btn-edit btn-sm">Sửa</a>
                                 <a href="admin-admins.php?delete=<?php echo $facility_admin['admin_id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa admin cơ sở y tế này?')">Xóa</a>
                             </td>
                         </tr>

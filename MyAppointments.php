@@ -116,7 +116,7 @@ function formatStatus($status) {
                             <p><strong>Chuyên khoa:</strong> <?php echo htmlspecialchars($appointment['specialty_name']); ?></p>
                             <p><strong>Ngày khám:</strong> <?php echo formatDate($appointment['appointment_date']); ?></p>
                             <p><strong>Giờ khám:</strong> <?php echo htmlspecialchars($appointment['appointment_time']); ?></p>
-                            <p style="word-wrap: break-word; word-break: break-word; overflow-wrap: break-word;"><strong>Triệu chứng:</strong> <span style="white-space: pre-wrap;"><?php echo htmlspecialchars($appointment['symptoms']); ?></span></p>
+                            <p class="text-wrap-break"><strong>Triệu chứng:</strong> <span class="white-space-pre"><?php echo htmlspecialchars($appointment['symptoms']); ?></span></p>
                         </div>
                         <div class="appointment-actions">
                             <form method="post" action="MyAppointments.php">
@@ -148,7 +148,7 @@ function formatStatus($status) {
                             <p><strong>Chuyên khoa:</strong> <?php echo htmlspecialchars($appointment['specialty_name']); ?></p>
                             <p><strong>Ngày khám:</strong> <?php echo formatDate($appointment['appointment_date']); ?></p>
                             <p><strong>Giờ khám:</strong> <?php echo htmlspecialchars($appointment['appointment_time']); ?></p>
-                            <p style="word-wrap: break-word; word-break: break-word; overflow-wrap: break-word;"><strong>Triệu chứng:</strong> <span style="white-space: pre-wrap;"><?php echo htmlspecialchars($appointment['symptoms']); ?></span></p>
+                            <p class="text-wrap-break"><strong>Triệu chứng:</strong> <span class="white-space-pre"><?php echo htmlspecialchars($appointment['symptoms']); ?></span></p>
                         </div>
                     </article>
                 <?php endforeach; ?>
