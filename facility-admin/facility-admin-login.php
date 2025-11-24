@@ -53,10 +53,6 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
                 </div>
                 <button type="submit" class="btn-admin-primary">Đăng nhập</button>
             </form>
-            
-            <div style="margin-top: 20px; text-align: center;">
-                <a href="../admin/admin-login.php" style="color: #0d6efd; text-decoration: none;">Đăng nhập Admin tổng</a>
-            </div>
         </div>
     </div>
 </body>
