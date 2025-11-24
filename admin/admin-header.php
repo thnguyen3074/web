@@ -53,6 +53,9 @@ $current_page = basename($_SERVER['PHP_SELF']); // Để highlight menu item đa
                 <a href="admin-admins.php" class="nav-item <?php echo ($current_page == 'admin-admins.php') ? 'active' : ''; ?>">
                     <span>🔐</span> Quản trị viên
                 </a>
+                <a href="admin-contact-messages.php" class="nav-item <?php echo ($current_page == 'admin-contact-messages.php' || $current_page == 'admin-contact-detail.php') ? 'active' : ''; ?>">
+                    <span>💬</span> Yêu cầu hỗ trợ
+                </a>
             </nav>
         </aside>
 

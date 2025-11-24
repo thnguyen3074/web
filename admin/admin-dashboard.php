@@ -52,6 +52,16 @@ $sql_facility_admins = "SELECT COUNT(*) AS total FROM facility_admins";
 $result_facility_admins = mysqli_query($conn, $sql_facility_admins);
 $facility_admins_count = mysqli_fetch_assoc($result_facility_admins)['total'];
 
+// Thống kê yêu cầu hỗ trợ
+$sql_contact_messages = "SELECT COUNT(*) AS total FROM contact_messages";
+$result_contact_messages = mysqli_query($conn, $sql_contact_messages);
+$contact_messages_count = mysqli_fetch_assoc($result_contact_messages)['total'];
+
+// Yêu cầu hỗ trợ hôm nay
+$sql_contact_today = "SELECT COUNT(*) AS total FROM contact_messages WHERE DATE(created_at) = '$today'";
+$result_contact_today = mysqli_query($conn, $sql_contact_today);
+$contact_today_count = mysqli_fetch_assoc($result_contact_today)['total'];
+
 // Lấy lịch hẹn gần đây nhất (5 lịch hẹn)
 // COALESCE: ưu tiên thông tin từ appointments, nếu NULL thì lấy từ users
 $sql_recent = "SELECT a.*, 
@@ -151,6 +161,20 @@ function formatDate($date) {
             <div class="stat-info">
                 <h3>Quản trị viên cơ sở y tế</h3>
                 <p class="stat-number"><?php echo $facility_admins_count; ?></p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">💬</div>
+            <div class="stat-info">
+                <h3>Yêu cầu hỗ trợ</h3>
+                <p class="stat-number"><?php echo $contact_messages_count; ?></p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📨</div>
+            <div class="stat-info">
+                <h3>Yêu cầu hôm nay</h3>
+                <p class="stat-number"><?php echo $contact_today_count; ?></p>
             </div>
         </div>
     </div>
