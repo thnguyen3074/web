@@ -1,19 +1,13 @@
 <?php
-/**
- * Facility Admin Facility Management - Medicare
- * Quản lý thông tin cơ sở y tế
- */
+// Facility Admin Facility Management - Quản lý thông tin cơ sở y tế
 
 $pageTitle = 'Quản lý cơ sở y tế';
 require_once '../config.php';
 include 'facility-admin-header.php';
 
 $facility_id = intval($_SESSION['facility_id']);
-
 $success_message = '';
 $error_message = '';
-
-// Lấy thông tin cơ sở y tế (cần lấy trước để xử lý upload)
 $sql = "SELECT * FROM facilities WHERE facility_id = $facility_id";
 $result = mysqli_query($conn, $sql);
 $facility = mysqli_fetch_assoc($result);
@@ -23,7 +17,7 @@ if (!$facility) {
     exit();
 }
 
-// Xử lý cập nhật thông tin
+// Cập nhật thông tin
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'update_facility') {
     $name = isset($_POST['name']) ? trim($_POST['name']) : '';
     $address = isset($_POST['address']) ? trim($_POST['address']) : '';
@@ -31,29 +25,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     $working_hours = isset($_POST['working_hours']) ? trim($_POST['working_hours']) : '';
     $description = isset($_POST['description']) ? trim($_POST['description']) : '';
     
-    // Validate
     if (empty($name) || empty($address) || empty($phone) || empty($working_hours)) {
         $error_message = 'Vui lòng điền đầy đủ thông tin bắt buộc (Tên, Địa chỉ, Số điện thoại, Giờ làm việc).';
     } else {
-        // Escape dữ liệu
         $name = mysqli_real_escape_string($conn, $name);
         $address = mysqli_real_escape_string($conn, $address);
         $phone = mysqli_real_escape_string($conn, $phone);
         $working_hours = mysqli_real_escape_string($conn, $working_hours);
         $description = mysqli_real_escape_string($conn, $description);
         
-        // Xử lý upload hình ảnh
+        // Upload hình ảnh - validate và lưu file
         $image_path = null;
         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-            $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']; // Chỉ cho phép JPG, PNG, GIF
             $file_type = $_FILES['image']['type'];
             $file_size = $_FILES['image']['size'];
             
-            if (in_array($file_type, $allowed_types) && $file_size <= 5 * 1024 * 1024) { // Max 5MB
+            // Kiểm tra loại file và kích thước (tối đa 5MB)
+            if (in_array($file_type, $allowed_types) && $file_size <= 5 * 1024 * 1024) {
                 $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                $new_filename = 'facility_' . $facility_id . '_' . time() . '.' . $file_extension;
+                $new_filename = 'facility_' . $facility_id . '_' . time() . '.' . $file_extension; // Tên file unique
                 $upload_dir = '../images/facilities/';
                 
+                // Tạo thư mục nếu chưa tồn tại
                 if (!is_dir($upload_dir)) {
                     mkdir($upload_dir, 0777, true);
                 }
@@ -62,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
                     $image_path = 'images/facilities/' . $new_filename;
                     
-                    // Xóa hình ảnh cũ nếu có
+                    // Xóa ảnh cũ nếu có
                     if (!empty($facility['image']) && file_exists('../' . $facility['image'])) {
                         @unlink('../' . $facility['image']);
                     }
@@ -74,9 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
             }
         }
         
-        // Cập nhật database
+        // Cập nhật thông tin facility
         if (empty($error_message)) {
             if ($image_path) {
+                // Cập nhật kèm ảnh mới
                 $image_path_escaped = mysqli_real_escape_string($conn, $image_path);
                 $sql_update = "UPDATE facilities SET 
                                name = '$name',
@@ -87,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                                image = '$image_path_escaped'
                                WHERE facility_id = $facility_id";
             } else {
+                // Giữ nguyên ảnh cũ
                 $sql_update = "UPDATE facilities SET 
                                name = '$name',
                                address = '$address',
@@ -98,15 +94,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
             
             if (mysqli_query($conn, $sql_update)) {
                 $success_message = 'Cập nhật thông tin cơ sở y tế thành công!';
-                // Cập nhật session
                 $_SESSION['facility_name'] = $name;
             } else {
                 $error_message = 'Có lỗi xảy ra khi cập nhật thông tin.';
             }
         }
     }
-    
-    // Reload thông tin sau khi cập nhật
     $sql = "SELECT * FROM facilities WHERE facility_id = $facility_id";
     $result = mysqli_query($conn, $sql);
     $facility = mysqli_fetch_assoc($result);

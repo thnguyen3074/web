@@ -1,22 +1,19 @@
 <?php
-/**
- * Admin Header Component - Dùng chung cho tất cả các trang admin
- * Kiểm tra session admin và hiển thị menu
- */
+// Admin Header Component - Dùng chung cho tất cả các trang admin
 
-// Bắt đầu session nếu chưa bắt đầu
+// Bắt đầu session nếu chưa có
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Kiểm tra admin đã đăng nhập chưa
+// Kiểm tra đăng nhập admin - bắt buộc phải đăng nhập
 if (!isset($_SESSION['admin_id'])) {
     header('Location: admin-login.php');
     exit();
 }
 
 $admin_name = isset($_SESSION['admin_name']) ? $_SESSION['admin_name'] : 'Admin';
-$current_page = basename($_SERVER['PHP_SELF']);
+$current_page = basename($_SERVER['PHP_SELF']); // Để highlight menu item đang active
 ?>
 <!DOCTYPE html>
 <html lang="vi">

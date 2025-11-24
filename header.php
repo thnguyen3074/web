@@ -1,15 +1,11 @@
 <?php
-/**
- * Header Component - Dùng chung cho tất cả các trang
- * Bao gồm logic kiểm tra session và hiển thị menu phù hợp
- */
-
-// Bắt đầu session nếu chưa bắt đầu
+// Header Component - Dùng chung cho tất cả các trang user
+// Bắt đầu session nếu chưa có
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Kiểm tra user đã đăng nhập chưa
+// Kiểm tra user đã đăng nhập chưa để hiển thị menu phù hợp
 $isLoggedIn = isset($_SESSION['user_id']);
 $userFullname = $isLoggedIn ? $_SESSION['fullname'] : '';
 ?>

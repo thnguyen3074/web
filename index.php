@@ -1,14 +1,10 @@
 <?php
-/**
- * Trang chủ - Medicare
- * Hiển thị danh sách bệnh viện, phòng khám và chuyên khoa từ MySQL
- */
+// Trang chủ - Hiển thị danh sách bệnh viện, phòng khám và chuyên khoa
 
 $pageTitle = 'Trang chủ';
 require_once 'config.php';
 include 'header.php';
 
-// Lấy danh sách bệnh viện từ database
 $hospitals = [];
 $sql_hospitals = "SELECT facility_id, name, address, working_hours, description, image FROM facilities WHERE type = 'hospital' ORDER BY facility_id";
 $result_hospitals = mysqli_query($conn, $sql_hospitals);
@@ -18,7 +14,6 @@ if ($result_hospitals) {
     }
 }
 
-// Lấy danh sách phòng khám từ database
 $clinics = [];
 $sql_clinics = "SELECT facility_id, name, address, working_hours, image FROM facilities WHERE type = 'clinic' ORDER BY facility_id";
 $result_clinics = mysqli_query($conn, $sql_clinics);
@@ -28,7 +23,6 @@ if ($result_clinics) {
     }
 }
 
-// Lấy danh sách chuyên khoa từ database
 $specialties_home = [];
 $sql_specialties = "SELECT * FROM specialties ORDER BY specialty_name";
 $result_specialties = mysqli_query($conn, $sql_specialties);

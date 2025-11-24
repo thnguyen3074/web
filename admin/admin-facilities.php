@@ -1,20 +1,15 @@
 <?php
-/**
- * Admin Facilities Management - Medicare
- * CRUD quản lý cơ sở y tế
- */
+// Admin Facilities Management - CRUD quản lý cơ sở y tế
 
 $pageTitle = 'Quản lý cơ sở y tế';
 require_once '../config.php';
 include 'admin-header.php';
 
-// Xử lý xóa facility
+// Xóa facility
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $facility_id = intval($_GET['delete']);
-    // Xóa các liên kết chuyên khoa trước
     $sql_delete_links = "DELETE FROM facility_specialty WHERE facility_id = $facility_id";
     mysqli_query($conn, $sql_delete_links);
-    // Xóa facility
     $sql_delete = "DELETE FROM facilities WHERE facility_id = $facility_id";
     mysqli_query($conn, $sql_delete);
     $redirect_tab = isset($_GET['tab']) ? '?tab=' . $_GET['tab'] : '';
@@ -22,22 +17,19 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     exit();
 }
 
-// Xử lý tạo tài khoản quản trị viên cơ sở y tế
+// Tạo tài khoản quản trị viên cơ sở y tế
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'create_facility_admin') {
     $facility_id = intval($_POST['facility_id']);
     $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = isset($_POST['password']) ? trim($_POST['password']) : '';
     
-    // Kiểm tra email trùng
     $check_email = "SELECT admin_id FROM facility_admins WHERE email = '$email'";
     $result_check = mysqli_query($conn, $check_email);
     if (mysqli_num_rows($result_check) > 0) {
         header('Location: admin-facilities.php?error=email_exists');
         exit();
     }
-    
-    // Kiểm tra email trùng với admins
     $check_email_admin = "SELECT admin_id FROM admins WHERE email = '$email'";
     $result_check_admin = mysqli_query($conn, $check_email_admin);
     if (mysqli_num_rows($result_check_admin) > 0) {
@@ -59,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     exit();
 }
 
-// Xử lý thêm/sửa facility
+// Thêm/sửa facility
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && (!isset($_POST['action']) || $_POST['action'] != 'create_facility_admin')) {
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $type = mysqli_real_escape_string($conn, $_POST['type']);
@@ -68,17 +60,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (!isset($_POST['action']) || $_POST[
     $working_hours = mysqli_real_escape_string($conn, $_POST['working_hours']);
     $description = mysqli_real_escape_string($conn, $_POST['description']);
     
-    // Xử lý upload ảnh
+    // Upload ảnh - validate và lưu file
     $image_path = '';
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $file = $_FILES['image'];
-        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png'];
-        $max_size = 5 * 1024 * 1024; // 5MB
+        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png']; // Chỉ cho phép JPG, PNG
+        $max_size = 5 * 1024 * 1024; // Tối đa 5MB
         
-        // Kiểm tra loại file
+        // Kiểm tra loại file và kích thước
         if (in_array($file['type'], $allowed_types) && $file['size'] <= $max_size) {
             $file_ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $new_filename = uniqid('facility_', true) . '.' . $file_ext;
+            $new_filename = uniqid('facility_', true) . '.' . $file_ext; // Tên file unique để tránh trùng
             $upload_dir = '../images/facilities/';
             
             // Tạo thư mục nếu chưa tồn tại
@@ -88,25 +80,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (!isset($_POST['action']) || $_POST[
             
             $upload_path = $upload_dir . $new_filename;
             
+            // Di chuyển file từ temp sang thư mục đích
             if (move_uploaded_file($file['tmp_name'], $upload_path)) {
                 $image_path = 'images/facilities/' . $new_filename;
             }
         }
     }
     
+    // Update hoặc Insert facility
     if (isset($_POST['facility_id']) && is_numeric($_POST['facility_id'])) {
-        // Update
+        // Update facility hiện có
         $facility_id = intval($_POST['facility_id']);
         
-        // Nếu có upload ảnh mới, cập nhật image
         if (!empty($image_path)) {
-            // Lấy ảnh cũ để xóa
+            // Xóa ảnh cũ nếu có upload ảnh mới
             $sql_old = "SELECT image FROM facilities WHERE facility_id = $facility_id";
             $result_old = mysqli_query($conn, $sql_old);
             if ($result_old) {
                 $old_facility = mysqli_fetch_assoc($result_old);
                 if (!empty($old_facility['image']) && file_exists('../' . $old_facility['image'])) {
-                    unlink('../' . $old_facility['image']);
+                    unlink('../' . $old_facility['image']); // Xóa file ảnh cũ
                 }
             }
             $sql_update = "UPDATE facilities SET name = '$name', type = '$type', address = '$address', phone = '$phone', working_hours = '$working_hours', description = '$description', image = '$image_path' WHERE facility_id = $facility_id";
@@ -116,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (!isset($_POST['action']) || $_POST[
         }
         mysqli_query($conn, $sql_update);
     } else {
-        // Insert
+        // Insert facility mới
         if (empty($image_path)) {
             $sql_insert = "INSERT INTO facilities (name, type, address, phone, working_hours, description, image) VALUES ('$name', '$type', '$address', '$phone', '$working_hours', '$description', NULL)";
         } else {
@@ -137,7 +130,6 @@ $tab = isset($_GET['tab']) && in_array($_GET['tab'], ['hospital', 'clinic']) ? $
 $show_form = isset($_GET['add']) || $edit_id > 0;
 $show_admin_form = $create_admin_id > 0;
 
-// Lấy thông tin facility để sửa
 $edit_facility = null;
 if ($edit_id > 0) {
     $sql_edit = "SELECT * FROM facilities WHERE facility_id = $edit_id";
@@ -150,7 +142,6 @@ if ($edit_id > 0) {
     }
 }
 
-// Lấy thông tin facility để tạo admin
 $create_admin_facility = null;
 if ($create_admin_id > 0) {
     $sql_fac = "SELECT * FROM facilities WHERE facility_id = $create_admin_id";
@@ -177,7 +168,6 @@ if (!empty($search)) {
 $where_hospital = implode(' AND ', $where_conditions_hospital);
 $where_clinic = implode(' AND ', $where_conditions_clinic);
 
-// Lấy danh sách bệnh viện và số lượng admin
 $hospitals = [];
 $sql_hospitals = "SELECT f.*, 
                          (SELECT COUNT(*) FROM facility_admins WHERE facility_id = f.facility_id) AS admin_count
@@ -191,7 +181,6 @@ if ($result_hospitals) {
     }
 }
 
-// Lấy danh sách phòng khám và số lượng admin
 $clinics = [];
 $sql_clinics = "SELECT f.*, 
                        (SELECT COUNT(*) FROM facility_admins WHERE facility_id = f.facility_id) AS admin_count
@@ -205,7 +194,6 @@ if ($result_clinics) {
     }
 }
 
-// Lấy thông báo lỗi/thành công từ URL
 $error = isset($_GET['error']) ? $_GET['error'] : '';
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 ?>

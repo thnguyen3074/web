@@ -1,27 +1,22 @@
 <?php
-/**
- * Trang tìm kiếm - Medicare
- * Tìm kiếm bệnh viện, phòng khám và chuyên khoa
- */
+// Trang tìm kiếm - Tìm kiếm bệnh viện, phòng khám và chuyên khoa
 
 $pageTitle = 'Tìm kiếm';
 require_once 'config.php';
 include 'header.php';
 
-// Lấy từ khóa tìm kiếm từ GET
 $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
 
-// Nếu không có từ khóa, redirect về trang chủ
 if (empty($keyword)) {
     header('Location: index.php');
     exit();
 }
 
-// Escape từ khóa để bảo mật
+// Escape keyword để tránh SQL injection
 $keyword = mysqli_real_escape_string($conn, $keyword);
-$search_term = '%' . $keyword . '%';
+$search_term = '%' . $keyword . '%'; // Thêm wildcard cho LIKE query
 
-// Tìm kiếm trong bảng facilities (bệnh viện và phòng khám) - tìm theo tên và địa chỉ
+// Tìm kiếm trong bảng facilities (tên và địa chỉ)
 $facilities = [];
 $sql_facilities = "SELECT * FROM facilities WHERE name LIKE '$search_term' OR address LIKE '$search_term' ORDER BY type, name";
 $result_facilities = mysqli_query($conn, $sql_facilities);
@@ -31,7 +26,7 @@ if ($result_facilities) {
     }
 }
 
-// Tìm kiếm trong bảng specialties (chuyên khoa)
+// Tìm kiếm trong bảng specialties (tên chuyên khoa)
 $specialties = [];
 $sql_specialties = "SELECT * FROM specialties WHERE specialty_name LIKE '$search_term' ORDER BY specialty_name";
 $result_specialties = mysqli_query($conn, $sql_specialties);

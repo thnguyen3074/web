@@ -1,14 +1,10 @@
 <?php
-/**
- * Kết quả tìm kiếm theo chuyên khoa - Medicare
- * Hiển thị danh sách cơ sở y tế theo chuyên khoa từ MySQL
- */
+// Kết quả tìm kiếm theo chuyên khoa - Hiển thị danh sách cơ sở y tế theo chuyên khoa
 
 $pageTitle = 'Cơ sở theo chuyên khoa';
 require_once 'config.php';
 include 'header.php';
 
-// Lấy specialty_id từ URL
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($id <= 0) {
@@ -17,7 +13,6 @@ if ($id <= 0) {
     exit();
 }
 
-// Lấy tên chuyên khoa
 $sql_specialty = "SELECT specialty_name FROM specialties WHERE specialty_id = $id";
 $result_specialty = mysqli_query($conn, $sql_specialty);
 $specialty = mysqli_fetch_assoc($result_specialty);
@@ -30,7 +25,6 @@ if (!$specialty) {
 
 $specialty_name = $specialty['specialty_name'];
 
-// Lấy danh sách cơ sở y tế theo chuyên khoa
 $facilities = [];
 $sql = "SELECT f.*
         FROM facilities f
@@ -44,7 +38,6 @@ if ($result) {
     }
 }
 
-// Chuyển đổi type thành tiếng Việt
 function getTypeText($type) {
     return ($type == 'hospital') ? 'Bệnh viện' : 'Phòng khám';
 }

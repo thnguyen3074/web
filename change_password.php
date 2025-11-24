@@ -1,22 +1,16 @@
 <?php
-/**
- * Đổi mật khẩu - Medicare
- * Form đổi mật khẩu cho user
- */
+// Đổi mật khẩu - Form đổi mật khẩu cho user
 
 $pageTitle = 'Đổi mật khẩu';
 require_once 'config.php';
 include 'header.php';
 
-// Kiểm tra user đã đăng nhập chưa
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
 
 $user_id = $_SESSION['user_id'];
-
-// Lấy thông báo lỗi từ URL
 $error = isset($_GET['error']) ? $_GET['error'] : '';
 ?>
 
@@ -65,26 +59,6 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
         </p>
     </div>
 </main>
-
-<script>
-// Validate password trùng nhau trước khi submit
-document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
-    const newPassword = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-    
-    if (newPassword.length < 6) {
-        e.preventDefault();
-        alert('Mật khẩu mới phải có ít nhất 6 ký tự.');
-        return false;
-    }
-    
-    if (newPassword !== confirmPassword) {
-        e.preventDefault();
-        alert('Mật khẩu mới và xác nhận không khớp. Vui lòng thử lại.');
-        return false;
-    }
-});
-</script>
 
 <?php include 'footer.php'; ?>
 

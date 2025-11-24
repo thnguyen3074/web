@@ -1,14 +1,10 @@
 <?php
-/**
- * Giới thiệu - Medicare
- * Trang giới thiệu về Medicare
- */
+// Giới thiệu - Trang giới thiệu về Medicare
 
 $pageTitle = 'Giới thiệu';
 require_once 'config.php';
 include 'header.php';
 
-// Lấy số lượng cơ sở y tế từ database
 $total_facilities = 0;
 $sql_facilities = "SELECT COUNT(*) as total FROM facilities";
 $result_facilities = mysqli_query($conn, $sql_facilities);
@@ -17,7 +13,6 @@ if ($result_facilities) {
     $total_facilities = $row['total'];
 }
 
-// Lấy số lượng lịch khám đã đặt từ database
 $total_appointments = 0;
 $sql_appointments = "SELECT COUNT(*) as total FROM appointments";
 $result_appointments = mysqli_query($conn, $sql_appointments);
@@ -26,7 +21,6 @@ if ($result_appointments) {
     $total_appointments = $row['total'];
 }
 
-// Format số với dấu phẩy
 function formatNumber($number) {
     return number_format($number, 0, ',', '.');
 }

@@ -1,20 +1,15 @@
 <?php
-/**
- * Danh sách cơ sở y tế - Medicare
- * Hiển thị danh sách bệnh viện và phòng khám từ MySQL
- */
+// Danh sách cơ sở y tế - Hiển thị danh sách bệnh viện và phòng khám
 
 $pageTitle = 'Cơ sở y tế';
 require_once 'config.php';
 include 'header.php';
 
-// Lấy tab từ URL để tự động mở đúng tab
 $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'hospital';
 if ($active_tab != 'hospital' && $active_tab != 'clinic') {
     $active_tab = 'hospital';
 }
 
-// Lấy danh sách bệnh viện từ database
 $hospitals = [];
 $sql_hospitals = "SELECT * FROM facilities WHERE type='hospital' ORDER BY facility_id";
 $result_hospitals = mysqli_query($conn, $sql_hospitals);
@@ -24,7 +19,6 @@ if ($result_hospitals) {
     }
 }
 
-// Lấy danh sách phòng khám từ database
 $clinics = [];
 $sql_clinics = "SELECT * FROM facilities WHERE type='clinic' ORDER BY facility_id";
 $result_clinics = mysqli_query($conn, $sql_clinics);
@@ -148,54 +142,6 @@ if ($result_clinics) {
         <?php endif; ?>
     </section>
 </main>
-
-<script>
-// Khởi tạo tab khi trang load
-document.addEventListener('DOMContentLoaded', function() {
-    const activeTab = '<?php echo $active_tab; ?>';
-    if (activeTab) {
-        switchTab(activeTab, false);
-    }
-});
-
-function switchTab(tab, updateUrl = true) {
-    // Ẩn tất cả tab panels
-    document.querySelectorAll('.tab-panel').forEach(panel => {
-        panel.classList.remove('active', 'default-show');
-    });
-    
-    // Xóa active từ tất cả buttons
-    document.querySelectorAll('.tab-button').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Hiển thị tab được chọn
-    const tabPanel = document.getElementById(tab + '-tab');
-    const tabButton = document.querySelector('[data-tab-target="' + tab + '"]');
-    
-    if (tabPanel) {
-        tabPanel.classList.add('active');
-    }
-    if (tabButton) {
-        tabButton.classList.add('active');
-    }
-    
-    // Cập nhật URL nếu cần
-    if (updateUrl) {
-        window.history.pushState({}, '', 'Facility.php?tab=' + tab);
-    }
-}
-
-// Xử lý click vào tab button
-document.querySelectorAll('.tab-button').forEach(button => {
-    button.addEventListener('click', function() {
-        const tab = this.getAttribute('data-tab-target');
-        if (tab) {
-            switchTab(tab, true);
-        }
-    });
-});
-</script>
 
 <?php include 'footer.php'; ?>
 

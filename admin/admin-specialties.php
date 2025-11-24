@@ -1,41 +1,36 @@
 <?php
-/**
- * Admin Specialties Management - Medicare
- * CRUD quản lý chuyên khoa
- */
+// Admin Specialties Management - CRUD quản lý chuyên khoa
 
 $pageTitle = 'Quản lý chuyên khoa';
 require_once '../config.php';
 include 'admin-header.php';
 
-// Xử lý xóa specialty
+// Xóa specialty
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $specialty_id = intval($_GET['delete']);
-    // Xóa các liên kết facility_specialty trước
     $sql_delete_links = "DELETE FROM facility_specialty WHERE specialty_id = $specialty_id";
     mysqli_query($conn, $sql_delete_links);
-    // Xóa specialty
     $sql_delete = "DELETE FROM specialties WHERE specialty_id = $specialty_id";
     mysqli_query($conn, $sql_delete);
     header('Location: admin-specialties.php');
     exit();
 }
 
-// Xử lý thêm/sửa specialty
+// Thêm/sửa specialty
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $specialty_name = mysqli_real_escape_string($conn, $_POST['specialty_name']);
     
-    // Xử lý upload icon
+    // Upload icon - validate và lưu file
     $icon_path = '';
     if (isset($_FILES['icon']) && $_FILES['icon']['error'] == 0) {
         $file = $_FILES['icon'];
-        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png'];
-        $max_size = 5 * 1024 * 1024; // 5MB
+        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png']; // Chỉ cho phép JPG, PNG
+        $max_size = 5 * 1024 * 1024; // Tối đa 5MB
         
-        // Kiểm tra loại file
+        // Kiểm tra loại file và kích thước
         if (in_array($file['type'], $allowed_types) && $file['size'] <= $max_size) {
             $file_ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $new_filename = uniqid('specialty_', true) . '.' . $file_ext;
+            $new_filename = uniqid('specialty_', true) . '.' . $file_ext; // Tên file unique
             $upload_dir = '../images/specialties/';
             
             // Tạo thư mục nếu chưa tồn tại
@@ -45,25 +40,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             $upload_path = $upload_dir . $new_filename;
             
+            // Di chuyển file từ temp sang thư mục đích
             if (move_uploaded_file($file['tmp_name'], $upload_path)) {
                 $icon_path = 'images/specialties/' . $new_filename;
             }
         }
     }
     
+    // Update hoặc Insert specialty
     if (isset($_POST['specialty_id']) && is_numeric($_POST['specialty_id'])) {
-        // Update
+        // Update specialty hiện có
         $specialty_id = intval($_POST['specialty_id']);
         
-        // Nếu có upload icon mới, cập nhật icon
         if (!empty($icon_path)) {
-            // Lấy icon cũ để xóa
+            // Xóa icon cũ nếu có upload icon mới
             $sql_old = "SELECT icon FROM specialties WHERE specialty_id = $specialty_id";
             $result_old = mysqli_query($conn, $sql_old);
             if ($result_old) {
                 $old_specialty = mysqli_fetch_assoc($result_old);
                 if (!empty($old_specialty['icon']) && file_exists('../' . $old_specialty['icon'])) {
-                    unlink('../' . $old_specialty['icon']);
+                    unlink('../' . $old_specialty['icon']); // Xóa file icon cũ
                 }
             }
             $sql_update = "UPDATE specialties SET specialty_name = '$specialty_name', icon = '$icon_path' WHERE specialty_id = $specialty_id";
@@ -73,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         mysqli_query($conn, $sql_update);
     } else {
-        // Insert
+        // Insert specialty mới
         if (empty($icon_path)) {
             $sql_insert = "INSERT INTO specialties (specialty_name, icon) VALUES ('$specialty_name', NULL)";
         } else {
@@ -90,7 +86,6 @@ $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $edit_id = isset($_GET['edit']) && is_numeric($_GET['edit']) ? intval($_GET['edit']) : 0;
 $show_form = isset($_GET['add']) || $edit_id > 0;
 
-// Lấy thông tin chuyên khoa để sửa
 $edit_specialty = null;
 if ($edit_id > 0) {
     $sql_edit = "SELECT * FROM specialties WHERE specialty_id = $edit_id";
@@ -111,7 +106,6 @@ if (!empty($search)) {
 }
 $where_clause = !empty($where_conditions) ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
 
-// Lấy danh sách chuyên khoa
 $specialties = [];
 $sql = "SELECT * FROM specialties $where_clause ORDER BY specialty_name";
 $result = mysqli_query($conn, $sql);

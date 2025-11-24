@@ -194,7 +194,7 @@ main {
   font-weight: 600;
 }
 
-/* ========== SLIDER CONTAINER (CHUNG CHO CẢ 3 KHU VỰC) ========== */
+/* SLIDER CONTAINER */
 .slider-container {
   position: relative;
   display: flex;
@@ -266,7 +266,7 @@ main {
   line-height: 1;
 }
 
-/* ========== SLIDER CARD (CHUNG CHO CẢ 3 KHU VỰC) ========== */
+/* SLIDER CARD */
 .slider-card {
   background: #fff;
   border-radius: 16px;
@@ -345,7 +345,7 @@ main {
   flex: 1;
 }
 
-/* ========== SLIDER CARD CHO CHUYÊN KHOA ========== */
+/* SLIDER CARD CHO CHUYÊN KHOA */
 .slider-card-specialty {
   text-align: center;
   padding: 24px 16px;
@@ -508,7 +508,7 @@ main {
   gap: 32px;
 }
 
-/* ========== SEARCH PAGE ========== */
+/* SEARCH PAGE */
 .search-results {
   display: flex;
   flex-direction: column;
@@ -795,7 +795,7 @@ main {
   font-weight: 600;
 }
 
-/* ========== FACILITY DETAIL PAGE ========== */
+/* FACILITY DETAIL PAGE */
 .facility-detail-page {
   padding: 0;
   display: flex;
@@ -877,7 +877,7 @@ main {
   padding: 12px 24px;
 }
 
-/* ========== FACILITY INFO CARD ========== */
+/* FACILITY INFO CARD */
 .facility-info-card {
   background: #fff;
   border-radius: 16px;
@@ -1232,7 +1232,7 @@ main {
   outline: none;
 }
 
-/* ========== USER PROFILE PAGE ========== */
+/* USER PROFILE PAGE */
 .user-profile-page {
   gap: 24px;
 }
@@ -1407,7 +1407,7 @@ main {
   border: 1px solid #fcc;
 }
 
-/* ========== APPOINTMENTS PAGE ========== */
+/* APPOINTMENTS PAGE */
 .appointments-page {
   gap: 32px;
 }
@@ -1477,7 +1477,7 @@ main {
   margin-top: 8px;
 }
 
-/* ========== BOOKING CONFIRM PAGE ========== */
+/* BOOKING CONFIRM PAGE */
 .booking-confirm-page {
   gap: 24px;
 }
@@ -1547,7 +1547,7 @@ main {
   margin-top: 8px;
 }
 
-/* ========== BOOKING SUCCESS PAGE ========== */
+/* BOOKING SUCCESS PAGE */
 .success-page {
   min-height: calc(100vh - 200px);
   display: flex;
@@ -1629,7 +1629,7 @@ main {
   flex-wrap: wrap;
 }
 
-/* ========== RESPONSIVE ========== */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .form-row {
     grid-template-columns: 1fr;

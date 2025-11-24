@@ -1,12 +1,8 @@
 <?php
-/**
- * Admin Login - Medicare
- * Trang đăng nhập admin
- */
+// Admin Login - Trang đăng nhập admin
 
 session_start();
 
-// Nếu đã đăng nhập thì redirect về dashboard
 if (isset($_SESSION['admin_id'])) {
     header('Location: admin-dashboard.php');
     exit();

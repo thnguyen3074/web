@@ -1,14 +1,9 @@
 <?php
-/**
- * Admin Users Management - Medicare
- * CRUD quản lý người dùng
- */
+// Admin Users Management - CRUD quản lý người dùng
 
 $pageTitle = 'Quản lý người dùng';
 require_once '../config.php';
 include 'admin-header.php';
-
-// Xử lý xóa user
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $user_id = intval($_GET['delete']);
     $sql_delete = "DELETE FROM users WHERE user_id = $user_id";
@@ -17,7 +12,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     exit();
 }
 
-// Xử lý cập nhật user
+// Cập nhật thông tin user (chỉ fullname và phone, không cho đổi email/password)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'update') {
     $user_id = intval($_POST['user_id']);
     $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
@@ -47,7 +42,7 @@ if ($edit_id > 0) {
     }
 }
 
-// Xây dựng điều kiện WHERE
+// Xây dựng điều kiện WHERE động cho tìm kiếm
 $where_conditions = [];
 if (!empty($search)) {
     $search_escaped = mysqli_real_escape_string($conn, $search);
@@ -55,7 +50,7 @@ if (!empty($search)) {
 }
 $where_clause = !empty($where_conditions) ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
 
-// Lấy danh sách users
+// Lấy danh sách users với filter
 $users = [];
 $sql = "SELECT * FROM users $where_clause ORDER BY user_id DESC";
 $result = mysqli_query($conn, $sql);

@@ -1,19 +1,16 @@
 <?php
-/**
- * Xử lý đặt lịch - Medicare
- * Lưu lịch hẹn vào database
- */
+// Xử lý đặt lịch - Lưu lịch hẹn vào database
 
 session_start();
 require_once 'config.php';
 
-// Kiểm tra method POST
+// Chỉ chấp nhận POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: Facility.php');
     exit();
 }
 
-// Kiểm tra user đã đăng nhập chưa
+// Kiểm tra user đã đăng nhập chưa (cho phép guest booking)
 $isLoggedIn = isset($_SESSION['user_id']);
 $user_id = $isLoggedIn ? $_SESSION['user_id'] : 'NULL';
 
@@ -24,20 +21,30 @@ $appointment_date = isset($_POST['appointment_date']) ? trim($_POST['appointment
 $appointment_time = isset($_POST['appointment_time']) ? trim($_POST['appointment_time']) : '';
 $symptoms = isset($_POST['symptoms']) ? trim($_POST['symptoms']) : '';
 
-// Lấy thông tin cá nhân từ form (luôn yêu cầu nhập, kể cả khi đã đăng nhập)
+// Lấy thông tin cá nhân từ form (luôn yêu cầu, kể cả khi đã đăng nhập)
 $fullname = isset($_POST['fullname']) ? trim($_POST['fullname']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
 
-// Validate input
+// Validate dữ liệu bắt buộc
 if ($facility_id <= 0 || $specialty_id <= 0 || empty($appointment_date) || empty($appointment_time) || empty($symptoms)) {
     header('Location: Facility.php');
     exit();
 }
 
-// Luôn yêu cầu đầy đủ thông tin cá nhân (kể cả khi đã đăng nhập)
+// Validate thông tin cá nhân
 if (empty($fullname) || empty($email) || empty($phone)) {
     header('Location: Booking.php?facility_id=' . $facility_id);
+    exit();
+}
+
+// Validate date/time - thời gian khám phải sau thời gian hiện tại
+$appointment_datetime = $appointment_date . ' ' . $appointment_time . ':00';
+$current_datetime = date('Y-m-d H:i:s');
+
+// Ngăn chặn đặt lịch trong quá khứ
+if (strtotime($appointment_datetime) <= strtotime($current_datetime)) {
+    header('Location: Booking.php?facility_id=' . $facility_id . '&error=invalid_time');
     exit();
 }
 
@@ -49,12 +56,12 @@ $fullname = mysqli_real_escape_string($conn, $fullname);
 $email = mysqli_real_escape_string($conn, $email);
 $phone = mysqli_real_escape_string($conn, $phone);
 
-// Lưu lịch hẹn vào database với thông tin bệnh nhân từ form
-// user_id có thể là NULL nếu chưa đăng nhập, hoặc user_id nếu đã đăng nhập (để xem lại lịch hẹn)
+// Lưu lịch hẹn vào database (user_id có thể NULL nếu chưa đăng nhập - guest booking)
 $sql = "INSERT INTO appointments (user_id, patient_name, patient_email, patient_phone, facility_id, specialty_id, appointment_date, appointment_time, symptoms, status)
         VALUES ($user_id, '$fullname', '$email', '$phone', $facility_id, $specialty_id, '$appointment_date', '$appointment_time', '$symptoms', 'pending')";
 $result = mysqli_query($conn, $sql);
 
+// Xử lý lỗi database
 if (!$result) {
     error_log("Booking error: " . mysqli_error($conn));
     header('Location: Booking.php?facility_id=' . $facility_id . '&error=1');

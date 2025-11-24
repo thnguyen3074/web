@@ -1,44 +1,35 @@
 <?php
-/**
- * Admin Dashboard - Medicare
- * Hiển thị thống kê tổng quan
- */
+// Admin Dashboard - Hiển thị thống kê tổng quan
 
 $pageTitle = 'Tổng quan';
 require_once '../config.php';
 include 'admin-header.php';
-
-// Lấy số lượng users
 $sql_users = "SELECT COUNT(*) AS total FROM users";
 $result_users = mysqli_query($conn, $sql_users);
 $users_count = mysqli_fetch_assoc($result_users)['total'];
 
-// Lấy số lượng facilities
+// Lấy thống kê tổng quan
 $sql_facilities = "SELECT COUNT(*) AS total FROM facilities";
 $result_facilities = mysqli_query($conn, $sql_facilities);
 $facilities_count = mysqli_fetch_assoc($result_facilities)['total'];
 
-// Lấy số lượng bệnh viện
 $sql_hospitals = "SELECT COUNT(*) AS total FROM facilities WHERE type = 'hospital'";
 $result_hospitals = mysqli_query($conn, $sql_hospitals);
 $hospitals_count = mysqli_fetch_assoc($result_hospitals)['total'];
 
-// Lấy số lượng phòng khám
 $sql_clinics = "SELECT COUNT(*) AS total FROM facilities WHERE type = 'clinic'";
 $result_clinics = mysqli_query($conn, $sql_clinics);
 $clinics_count = mysqli_fetch_assoc($result_clinics)['total'];
 
-// Lấy số lượng chuyên khoa
 $sql_specialties = "SELECT COUNT(*) AS total FROM specialties";
 $result_specialties = mysqli_query($conn, $sql_specialties);
 $specialties_count = mysqli_fetch_assoc($result_specialties)['total'];
 
-// Lấy số lượng lịch hẹn
 $sql_appointments = "SELECT COUNT(*) AS total FROM appointments";
 $result_appointments = mysqli_query($conn, $sql_appointments);
 $appointments_count = mysqli_fetch_assoc($result_appointments)['total'];
 
-// Lấy số lượng lịch hẹn theo trạng thái
+// Thống kê lịch hẹn theo trạng thái
 $sql_pending = "SELECT COUNT(*) AS total FROM appointments WHERE status = 'pending'";
 $result_pending = mysqli_query($conn, $sql_pending);
 $pending_count = mysqli_fetch_assoc($result_pending)['total'];
@@ -51,18 +42,18 @@ $sql_completed = "SELECT COUNT(*) AS total FROM appointments WHERE status = 'com
 $result_completed = mysqli_query($conn, $sql_completed);
 $completed_count = mysqli_fetch_assoc($result_completed)['total'];
 
-// Lấy số lượng lịch hẹn hôm nay
+// Thống kê lịch hẹn hôm nay
 $today = date('Y-m-d');
 $sql_today = "SELECT COUNT(*) AS total FROM appointments WHERE appointment_date = '$today'";
 $result_today = mysqli_query($conn, $sql_today);
 $today_count = mysqli_fetch_assoc($result_today)['total'];
 
-// Lấy số lượng facility admins
 $sql_facility_admins = "SELECT COUNT(*) AS total FROM facility_admins";
 $result_facility_admins = mysqli_query($conn, $sql_facility_admins);
 $facility_admins_count = mysqli_fetch_assoc($result_facility_admins)['total'];
 
 // Lấy lịch hẹn gần đây nhất (5 lịch hẹn)
+// COALESCE: ưu tiên thông tin từ appointments, nếu NULL thì lấy từ users
 $sql_recent = "SELECT a.*, 
                COALESCE(a.patient_name, u.fullname) AS display_name, 
                f.name AS facility_name,
@@ -81,7 +72,7 @@ if ($result_recent) {
     }
 }
 
-// Hàm format ngày
+// Format ngày
 function formatDate($date) {
     $date_obj = new DateTime($date);
     return $date_obj->format('d/m/Y');

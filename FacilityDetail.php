@@ -1,14 +1,10 @@
 <?php
-/**
- * Chi tiết cơ sở y tế - Medicare
- * Hiển thị thông tin chi tiết của một cơ sở y tế từ MySQL
- */
+// Chi tiết cơ sở y tế - Hiển thị thông tin chi tiết của một cơ sở y tế
 
 $pageTitle = 'Chi tiết cơ sở y tế';
 require_once 'config.php';
 include 'header.php';
 
-// Lấy ID từ URL
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($id <= 0) {
@@ -17,7 +13,6 @@ if ($id <= 0) {
     exit();
 }
 
-// Lấy thông tin cơ sở y tế
 $sql = "SELECT * FROM facilities WHERE facility_id = $id";
 $result = mysqli_query($conn, $sql);
 $facility = mysqli_fetch_assoc($result);
@@ -28,7 +23,6 @@ if (!$facility) {
     exit();
 }
 
-// Lấy danh sách chuyên khoa của cơ sở
 $specialties = [];
 $sql_specialties = "SELECT s.specialty_name 
                    FROM specialties s 
@@ -41,7 +35,6 @@ if ($result_specialties) {
     }
 }
 
-// Chuyển đổi type thành tiếng Việt
 $type_text = ($facility['type'] == 'hospital') ? 'Bệnh viện' : 'Phòng khám';
 ?>
 

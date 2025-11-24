@@ -1,14 +1,9 @@
 <?php
-/**
- * Admin Admins Management - Medicare
- * CRUD quản lý quản trị viên
- */
+// Admin Admins Management - CRUD quản lý quản trị viên
 
 $pageTitle = 'Quản lý admin cơ sở y tế';
 require_once '../config.php';
 include 'admin-header.php';
-
-// Xử lý xóa admin cơ sở y tế
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $admin_id = intval($_GET['delete']);
     $sql_delete = "DELETE FROM facility_admins WHERE admin_id = $admin_id";
@@ -17,7 +12,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     exit();
 }
 
-// Xử lý thêm/sửa admin cơ sở y tế
+// Thêm/sửa admin cơ sở y tế
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -25,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $facility_id = isset($_POST['facility_id']) ? intval($_POST['facility_id']) : 0;
     
     if (isset($_POST['admin_id']) && is_numeric($_POST['admin_id'])) {
-        // Cập nhật admin cơ sở y tế
+        // Update admin hiện có
         $admin_id = intval($_POST['admin_id']);
         
         // Kiểm tra email trùng (trừ chính admin đang sửa)
@@ -36,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
         
-        // Kiểm tra email trùng với admins
+        // Kiểm tra email không trùng với admin chính
         $check_email_admin = "SELECT admin_id FROM admins WHERE email = '$email'";
         $result_check_admin = mysqli_query($conn, $check_email_admin);
         if (mysqli_num_rows($result_check_admin) > 0) {
@@ -44,24 +39,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
         
+        // Update password nếu có, nếu không thì giữ nguyên
         if (!empty($password)) {
-            // Cập nhật cả mật khẩu
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             $password_hash = mysqli_real_escape_string($conn, $password_hash);
             $sql_update = "UPDATE facility_admins SET fullname = '$fullname', email = '$email', password = '$password_hash' WHERE admin_id = $admin_id";
         } else {
-            // Giữ nguyên mật khẩu cũ
             $sql_update = "UPDATE facility_admins SET fullname = '$fullname', email = '$email' WHERE admin_id = $admin_id";
         }
         mysqli_query($conn, $sql_update);
     } else {
-        // Thêm mới admin cơ sở y tế
+        // Insert admin mới
         if ($facility_id <= 0) {
             header('Location: admin-admins.php?error=facility_required');
             exit();
         }
         
-        // Kiểm tra email trùng
+        // Kiểm tra email trùng trong facility_admins
         $check_email = "SELECT admin_id FROM facility_admins WHERE email = '$email'";
         $result_check = mysqli_query($conn, $check_email);
         if (mysqli_num_rows($result_check) > 0) {
@@ -69,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
         
-        // Kiểm tra email trùng với admins
+        // Kiểm tra email không trùng với admin chính
         $check_email_admin = "SELECT admin_id FROM admins WHERE email = '$email'";
         $result_check_admin = mysqli_query($conn, $check_email_admin);
         if (mysqli_num_rows($result_check_admin) > 0) {
@@ -77,11 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
         
+        // Password bắt buộc khi tạo mới
         if (empty($password)) {
             header('Location: admin-admins.php?error=password_required');
             exit();
         }
         
+        // Hash password trước khi lưu
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
         $password_hash = mysqli_real_escape_string($conn, $password_hash);
         $sql_insert = "INSERT INTO facility_admins (facility_id, fullname, email, password) VALUES ($facility_id, '$fullname', '$email', '$password_hash')";
@@ -96,7 +92,6 @@ $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $edit_id = isset($_GET['edit']) && is_numeric($_GET['edit']) ? intval($_GET['edit']) : 0;
 $show_form = isset($_GET['add']) || $edit_id > 0;
 
-// Lấy thông tin admin để sửa
 $edit_admin = null;
 if ($edit_id > 0) {
     $sql_edit = "SELECT fa.*, f.name AS facility_name, f.type AS facility_type
@@ -112,7 +107,7 @@ if ($edit_id > 0) {
     }
 }
 
-// Xây dựng điều kiện WHERE cho admin cơ sở y tế
+// Xây dựng điều kiện WHERE
 $where_conditions = [];
 if (!empty($search)) {
     $search_escaped = mysqli_real_escape_string($conn, $search);
@@ -120,7 +115,6 @@ if (!empty($search)) {
 }
 $where_clause = !empty($where_conditions) ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
 
-// Lấy danh sách admin cơ sở y tế với thông tin cơ sở
 $facility_admins = [];
 $sql_facility = "SELECT fa.*, f.name AS facility_name, f.type AS facility_type
                  FROM facility_admins fa
@@ -134,7 +128,6 @@ if ($result_facility) {
     }
 }
 
-// Lấy danh sách cơ sở y tế để tạo admin mới
 $facilities = [];
 $sql_facilities = "SELECT f.*, 
                           (SELECT COUNT(*) FROM facility_admins WHERE facility_id = f.facility_id) AS admin_count
@@ -147,7 +140,6 @@ if ($result_facilities) {
     }
 }
 
-// Lấy thông báo lỗi từ URL
 $error = isset($_GET['error']) ? $_GET['error'] : '';
 ?>
 

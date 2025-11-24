@@ -1,14 +1,10 @@
 <?php
-/**
- * Đặt lịch thành công - Medicare
- * Hiển thị thông tin lịch hẹn vừa tạo
- */
+// Đặt lịch thành công - Hiển thị thông tin lịch hẹn vừa tạo
 
 $pageTitle = 'Đặt lịch thành công';
 require_once 'config.php';
 include 'header.php';
 
-// Lấy appointment_id từ URL
 $appointment_id = isset($_GET['appointment_id']) ? intval($_GET['appointment_id']) : 0;
 
 if ($appointment_id <= 0) {
@@ -16,11 +12,10 @@ if ($appointment_id <= 0) {
     exit();
 }
 
-// Kiểm tra user đã đăng nhập chưa
 $isLoggedIn = isset($_SESSION['user_id']);
 
-// Lấy thông tin lịch hẹn với JOIN (LEFT JOIN users vì có thể user_id = NULL)
-// Cho phép cả user đã đăng nhập và guest xem lịch hẹn của họ
+// Lấy thông tin lịch hẹn với JOIN
+// LEFT JOIN users vì có thể user_id = NULL (guest booking)
 $sql = "SELECT a.*, f.name AS facility_name, s.specialty_name, u.fullname AS patient_name, u.email AS patient_email, u.phone AS patient_phone
         FROM appointments a
         JOIN facilities f ON a.facility_id = f.facility_id
@@ -28,12 +23,13 @@ $sql = "SELECT a.*, f.name AS facility_name, s.specialty_name, u.fullname AS pat
         LEFT JOIN users u ON a.user_id = u.user_id
         WHERE a.appointment_id = $appointment_id";
         
-// Nếu đã đăng nhập, chỉ cho phép xem lịch hẹn của chính user đó
+// Bảo mật: chỉ cho phép xem lịch hẹn của chính mình
 if ($isLoggedIn) {
+    // User đã đăng nhập: chỉ xem lịch hẹn của chính user đó
     $user_id = $_SESSION['user_id'];
     $sql .= " AND a.user_id = $user_id";
 } else {
-    // Nếu chưa đăng nhập, chỉ cho phép xem lịch hẹn có user_id = NULL (guest booking)
+    // Guest: chỉ xem lịch hẹn có user_id = NULL (guest booking)
     $sql .= " AND a.user_id IS NULL";
 }
 
@@ -45,7 +41,7 @@ if (!$appointment) {
     exit();
 }
 
-// Format ngày để hiển thị
+// Format ngày để hiển thị (dd/mm/yyyy)
 $date_obj = new DateTime($appointment['appointment_date']);
 $formatted_date = $date_obj->format('d/m/Y');
 ?>

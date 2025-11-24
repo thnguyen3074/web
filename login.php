@@ -1,20 +1,15 @@
 <?php
-/**
- * Trang đăng nhập - Medicare
- * Giao diện form đăng nhập
- */
+// Trang đăng nhập - Giao diện form đăng nhập
 
 $pageTitle = 'Đăng nhập';
 require_once 'config.php';
 include 'header.php';
 
-// Kiểm tra nếu đã đăng nhập thì redirect về trang chủ
 if (isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit();
 }
 
-// Lấy thông báo lỗi từ URL
 $error = isset($_GET['error']) ? $_GET['error'] : '';
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 ?>

@@ -1,12 +1,8 @@
 <?php
-/**
- * Facility Admin Login - Medicare
- * Trang đăng nhập cho quản trị viên cơ sở y tế
- */
+// Facility Admin Login - Trang đăng nhập cho quản trị viên cơ sở y tế
 
 session_start();
 
-// Nếu đã đăng nhập thì redirect về dashboard
 if (isset($_SESSION['facility_admin_id'])) {
     header('Location: facility-admin-dashboard.php');
     exit();

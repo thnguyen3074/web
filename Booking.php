@@ -1,18 +1,12 @@
 <?php
-/**
- * Đặt lịch khám - Medicare
- * Form đặt lịch khám bệnh
- */
+// Đặt lịch khám - Form đặt lịch khám bệnh
 
 $pageTitle = 'Đặt lịch khám';
 require_once 'config.php';
 include 'header.php';
 
-// Kiểm tra user đã đăng nhập chưa
 $isLoggedIn = isset($_SESSION['user_id']);
 $user = null;
-
-// Nếu đã đăng nhập, lấy thông tin user
 if ($isLoggedIn) {
     $user_id = $_SESSION['user_id'];
     $sql_user = "SELECT fullname, email, phone FROM users WHERE user_id = $user_id";
@@ -20,7 +14,7 @@ if ($isLoggedIn) {
     $user = mysqli_fetch_assoc($result_user);
 }
 
-// Lấy facility_id từ URL hoặc POST (khi quay lại từ BookingConfirm)
+// Lấy facility_id từ URL hoặc POST
 $facility_id = isset($_GET['facility_id']) ? intval($_GET['facility_id']) : (isset($_POST['facility_id']) ? intval($_POST['facility_id']) : 0);
 
 if ($facility_id <= 0) {
@@ -29,7 +23,7 @@ if ($facility_id <= 0) {
     exit();
 }
 
-// Lấy thông tin đã nhập từ POST (khi quay lại từ BookingConfirm)
+// Lấy thông tin đã nhập từ POST
 $prev_specialty_id = isset($_POST['specialty_id']) ? intval($_POST['specialty_id']) : 0;
 $prev_appointment_date = isset($_POST['appointment_date']) ? trim($_POST['appointment_date']) : '';
 $prev_appointment_time = isset($_POST['appointment_time']) ? trim($_POST['appointment_time']) : '';
@@ -38,7 +32,7 @@ $prev_fullname = isset($_POST['fullname']) ? trim($_POST['fullname']) : '';
 $prev_email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $prev_phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
 
-// Lấy thông tin cơ sở y tế
+// Lấy thông tin cơ sở y tế để hiển thị
 $sql_facility = "SELECT * FROM facilities WHERE facility_id = $facility_id";
 $result_facility = mysqli_query($conn, $sql_facility);
 $facility = mysqli_fetch_assoc($result_facility);
@@ -49,7 +43,7 @@ if (!$facility) {
     exit();
 }
 
-// Lấy danh sách chuyên khoa của cơ sở
+// Lấy danh sách chuyên khoa của cơ sở (JOIN với bảng liên kết)
 $specialties = [];
 $sql_specialties = "SELECT s.*
                     FROM specialties s
@@ -98,7 +92,10 @@ if ($result_specialties) {
                 </div>
                 <div class="form-group">
                     <label for="booking-date">Ngày khám</label>
-                    <input type="date" id="booking-date" name="appointment_date" value="<?php echo htmlspecialchars($prev_appointment_date); ?>" required />
+                    <input type="date" id="booking-date" name="appointment_date" value="<?php echo htmlspecialchars($prev_appointment_date); ?>" min="<?php echo date('Y-m-d'); ?>" required />
+                    <?php if (isset($_GET['error']) && $_GET['error'] == 'invalid_time'): ?>
+                        <small style="color: #dc3545; display: block; margin-top: 5px;">Vui lòng chọn thời gian khám sau thời gian hiện tại.</small>
+                    <?php endif; ?>
                 </div>
                 <div class="form-group">
                     <label for="booking-time">Giờ khám</label>
@@ -179,74 +176,5 @@ if ($result_specialties) {
         </form>
     </section>
 </main>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const dateInput = document.getElementById('booking-date');
-    const timeSelect = document.getElementById('booking-time');
-    
-    // Cho phép chọn ngày hôm nay - sử dụng timezone local
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    const minDate = `${year}-${month}-${day}`;
-    dateInput.setAttribute('min', minDate);
-    
-    // Lưu lại đối tượng Date của hôm nay để so sánh
-    const todayDate = new Date(year, today.getMonth(), today.getDate());
-
-    // Hàm disable các giờ đã qua nếu chọn hôm nay
-    function updateTimeSlots() {
-        const selectedDate = dateInput.value;
-        const now = new Date();
-        const currentTime = now.toTimeString().slice(0, 5); // dạng HH:MM
-
-        // Reset tất cả option về trạng thái enabled
-        for (let option of timeSelect.options) {
-            option.disabled = false;
-        }
-
-        // Nếu không chọn ngày → không kiểm tra
-        if (!selectedDate) return;
-
-        // Parse ngày đã chọn (format YYYY-MM-DD)
-        const [yearSelected, monthSelected, daySelected] = selectedDate.split('-').map(Number);
-        const chosenDate = new Date(yearSelected, monthSelected - 1, daySelected);
-
-        // Nếu chọn đúng ngày hôm nay → disable giờ đã qua
-        if (chosenDate.getTime() === todayDate.getTime()) {
-            for (let option of timeSelect.options) {
-                if (option.value && option.value < currentTime) {
-                    option.disabled = true;
-                }
-            }
-        }
-    }
-
-    // Khi thay đổi ngày → cập nhật giờ
-    dateInput.addEventListener('change', updateTimeSlots);
-
-    // Cập nhật ngay khi vào trang nếu ngày đã có sẵn
-    updateTimeSlots();
-
-    // Kiểm tra khi submit
-    document.getElementById('booking-form').addEventListener('submit', function(e) {
-        const selectedDate = dateInput.value;
-        const selectedTime = timeSelect.value;
-
-        if (!selectedDate || !selectedTime) return;
-
-        const now = new Date();
-        const selectedDateTime = new Date(selectedDate + 'T' + selectedTime);
-
-        if (selectedDateTime <= now) {
-            e.preventDefault();
-            alert('Vui lòng chọn thời gian khám sau thời gian hiện tại.');
-        }
-    });
-});
-
-</script>
 
 <?php include 'footer.php'; ?>

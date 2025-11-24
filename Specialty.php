@@ -1,14 +1,10 @@
 <?php
-/**
- * Danh sách chuyên khoa - Medicare
- * Hiển thị danh sách các chuyên khoa từ MySQL
- */
+// Danh sách chuyên khoa - Hiển thị danh sách các chuyên khoa
 
 $pageTitle = 'Chuyên khoa';
 require_once 'config.php';
 include 'header.php';
 
-// Lấy danh sách chuyên khoa từ database
 $specialties = [];
 $sql = "SELECT * FROM specialties ORDER BY specialty_name";
 $result = mysqli_query($conn, $sql);

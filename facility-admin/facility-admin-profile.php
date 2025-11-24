@@ -1,8 +1,5 @@
 <?php
-/**
- * Facility Admin Profile Management - Medicare
- * Quản lý thông tin và đổi mật khẩu
- */
+// Facility Admin Profile Management - Quản lý thông tin và đổi mật khẩu
 
 $pageTitle = 'Quản lý tài khoản';
 require_once '../config.php';
@@ -10,11 +7,10 @@ include 'facility-admin-header.php';
 
 $facility_admin_id = intval($_SESSION['facility_admin_id']);
 $facility_id = intval($_SESSION['facility_id']);
-
 $success_message = '';
 $error_message = '';
 
-// Xử lý cập nhật thông tin
+// Cập nhật thông tin
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'update_info') {
     $fullname = isset($_POST['fullname']) ? trim($_POST['fullname']) : '';
     
@@ -32,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     }
 }
 
-// Xử lý đổi mật khẩu
+// Đổi mật khẩu
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'change_password') {
     $current_password = isset($_POST['current_password']) ? $_POST['current_password'] : '';
     $new_password = isset($_POST['new_password']) ? $_POST['new_password'] : '';
@@ -45,12 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     } elseif (strlen($new_password) < 6) {
         $error_message = 'Mật khẩu mới phải có ít nhất 6 ký tự.';
     } else {
-        // Lấy mật khẩu hiện tại
+        // Lấy mật khẩu hiện tại từ database
         $sql_get = "SELECT password FROM facility_admins WHERE admin_id = $facility_admin_id";
         $result_get = mysqli_query($conn, $sql_get);
         $admin = mysqli_fetch_assoc($result_get);
         
+        // Xác thực mật khẩu cũ trước khi đổi
         if ($admin && password_verify($current_password, $admin['password'])) {
+            // Hash mật khẩu mới và cập nhật
             $new_password_hash = password_hash($new_password, PASSWORD_DEFAULT);
             $sql_update = "UPDATE facility_admins SET password = '$new_password_hash' WHERE admin_id = $facility_admin_id";
             if (mysqli_query($conn, $sql_update)) {
@@ -64,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     }
 }
 
-// Lấy thông tin facility admin
+// Lấy thông tin facility admin để hiển thị
 $sql = "SELECT fa.*, f.name AS facility_name 
         FROM facility_admins fa 
         JOIN facilities f ON fa.facility_id = f.facility_id 

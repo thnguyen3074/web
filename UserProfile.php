@@ -1,14 +1,10 @@
 <?php
-/**
- * Hồ sơ cá nhân - Medicare
- * Hiển thị và quản lý thông tin tài khoản người dùng
- */
+// Hồ sơ cá nhân - Hiển thị và quản lý thông tin tài khoản người dùng
 
 $pageTitle = 'Hồ sơ cá nhân';
 require_once 'config.php';
 include 'header.php';
 
-// Kiểm tra user đã đăng nhập chưa
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
@@ -16,7 +12,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Lấy thông tin user từ database
 $sql = "SELECT fullname, email, phone, created_at FROM users WHERE user_id = $user_id";
 $result = mysqli_query($conn, $sql);
 $user = mysqli_fetch_assoc($result);
@@ -26,18 +21,14 @@ if (!$user) {
     exit();
 }
 
-// Format ngày tạo tài khoản
 $created_date = '';
 if (!empty($user['created_at'])) {
     $date_obj = new DateTime($user['created_at']);
     $created_date = $date_obj->format('d/m/Y');
 }
 
-// Lấy thông báo từ URL
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 $error = isset($_GET['error']) ? $_GET['error'] : '';
-
-// Kiểm tra chế độ chỉnh sửa
 $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1';
 ?>
 

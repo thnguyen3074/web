@@ -1,14 +1,9 @@
 <?php
-/**
- * Admin Appointments Management - Medicare
- * Quản lý lịch hẹn
- */
+// Admin Appointments Management - Quản lý lịch hẹn
 
 $pageTitle = 'Quản lý lịch hẹn';
 require_once '../config.php';
 include 'admin-header.php';
-
-// Xử lý xóa appointment
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $appointment_id = intval($_GET['delete']);
     $sql_delete = "DELETE FROM appointments WHERE appointment_id = $appointment_id";
@@ -17,7 +12,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     exit();
 }
 
-// Xử lý cập nhật trạng thái
+// Cập nhật trạng thái
 if (isset($_GET['update_status']) && is_numeric($_GET['update_status']) && isset($_GET['status'])) {
     $appointment_id = intval($_GET['update_status']);
     $status = mysqli_real_escape_string($conn, $_GET['status']);
@@ -33,34 +28,32 @@ $status_filter = isset($_GET['status']) ? $_GET['status'] : '';
 $facility_filter = isset($_GET['facility_id']) ? intval($_GET['facility_id']) : 0;
 $date_from = isset($_GET['date_from']) ? $_GET['date_from'] : '';
 $date_to = isset($_GET['date_to']) ? $_GET['date_to'] : '';
-
-// Phân trang
 $per_page = 20;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 $page = max(1, $page);
 $offset = ($page - 1) * $per_page;
 
-// Xây dựng điều kiện WHERE
+// Xây dựng điều kiện WHERE động cho filter
 $where_conditions = [];
 
-// Thêm điều kiện tìm kiếm
+// Tìm kiếm trong nhiều trường (ưu tiên thông tin từ appointments, fallback về users)
 if (!empty($search)) {
     $search_escaped = mysqli_real_escape_string($conn, $search);
     $where_conditions[] = "(COALESCE(a.patient_name, u.fullname) LIKE '%$search_escaped%' OR COALESCE(a.patient_email, u.email) LIKE '%$search_escaped%' OR COALESCE(a.patient_phone, u.phone) LIKE '%$search_escaped%' OR f.name LIKE '%$search_escaped%' OR s.specialty_name LIKE '%$search_escaped%' OR a.symptoms LIKE '%$search_escaped%')";
 }
 
-// Thêm điều kiện lọc theo trạng thái
+// Filter theo trạng thái (chỉ chấp nhận giá trị hợp lệ)
 if (!empty($status_filter) && in_array($status_filter, ['pending', 'confirmed', 'completed', 'canceled'])) {
     $status_escaped = mysqli_real_escape_string($conn, $status_filter);
     $where_conditions[] = "a.status = '$status_escaped'";
 }
 
-// Thêm điều kiện lọc theo cơ sở y tế
+// Filter theo cơ sở y tế
 if ($facility_filter > 0) {
     $where_conditions[] = "a.facility_id = $facility_filter";
 }
 
-// Thêm điều kiện lọc theo ngày
+// Filter theo khoảng thời gian
 if (!empty($date_from)) {
     $date_from_escaped = mysqli_real_escape_string($conn, $date_from);
     $where_conditions[] = "a.appointment_date >= '$date_from_escaped'";
@@ -83,9 +76,8 @@ $result_count = mysqli_query($conn, $sql_count);
 $total_records = mysqli_fetch_assoc($result_count)['total'];
 $total_pages = ceil($total_records / $per_page);
 
-// Lấy danh sách appointments với JOIN và filter
-// Ưu tiên hiển thị thông tin từ appointments (patient_name, patient_email, patient_phone)
-// Nếu không có thì mới lấy từ users (cho các lịch hẹn cũ)
+// Lấy danh sách appointments với phân trang
+// COALESCE: ưu tiên thông tin từ appointments, nếu NULL thì lấy từ users (cho lịch hẹn cũ)
 $appointments = [];
 $sql = "SELECT a.*, 
                COALESCE(a.patient_name, u.fullname) AS display_name,
@@ -107,7 +99,7 @@ if ($result) {
     }
 }
 
-// Lấy danh sách facilities cho filter
+// Lấy danh sách facilities
 $facilities = [];
 $sql_facilities = "SELECT facility_id, name FROM facilities ORDER BY name";
 $result_facilities = mysqli_query($conn, $sql_facilities);
@@ -117,13 +109,13 @@ if ($result_facilities) {
     }
 }
 
-// Hàm format ngày
+// Format ngày
 function formatDate($date) {
     $date_obj = new DateTime($date);
     return $date_obj->format('d/m/Y');
 }
 
-// Hàm format trạng thái
+// Format trạng thái
 function formatStatus($status) {
     $status_text = [
         'pending' => 'Chờ',

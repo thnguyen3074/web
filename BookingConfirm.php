@@ -1,14 +1,9 @@
 <?php
-/**
- * Xác nhận đặt lịch - Medicare
- * Hiển thị lại thông tin để xác nhận trước khi lưu
- */
+// Xác nhận đặt lịch - Hiển thị lại thông tin để xác nhận
 
 $pageTitle = 'Xác nhận đặt lịch';
 require_once 'config.php';
 include 'header.php';
-
-// Kiểm tra method POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: Facility.php');
     exit();
@@ -24,24 +19,32 @@ $appointment_date = isset($_POST['appointment_date']) ? trim($_POST['appointment
 $appointment_time = isset($_POST['appointment_time']) ? trim($_POST['appointment_time']) : '';
 $symptoms = isset($_POST['symptoms']) ? trim($_POST['symptoms']) : '';
 
-// Lấy thông tin cá nhân từ form (luôn yêu cầu nhập, kể cả khi đã đăng nhập)
+// Lấy thông tin cá nhân từ form
 $fullname = isset($_POST['fullname']) ? trim($_POST['fullname']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-
-// Validate input
 if ($facility_id <= 0 || $specialty_id <= 0 || empty($appointment_date) || empty($appointment_time) || empty($symptoms)) {
     header('Location: Facility.php');
     exit();
 }
 
-// Luôn yêu cầu đầy đủ thông tin cá nhân (kể cả khi đã đăng nhập)
+// Validate thông tin cá nhân
 if (empty($fullname) || empty($email) || empty($phone)) {
     header('Location: Booking.php?facility_id=' . $facility_id);
     exit();
 }
 
-// Lấy thông tin cơ sở y tế
+// Validate date/time - thời gian khám phải sau thời gian hiện tại
+$appointment_datetime = $appointment_date . ' ' . $appointment_time . ':00';
+$current_datetime = date('Y-m-d H:i:s');
+
+// Ngăn chặn đặt lịch trong quá khứ
+if (strtotime($appointment_datetime) <= strtotime($current_datetime)) {
+    header('Location: Booking.php?facility_id=' . $facility_id . '&error=invalid_time');
+    exit();
+}
+
+// Lấy thông tin cơ sở y tế để hiển thị xác nhận
 $sql_facility = "SELECT name FROM facilities WHERE facility_id = $facility_id";
 $result_facility = mysqli_query($conn, $sql_facility);
 $facility = mysqli_fetch_assoc($result_facility);
@@ -51,7 +54,7 @@ if (!$facility) {
     exit();
 }
 
-// Lấy thông tin chuyên khoa
+// Lấy thông tin chuyên khoa để hiển thị xác nhận
 $sql_specialty = "SELECT specialty_name FROM specialties WHERE specialty_id = $specialty_id";
 $result_specialty = mysqli_query($conn, $sql_specialty);
 $specialty = mysqli_fetch_assoc($result_specialty);
@@ -61,7 +64,7 @@ if (!$specialty) {
     exit();
 }
 
-// Format ngày để hiển thị
+// Format ngày để hiển thị (dd/mm/yyyy)
 $date_obj = new DateTime($appointment_date);
 $formatted_date = $date_obj->format('d/m/Y');
 ?>

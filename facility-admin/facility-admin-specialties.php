@@ -1,8 +1,5 @@
 <?php
-/**
- * Facility Admin Specialties Management - Medicare
- * Quản lý chuyên khoa của cơ sở y tế
- */
+// Facility Admin Specialties Management - Quản lý chuyên khoa của cơ sở y tế
 
 $pageTitle = 'Quản lý chuyên khoa';
 require_once '../config.php';
@@ -10,11 +7,11 @@ include 'facility-admin-header.php';
 
 $facility_id = intval($_SESSION['facility_id']);
 
-// Xử lý thêm chuyên khoa vào cơ sở
+// Thêm chuyên khoa vào cơ sở
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'add') {
     $specialty_id = intval($_POST['specialty_id']);
     
-    // Kiểm tra chuyên khoa đã tồn tại trong cơ sở chưa
+    // Kiểm tra chuyên khoa chưa tồn tại trong cơ sở (tránh duplicate)
     $check_exists = "SELECT id FROM facility_specialty WHERE facility_id = $facility_id AND specialty_id = $specialty_id";
     $result_check = mysqli_query($conn, $check_exists);
     if (mysqli_num_rows($result_check) == 0) {
@@ -25,16 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     exit();
 }
 
-// Xử lý xóa chuyên khoa khỏi cơ sở
+// Xóa chuyên khoa khỏi cơ sở (yêu cầu xác nhận)
 $confirm_remove = isset($_GET['confirm_remove']) && is_numeric($_GET['confirm_remove']);
 if (isset($_GET['remove']) && is_numeric($_GET['remove'])) {
     $specialty_id = intval($_GET['remove']);
     
-    // Nếu chưa xác nhận, hiển thị form xác nhận
+    // Yêu cầu xác nhận trước khi xóa
     if (!$confirm_remove) {
         $show_remove_confirm = true;
         $remove_specialty_id = $specialty_id;
     } else {
+        // Xóa liên kết giữa facility và specialty
         $sql_delete = "DELETE FROM facility_specialty WHERE facility_id = $facility_id AND specialty_id = $specialty_id";
         mysqli_query($conn, $sql_delete);
         header('Location: facility-admin-specialties.php');
@@ -56,7 +54,7 @@ if ($result_facility_specialties) {
     }
 }
 
-// Lấy danh sách tất cả chuyên khoa để thêm vào
+// Lấy danh sách chuyên khoa chưa được thêm vào cơ sở (để thêm mới)
 $all_specialties = [];
 $sql_all_specialties = "SELECT s.specialty_id, s.specialty_name, s.icon
                         FROM specialties s

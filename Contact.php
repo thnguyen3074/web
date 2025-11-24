@@ -1,14 +1,10 @@
 <?php
-/**
- * Liên hệ - Medicare
- * Trang liên hệ với Medicare
- */
+// Liên hệ - Trang liên hệ với Medicare
 
 $pageTitle = 'Liên hệ';
 require_once 'config.php';
 include 'header.php';
 
-// Lấy thông báo từ URL
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 $error = isset($_GET['error']) ? $_GET['error'] : '';
 ?>

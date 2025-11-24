@@ -1,20 +1,15 @@
 <?php
-/**
- * Trang đăng ký - Medicare
- * Giao diện form đăng ký
- */
+// Trang đăng ký - Giao diện form đăng ký
 
 $pageTitle = 'Đăng ký';
 require_once 'config.php';
 include 'header.php';
 
-// Kiểm tra nếu đã đăng nhập thì redirect về trang chủ
 if (isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit();
 }
 
-// Lấy thông báo lỗi từ URL
 $error = isset($_GET['error']) ? $_GET['error'] : '';
 ?>
 
@@ -100,20 +95,6 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
         </p>
     </div>
 </main>
-
-<script>
-// Validate password trùng nhau trước khi submit
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-    const password = document.getElementById('register-password').value;
-    const confirmPassword = document.getElementById('register-confirm').value;
-    
-    if (password !== confirmPassword) {
-        e.preventDefault();
-        alert('Mật khẩu xác nhận không khớp. Vui lòng thử lại.');
-        return false;
-    }
-});
-</script>
 
 <?php include 'footer.php'; ?>
 

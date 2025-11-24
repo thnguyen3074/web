@@ -1,8 +1,5 @@
 <?php
-/**
- * Admin Appointment Detail - Medicare
- * Xem chi tiết lịch hẹn
- */
+// Admin Appointment Detail - Xem chi tiết lịch hẹn
 
 $pageTitle = 'Chi tiết lịch hẹn';
 require_once '../config.php';
@@ -15,9 +12,8 @@ if ($appointment_id == 0) {
     exit();
 }
 
-// Lấy thông tin chi tiết lịch hẹn
-// Ưu tiên hiển thị thông tin từ appointments (patient_name, patient_email, patient_phone)
-// Nếu không có thì mới lấy từ users (cho các lịch hẹn cũ)
+// Lấy thông tin chi tiết appointment
+// COALESCE: ưu tiên thông tin từ appointments, nếu NULL thì lấy từ users (cho lịch hẹn cũ)
 $sql = "SELECT a.*, 
                COALESCE(a.patient_name, u.fullname) AS display_name,
                COALESCE(a.patient_email, u.email) AS display_email,
@@ -40,13 +36,13 @@ if (!$appointment) {
     exit();
 }
 
-// Hàm format ngày
+// Format ngày
 function formatDate($date) {
     $date_obj = new DateTime($date);
     return $date_obj->format('d/m/Y');
 }
 
-// Hàm format trạng thái
+// Format trạng thái
 function formatStatus($status) {
     $status_text = [
         'pending' => 'Chờ xác nhận',
@@ -57,7 +53,7 @@ function formatStatus($status) {
     return isset($status_text[$status]) ? $status_text[$status] : $status;
 }
 
-// Hàm format màu trạng thái
+// Format màu trạng thái
 function getStatusClass($status) {
     $status_classes = [
         'pending' => 'pending',

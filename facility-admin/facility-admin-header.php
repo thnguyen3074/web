@@ -1,33 +1,28 @@
 <?php
-/**
- * Facility Admin Header Component - Dùng chung cho tất cả các trang facility admin
- * Kiểm tra session facility admin và hiển thị menu
- */
+// Facility Admin Header Component - Dùng chung cho tất cả các trang facility admin
 
-// Bắt đầu session nếu chưa bắt đầu
+// Bắt đầu session nếu chưa có
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Kiểm tra facility admin đã đăng nhập chưa
+// Kiểm tra đăng nhập facility admin - bắt buộc phải đăng nhập
 if (!isset($_SESSION['facility_admin_id'])) {
     header('Location: facility-admin-login.php');
     exit();
 }
 
-// Kiểm tra facility_id có tồn tại không
-// Chỉ kiểm tra nếu chưa có kết nối database (tránh đóng kết nối sớm)
+// Kiểm tra facility_id có tồn tại không (nếu facility bị xóa thì đăng xuất)
 if (isset($_SESSION['facility_id']) && !isset($conn)) {
     require_once '../config.php';
     $check_facility = "SELECT facility_id FROM facilities WHERE facility_id = " . intval($_SESSION['facility_id']);
     $result_check = mysqli_query($conn, $check_facility);
     if (mysqli_num_rows($result_check) == 0) {
-        // Facility đã bị xóa, đăng xuất
+        // Facility đã bị xóa → hủy session và đăng xuất
         session_destroy();
         header('Location: facility-admin-login.php');
         exit();
     }
-    // Không đóng kết nối ở đây vì các file khác cần sử dụng
 }
 
 $facility_admin_name = isset($_SESSION['facility_admin_name']) ? $_SESSION['facility_admin_name'] : 'Admin';

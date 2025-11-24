@@ -1,14 +1,10 @@
 <?php
-/**
- * Lịch hẹn của tôi - Medicare
- * Hiển thị tất cả lịch hẹn của user đã đăng nhập
- */
+// Lịch hẹn của tôi - Hiển thị tất cả lịch hẹn của user đã đăng nhập
 
 $pageTitle = 'Lịch hẹn của tôi';
 require_once 'config.php';
 include 'header.php';
 
-// Kiểm tra user đã đăng nhập chưa
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
@@ -18,12 +14,12 @@ $user_id = $_SESSION['user_id'];
 $success_message = '';
 $error_message = '';
 
-// Xử lý hủy lịch hẹn
+// Hủy lịch hẹn
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_appointment'], $_POST['appointment_id'])) {
     $appointment_id = intval($_POST['appointment_id']);
     $user_id_escaped = intval($user_id);
     
-    // Kiểm tra lịch hẹn thuộc về user này và có thể hủy
+    // Kiểm tra lịch hẹn thuộc về user này và chỉ cho phép hủy nếu đang pending/confirmed
     $sql_check = "SELECT appointment_id FROM appointments WHERE appointment_id = $appointment_id AND user_id = $user_id_escaped AND status IN ('pending','confirmed')";
     $result_check = mysqli_query($conn, $sql_check);
     
@@ -57,7 +53,7 @@ if ($result) {
     }
 }
 
-// Phân loại lịch hẹn
+// Phân loại lịch hẹn: sắp tới và đã hoàn thành/hủy
 $upcoming = [];
 $completed = [];
 
@@ -65,6 +61,7 @@ foreach ($appointments as $appointment) {
     $appointment_date = new DateTime($appointment['appointment_date']);
     $today = new DateTime();
     
+    // Phân loại: completed/canceled hoặc đã qua ngày → completed, còn lại → upcoming
     if ($appointment['status'] == 'completed' || $appointment['status'] == 'canceled' || $appointment_date < $today) {
         $completed[] = $appointment;
     } else {
@@ -72,13 +69,13 @@ foreach ($appointments as $appointment) {
     }
 }
 
-// Hàm format ngày
+// Format ngày
 function formatDate($date) {
     $date_obj = new DateTime($date);
     return $date_obj->format('d/m/Y');
 }
 
-// Hàm format trạng thái
+// Format trạng thái
 function formatStatus($status) {
     $status_text = [
         'pending' => 'Chờ xác nhận',

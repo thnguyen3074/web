@@ -1,8 +1,5 @@
 <?php
-/**
- * Facility Admin Appointments Management - Medicare
- * Quản lý lịch hẹn của cơ sở y tế
- */
+// Facility Admin Appointments Management - Quản lý lịch hẹn của cơ sở y tế
 
 $pageTitle = 'Quản lý lịch hẹn';
 require_once '../config.php';
@@ -17,23 +14,23 @@ $date_from = isset($_GET['date_from']) ? $_GET['date_from'] : '';
 $date_to = isset($_GET['date_to']) ? $_GET['date_to'] : '';
 
 // Phân trang
-$per_page = 20; // Số bản ghi mỗi trang
+$per_page = 20;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
-$page = max(1, $page); // Đảm bảo page >= 1
+$page = max(1, $page);
 $offset = ($page - 1) * $per_page;
 
-// Xử lý cập nhật trạng thái
+// Cập nhật trạng thái appointment
 $confirm_cancel = isset($_GET['confirm_cancel']) && is_numeric($_GET['confirm_cancel']);
 if (isset($_GET['update_status']) && is_numeric($_GET['update_status']) && isset($_GET['status'])) {
     $appointment_id = intval($_GET['update_status']);
     $status = mysqli_real_escape_string($conn, $_GET['status']);
     
-    // Nếu là hủy và chưa xác nhận, hiển thị form xác nhận
+    // Yêu cầu xác nhận trước khi hủy lịch hẹn
     if ($status == 'canceled' && !$confirm_cancel) {
         $show_cancel_confirm = true;
         $cancel_appointment_id = $appointment_id;
     } else {
-        // Kiểm tra appointment thuộc về facility này
+        // Kiểm tra appointment thuộc về facility này (bảo mật)
         $check_appointment = "SELECT appointment_id FROM appointments WHERE appointment_id = $appointment_id AND facility_id = $facility_id";
         $result_check = mysqli_query($conn, $check_appointment);
         if (mysqli_num_rows($result_check) > 0) {
@@ -45,23 +42,24 @@ if (isset($_GET['update_status']) && is_numeric($_GET['update_status']) && isset
     }
 }
 
-// Lấy danh sách appointments của cơ sở với JOIN và filter
+// Lấy danh sách appointments với filter và phân trang
+// COALESCE: ưu tiên thông tin từ appointments, nếu NULL thì lấy từ users
 $appointments = [];
-$where_conditions = ["a.facility_id = $facility_id"];
+$where_conditions = ["a.facility_id = $facility_id"]; // Chỉ lấy appointments của facility này
 
-// Thêm điều kiện tìm kiếm (tìm trong thông tin từ appointments và users)
+// Tìm kiếm trong nhiều trường
 if (!empty($search)) {
     $search_escaped = mysqli_real_escape_string($conn, $search);
     $where_conditions[] = "(a.patient_name LIKE '%$search_escaped%' OR a.patient_email LIKE '%$search_escaped%' OR a.patient_phone LIKE '%$search_escaped%' OR u.fullname LIKE '%$search_escaped%' OR u.email LIKE '%$search_escaped%' OR u.phone LIKE '%$search_escaped%' OR s.specialty_name LIKE '%$search_escaped%' OR a.symptoms LIKE '%$search_escaped%')";
 }
 
-// Thêm điều kiện lọc theo trạng thái
+// Filter theo trạng thái (chỉ chấp nhận giá trị hợp lệ)
 if (!empty($status_filter) && in_array($status_filter, ['pending', 'confirmed', 'completed', 'canceled'])) {
     $status_escaped = mysqli_real_escape_string($conn, $status_filter);
     $where_conditions[] = "a.status = '$status_escaped'";
 }
 
-// Thêm điều kiện lọc theo ngày
+// Filter theo khoảng thời gian
 if (!empty($date_from)) {
     $date_from_escaped = mysqli_real_escape_string($conn, $date_from);
     $where_conditions[] = "a.appointment_date >= '$date_from_escaped'";
@@ -73,7 +71,7 @@ if (!empty($date_to)) {
 
 $where_clause = implode(' AND ', $where_conditions);
 
-// Đếm tổng số bản ghi (sử dụng cùng điều kiện where)
+// Đếm tổng số bản ghi
 $sql_count = "SELECT COUNT(*) AS total 
               FROM appointments a
               LEFT JOIN users u ON a.user_id = u.user_id
@@ -82,10 +80,7 @@ $sql_count = "SELECT COUNT(*) AS total
 $result_count = mysqli_query($conn, $sql_count);
 $total_records = mysqli_fetch_assoc($result_count)['total'];
 $total_pages = ceil($total_records / $per_page);
-
-// Lấy dữ liệu với phân trang
-// Ưu tiên hiển thị thông tin từ appointments (patient_name, patient_email, patient_phone)
-// Nếu không có thì mới lấy từ users (cho các lịch hẹn cũ)
+// Lấy danh sách appointments với phân trang
 $sql = "SELECT a.*, 
                COALESCE(a.patient_name, u.fullname) AS display_name,
                COALESCE(a.patient_email, u.email) AS display_email,
@@ -104,13 +99,13 @@ if ($result) {
     }
 }
 
-// Hàm format ngày
+// Format ngày
 function formatDate($date) {
     $date_obj = new DateTime($date);
     return $date_obj->format('d/m/Y');
 }
 
-// Hàm format trạng thái
+// Format trạng thái
 function formatStatus($status) {
     $status_text = [
         'pending' => 'Chờ xác nhận',
@@ -121,7 +116,7 @@ function formatStatus($status) {
     return isset($status_text[$status]) ? $status_text[$status] : $status;
 }
 
-// Hàm format màu trạng thái
+// Format màu trạng thái
 function getStatusClass($status) {
     $status_classes = [
         'pending' => 'pending',

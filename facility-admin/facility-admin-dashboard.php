@@ -1,8 +1,5 @@
 <?php
-/**
- * Facility Admin Dashboard - Medicare
- * Hiển thị thống kê của cơ sở y tế
- */
+// Facility Admin Dashboard - Hiển thị thống kê của cơ sở y tế
 
 $pageTitle = 'Tổng quan';
 require_once '../config.php';
@@ -15,60 +12,56 @@ $sql_facility = "SELECT * FROM facilities WHERE facility_id = $facility_id";
 $result_facility = mysqli_query($conn, $sql_facility);
 $facility = mysqli_fetch_assoc($result_facility);
 
-// Lấy số lượng lịch hẹn của cơ sở
+// Thống kê lịch hẹn của cơ sở
 $sql_appointments_total = "SELECT COUNT(*) AS total FROM appointments WHERE facility_id = $facility_id";
 $result_appointments_total = mysqli_query($conn, $sql_appointments_total);
 $appointments_total = mysqli_fetch_assoc($result_appointments_total)['total'];
 
-// Lấy số lượng lịch hẹn chờ xác nhận
+// Thống kê lịch hẹn theo trạng thái
 $sql_appointments_pending = "SELECT COUNT(*) AS total FROM appointments WHERE facility_id = $facility_id AND status = 'pending'";
 $result_appointments_pending = mysqli_query($conn, $sql_appointments_pending);
 $appointments_pending = mysqli_fetch_assoc($result_appointments_pending)['total'];
 
-// Lấy số lượng lịch hẹn đã xác nhận
 $sql_appointments_confirmed = "SELECT COUNT(*) AS total FROM appointments WHERE facility_id = $facility_id AND status = 'confirmed'";
 $result_appointments_confirmed = mysqli_query($conn, $sql_appointments_confirmed);
 $appointments_confirmed = mysqli_fetch_assoc($result_appointments_confirmed)['total'];
 
-// Lấy số lượng lịch hẹn đã hoàn thành
 $sql_appointments_completed = "SELECT COUNT(*) AS total FROM appointments WHERE facility_id = $facility_id AND status = 'completed'";
 $result_appointments_completed = mysqli_query($conn, $sql_appointments_completed);
 $appointments_completed = mysqli_fetch_assoc($result_appointments_completed)['total'];
 
-// Lấy số lượng chuyên khoa của cơ sở
 $sql_specialties = "SELECT COUNT(*) AS total FROM facility_specialty WHERE facility_id = $facility_id";
 $result_specialties = mysqli_query($conn, $sql_specialties);
 $specialties_count = mysqli_fetch_assoc($result_specialties)['total'];
 
-// Lấy số lượng lịch hẹn hôm nay
+// Thống kê lịch hẹn theo thời gian
 $today = date('Y-m-d');
 $sql_appointments_today = "SELECT COUNT(*) AS total FROM appointments WHERE facility_id = $facility_id AND appointment_date = '$today'";
 $result_appointments_today = mysqli_query($conn, $sql_appointments_today);
 $appointments_today = mysqli_fetch_assoc($result_appointments_today)['total'];
 
-// Lấy số lượng lịch hẹn trong tuần này
+// Lịch hẹn trong tuần này (thứ 2 đến chủ nhật)
 $week_start = date('Y-m-d', strtotime('monday this week'));
 $week_end = date('Y-m-d', strtotime('sunday this week'));
 $sql_appointments_week = "SELECT COUNT(*) AS total FROM appointments WHERE facility_id = $facility_id AND appointment_date BETWEEN '$week_start' AND '$week_end'";
 $result_appointments_week = mysqli_query($conn, $sql_appointments_week);
 $appointments_week = mysqli_fetch_assoc($result_appointments_week)['total'];
 
-// Lấy số lượng lịch hẹn trong tháng này
+// Lịch hẹn trong tháng này
 $month_start = date('Y-m-01');
 $month_end = date('Y-m-t');
 $sql_appointments_month = "SELECT COUNT(*) AS total FROM appointments WHERE facility_id = $facility_id AND appointment_date BETWEEN '$month_start' AND '$month_end'";
 $result_appointments_month = mysqli_query($conn, $sql_appointments_month);
 $appointments_month = mysqli_fetch_assoc($result_appointments_month)['total'];
 
-// Lấy lịch hẹn sắp tới (7 ngày tới)
+// Lịch hẹn sắp tới (7 ngày tới, chỉ pending và confirmed)
 $next_week = date('Y-m-d', strtotime('+7 days'));
 $sql_upcoming = "SELECT COUNT(*) AS total FROM appointments WHERE facility_id = $facility_id AND appointment_date BETWEEN '$today' AND '$next_week' AND status IN ('pending', 'confirmed')";
 $result_upcoming = mysqli_query($conn, $sql_upcoming);
 $appointments_upcoming = mysqli_fetch_assoc($result_upcoming)['total'];
 
 // Lấy lịch hẹn gần đây nhất (5 lịch hẹn)
-// Ưu tiên hiển thị thông tin từ appointments (patient_name)
-// Nếu không có thì mới lấy từ users (cho các lịch hẹn cũ)
+// COALESCE: ưu tiên thông tin từ appointments, nếu NULL thì lấy từ users
 $sql_recent = "SELECT a.*, 
                COALESCE(a.patient_name, u.fullname) AS display_name, 
                s.specialty_name 
@@ -86,7 +79,7 @@ if ($result_recent) {
     }
 }
 
-// Hàm format ngày
+// Format ngày
 function formatDate($date) {
     $date_obj = new DateTime($date);
     return $date_obj->format('d/m/Y');

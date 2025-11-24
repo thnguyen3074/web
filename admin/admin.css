@@ -21,7 +21,7 @@ body {
   line-height: 1.5;
 }
 
-/* ========== ADMIN LOGIN PAGE ========== */
+/* ADMIN LOGIN PAGE */
 .admin-login-page {
   min-height: 100vh;
   display: flex;
@@ -61,7 +61,7 @@ body {
   gap: 20px;
 }
 
-/* ========== ADMIN LAYOUT ========== */
+/* ADMIN LAYOUT */
 .admin-body {
   background: var(--admin-bg);
   min-height: 100vh;
@@ -169,7 +169,7 @@ body {
   margin-bottom: 24px;
 }
 
-/* ========== STATS GRID ========== */
+/* STATS GRID */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -203,7 +203,7 @@ body {
   color: var(--admin-primary);
 }
 
-/* ========== TABS ========== */
+/* TABS */
 .admin-tabs {
   display: flex;
   gap: 8px;
@@ -240,7 +240,7 @@ body {
   display: block;
 }
 
-/* ========== TABLE ========== */
+/* TABLE */
 .table-container {
   background: #fff;
   border-radius: 12px;
@@ -281,7 +281,7 @@ body {
   object-fit: cover;
 }
 
-/* ========== BUTTONS ========== */
+/* BUTTONS */
 .btn-admin-primary {
   background: var(--admin-primary);
   color: #fff;
@@ -377,7 +377,7 @@ body {
   opacity: 0.9;
 }
 
-/* ========== STATUS BADGES ========== */
+/* STATUS BADGES */
 .status-badge {
   display: inline-block;
   padding: 4px 12px;
@@ -417,7 +417,7 @@ body {
   color: #991b1b;
 }
 
-/* ========== MODAL ========== */
+/* MODAL */
 .modal {
   display: none;
   position: fixed;
@@ -431,7 +431,7 @@ body {
   justify-content: center;
 }
 
-/* Hỗ trợ cả hai cách: class active và style.display */
+/* Hỗ trợ class active và style.display */
 .modal.active {
   display: flex !important;
 }
@@ -499,7 +499,7 @@ body {
   background: #cbd5e1;
 }
 
-/* ========== FORM GROUP ========== */
+/* FORM GROUP */
 .form-group {
   display: flex;
   flex-direction: column;
