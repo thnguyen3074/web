@@ -62,38 +62,6 @@ if (tabButtons.length && tabPanels.length) {
     });
   });
 }
-
-// MODAL FUNCTIONS
-function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.add("active");
-  }
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.remove("active");
-  }
-}
-
-// Close modal khi click outside
-window.addEventListener("click", (event) => {
-  if (event.target.classList.contains("modal")) {
-    event.target.classList.remove("active");
-  }
-});
-
-
-function openChangePasswordModal() {
-  openModal("passwordModal");
-}
-
-// The rest of the booking and appointment logic is now handled server-side
-// via the PHP modules (Booking.php, MyAppointments.php).
-
-
 // SLIDER FUNCTIONALITY - Xử lý cuộn ngang cho danh sách bệnh viện/phòng khám
 function initSliders() {
   const sliderContainers = document.querySelectorAll(".slider-container");
