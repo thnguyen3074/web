@@ -43,9 +43,7 @@ function formatDateTime($date) {
             <tr>
                 <td>Email</td>
                 <td>
-                    <a href="mailto:<?php echo htmlspecialchars($message['email']); ?>" class="text-link">
-                        <?php echo htmlspecialchars($message['email']); ?>
-                    </a>
+                    <?php echo htmlspecialchars($message['email']); ?>
                 </td>
             </tr>
             <tr>
@@ -75,7 +73,6 @@ function formatDateTime($date) {
     <div class="card">
         <h2>Hành động</h2>
         <div class="flex-wrap">
-            <a href="mailto:<?php echo htmlspecialchars($message['email']); ?>?subject=<?php echo urlencode('Phản hồi: ' . $message['subject']); ?>" class="btn-admin-primary btn-sm">Trả lời email</a>
             <a href="admin-contact-messages.php?delete=<?php echo $message['id']; ?>" class="btn-delete btn-sm" onclick="return confirm('Bạn có chắc muốn xóa yêu cầu hỗ trợ này?')">Xóa yêu cầu</a>
             <a href="admin-contact-messages.php" class="btn-admin-secondary btn-sm">Danh sách yêu cầu</a>
         </div>
