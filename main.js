@@ -1,10 +1,5 @@
 // Menu Toggle - Mobile menu
 $(document).ready(function() {
-    $('.menu-toggle').on('click', function() {
-        $('.nav').toggleClass('open');
-        $('.auth').toggleClass('open');
-    });
-
     // Form validation
     $('form[data-validate="true"]').on('submit', function(event) {
         const $form = $(this);

@@ -19,7 +19,7 @@ $userFullname = $isLoggedIn ? $_SESSION['fullname'] : '';
 </head>
 <body>
     <header class="header">
-        <div class="logo">Medicare</div>
+        <div class="logo"><a href="index.php">Medicare</a></div>
         <nav class="nav">
             <a href="index.php">Trang chủ</a>
             <a href="Facility.php">Cơ sở y tế</a>
@@ -37,6 +37,5 @@ $userFullname = $isLoggedIn ? $_SESSION['fullname'] : '';
                 <a href="register.php" class="auth-link signup">Đăng ký</a>
             <?php endif; ?>
         </div>
-        <button class="menu-toggle" aria-label="Mở menu">☰</button>
     </header>
 
