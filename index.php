@@ -32,6 +32,12 @@ if ($result_specialties) {
     }
 }
 ?>
+<section class="home-intro">
+    <h1>Chào mừng bạn đến với Medicare</h1>
+    <p>
+        Medicare là nền tảng đặt lịch khám bệnh trực tuyến giúp bạn tra cứu nhanh chóng thông tin bệnh viện, phòng khám và đặt lịch khám chỉ trong vài bước.
+    </p>
+</section>
 
 <section class="search-bar">
     <div class="search-wrapper">
