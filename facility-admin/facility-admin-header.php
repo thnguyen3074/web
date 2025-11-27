@@ -42,7 +42,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="admin-logo">Medicare Facility Admin</div>
         <div class="admin-header-actions">
             <span style="margin-right: 16px;"><?php echo htmlspecialchars($facility_name); ?> - Xin chào, <?php echo htmlspecialchars($facility_admin_name); ?></span>
-            <a href="/facility-admin-logout.php" class="btn-admin-logout">Đăng xuất</a>
+            <a href="facility-admin-logout.php" class="btn-admin-logout">Đăng xuất</a>
         </div>
     </header>
 
